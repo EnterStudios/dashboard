@@ -9,21 +9,9 @@
             position: absolute;
             top: 15px;
         }
-        &.back_to_site_link {
-            text-decoration: none;
-            position: absolute;
-            top: 86px;
-            left: 128px;
-            color: #939598;
-            font-size: 1.5rem;
-            &:hover {
-                cursor: pointer;
-            }
-        }
     }
     .mdl-layout__header {
         box-shadow: none;
-        margin-bottom: 64px;
     }
     .mdl-layout-title {
         position: relative;
@@ -34,7 +22,7 @@
         margin-bottom: 0;
     }
     .mdl-color-cyan-bespoken {
-        background-color: #38bfc4;
+        background-color: rgb(153, 213, 220);
     }
     .mdl-color-green-bespoken {
         background-color: #023333;

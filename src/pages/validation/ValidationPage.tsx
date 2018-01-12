@@ -12,6 +12,8 @@ import Snackbar from "react-toolbox/lib/snackbar";
 import Button from "../../components/Button";
 import {CodeSheet} from "../../components/CodeSheet";
 import {Cell} from "../../components/Grid";
+import { Dimensions } from "../../components/Measure";
+import SourcePageTwoPane from "../../components/SourcePageTwoPane";
 import Source from "../../models/source";
 import {User, UserDetails} from "../../models/user";
 import { State } from "../../reducers";
@@ -22,6 +24,7 @@ import { Location } from "../../utils/Location";
 const dashboardTheme = require("../../themes/dashboard.scss");
 const inputTheme = require("../../themes/input.scss");
 const checkboxTheme = require("../../themes/checkbox-theme.scss");
+const buttonStyle = require("../../themes/amazon_pane.scss");
 
 interface ValidationPageState {
     dialogActive: boolean;
@@ -39,6 +42,7 @@ interface ValidationPageState {
     pusher: pusher.Pusher | undefined;
     vendorID: string;
     vendorIDChanged: boolean;
+    myHeight: number;
 }
 
 interface ValidationPageProps {
@@ -88,7 +92,9 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                 : undefined),
             vendorID: "",
             vendorIDChanged: false,
+            myHeight: 0,
         };
+        this.onMeasure = this.onMeasure.bind(this);
         this.handleScriptChange = this.handleScriptChange.bind(this);
         this.handleTokenChange = this.handleTokenChange.bind(this);
         this.handleMonitorEnabledCheckChange = this.handleMonitorEnabledCheckChange.bind(this);
@@ -100,6 +106,11 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
         this.handleVendorIDChange = this.handleVendorIDChange.bind(this);
         this.handleGetTokenClick = this.handleGetTokenClick.bind(this);
         this.handleSnackbarClick = this.handleSnackbarClick.bind(this);
+    }
+
+    onMeasure(dimensions: Dimensions) {
+        this.state.myHeight = dimensions.height;
+        this.setState(this.state);
     }
 
     lastScriptKey(source: Source) {
@@ -278,55 +289,67 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
 
     render() {
         return (
-                <form className="mdl-grid" onSubmit={this.handleRun}>
-                    <Cell col={3} tablet={12}>
-                        <Input className="sm-input" label="Validation Token" value={this.state.token} onChange={this.handleTokenChange} required={true}/>
-                        Don't have a token yet? <a href="#" onClick={this.handleGetTokenClick}>Get it here</a>
-                        <Snackbar className="sm-snackbar" action="Dismiss" type="cancel"
-                            active={this.state.showSnackbar}
-                            label={this.state.snackbarLabel}
-                            onClick={this.handleSnackbarClick}/>
-                    </Cell>
+            <SourcePageTwoPane>
+                {(
+                    <form className="mdl-grid" onSubmit={this.handleRun}>
                         <Cell col={3} tablet={12}>
-                            <Input className="sm-input" label="Vendor ID" value={this.state.vendorID} onChange={this.handleVendorIDChange} required={true}/>
-                            To retrieve your vendor ID, <a href="https://developer.amazon.com/mycid.html" target="_blank">click here</a>. Please make sure it is for the correct organization if you belong to multiple.
+                            <Input className="sm-input" label="Validation Token" value={this.state.token}
+                                   onChange={this.handleTokenChange} required={true}/>
+                            Don't have a token yet? <a href="#" onClick={this.handleGetTokenClick}>Get it here</a>
+                            <Snackbar className="sm-snackbar" action="Dismiss" type="cancel"
+                                      active={this.state.showSnackbar}
+                                      label={this.state.snackbarLabel}
+                                      onClick={this.handleSnackbarClick}/>
                         </Cell>
-                    <Cell col={12}>
-                        <Cell col={6}>
-                            <Input className="script-input" multiline={true}
-                                value={this.state.script}
-                                onChange={this.handleScriptChange}
-                                hint={ValidationPage.scriptHint} required={true}/>
-                            <p>Scripts will “speak” the sequence of commands listed above,
-                                testing for the proper result - <a href="#" onClick={this.handleHelpChange}>click here for help</a>.
-                            </p>
+                        <Cell col={3} tablet={12}>
+                            <Input className="sm-input" label="Vendor ID" value={this.state.vendorID}
+                                   onChange={this.handleVendorIDChange} required={true}/>
+                            To retrieve your vendor ID, <a href="https://developer.amazon.com/mycid.html"
+                                                           target="_blank">click
+                            here</a>. Please make sure it is for the correct organization if you belong to multiple.
                         </Cell>
-                    </Cell>
-                    <Cell col={12}>
-                        {this.state.showHelp ? <ValidationHelp/> : undefined}
-                    </Cell>
-                    <Cell col={12}>
-                        <Button raised={true} disabled={this.state.loadingValidationResults}>
-                            {this.state.loadingValidationResults
-                            ? <ProgressBar className="circularProgressBar" type="circular" mode="indeterminate" />
-                            : <span>Run</span>}
-                        </Button>
-                        <Dialog
-                            className={`${dashboardTheme.dialog}`}
-                            active={this.state.dialogActive}
-                            onEscKeyDown={this.handleDialogToggle}
-                            onOverlayClick={this.handleDialogToggle}>
-                            <div dangerouslySetInnerHTML={{__html: this.state.validationResults}}/>
-                        </Dialog>
-                    </Cell>
-                    <Cell style={{display: "none"}} col={12} className={`${inputTheme.checkbox}`}>
-                        <Checkbox
-                            theme={checkboxTheme}
-                            label={"Enable Monitoring"}
-                            checked={this.state.monitorEnabled}
-                            onChange={this.handleMonitorEnabledCheckChange}/>
-                    </Cell>
-                </form>
+                        <Cell col={12}>
+                            <Cell col={6}>
+                                <Input className="script-input" multiline={true}
+                                       value={this.state.script}
+                                       onChange={this.handleScriptChange}
+                                       hint={ValidationPage.scriptHint} required={true}/>
+                                <p>Scripts will “speak” the sequence of commands listed above,
+                                    testing for the proper result - <a href="#" onClick={this.handleHelpChange}>click
+                                        here
+                                        for help</a>.
+                                </p>
+                            </Cell>
+                        </Cell>
+                        <Cell col={12}>
+                            {this.state.showHelp ? <ValidationHelp/> : undefined}
+                        </Cell>
+                        <Cell col={12}>
+                            <Button className={buttonStyle.validation_button} primary={true} raised={true} disabled={this.state.loadingValidationResults}>
+                                {this.state.loadingValidationResults
+                                    ?
+                                    <ProgressBar className="circularProgressBar" type="circular" mode="indeterminate"/>
+                                    : <span>Run Skill ></span>}
+                            </Button>
+                            <Dialog
+                                className={`${dashboardTheme.dialog}`}
+                                active={this.state.dialogActive}
+                                onEscKeyDown={this.handleDialogToggle}
+                                onOverlayClick={this.handleDialogToggle}>
+                                <div dangerouslySetInnerHTML={{__html: this.state.validationResults}}/>
+                            </Dialog>
+                        </Cell>
+                        <Cell style={{display: "none"}} col={12} className={`${inputTheme.checkbox}`}>
+                            <Checkbox
+                                theme={checkboxTheme}
+                                label={"Enable Monitoring"}
+                                checked={this.state.monitorEnabled}
+                                onChange={this.handleMonitorEnabledCheckChange}/>
+                        </Cell>
+                    </form>
+                )}
+                {"call to action placeholder (sidebar)"}
+            </SourcePageTwoPane>
         );
     }
 }

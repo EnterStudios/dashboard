@@ -1,9 +1,10 @@
+import * as classNames from "classnames";
 import * as React from "react";
 import { Button } from "react-toolbox/lib/button";
 import Input from "react-toolbox/lib/input";
 import auth from "../services/auth";
-import { Cell, Grid } from "./Grid";
 import { Dimensions, Measure } from "./Measure";
+import LandingAmazonPageTwoPane from "./SourcePageTwoPane";
 
 const ButtonTheme = require("../themes/button_theme.scss");
 const InputTheme = require("../themes/input.scss");
@@ -44,18 +45,16 @@ export default class AmazonVendorPane extends React.Component<any, any> {
         let spacing = this.props.spacing !== undefined && this.props.spacing;
         return (
             <Measure
-                onMeasure={this.onMeasure} >
-                <Grid
-                    style={this.props.style}
-                    className={`${this.props.className} ${VendorPaneStyle.main_grid}`}
-                    noSpacing={spacing}>
-                    <Cell className={VendorPaneStyle.left_cell} col={9} phone={4} tablet={6}>
-                        <div className={VendorPaneStyle.left_container}>
-                            <div>
-                                <h5>We only need one more piece of information before getting you started</h5>
-                                <h4>Please enter your vendorID</h4>
-                                <span>
+                onMeasure={this.onMeasure}>
+                <LandingAmazonPageTwoPane spacing={spacing}>
+                    {(
+                        <div style={{color: "#898989"}}>
+                            <h5 style={{marginBottom: 0, letterSpacing: "-1px"}}>We only need one more piece of
+                                information before getting you started</h5>
+                            <h4 style={{margin: 0, letterSpacing: "-1px"}}>Please enter on here your vendor ID</h4>
+                            <span>
                                     <Input
+                                        className={classNames(InputTheme.vendor_id_input)}
                                         style={{color: "#000"}}
                                         theme={InputTheme}
                                         label="Vendor ID"
@@ -63,26 +62,24 @@ export default class AmazonVendorPane extends React.Component<any, any> {
                                         onChange={this.handleVendorIDChange}
                                         required={true}/>
                                 </span>
-                                <small>To
-                                    retrieve your vendor ID, <a href="https://developer.amazon.com/mycid.html"
-                                                                target="_blank">click here</a>
-                                </small>
-                                <Button
-                                    className={VendorPaneStyle.vendor_button}
-                                    theme={ButtonTheme}
-                                    raised={true}
-                                    primary={true}
-                                    onClick={this.handleUpdateVendorId}
-                                    label="Get Started  >"/>
-                            </div>
+                            <small>To retrieve your vendor ID, <a href="https://developer.amazon.com/mycid.html"
+                                                                  target="_blank">click here</a>
+                            </small>
+                            <Button
+                                className={VendorPaneStyle.vendor_button}
+                                theme={ButtonTheme}
+                                raised={true}
+                                primary={true}
+                                onClick={this.handleUpdateVendorId}
+                                label="Get Started  >"/>
                         </div>
-                    </Cell>
-                    <Cell className={VendorPaneStyle.right_cell} col={3} hidePhone={true} tablet={2}>
-                        <div style={{margin: 20, backgroundColor: "#fff"}}>
-                            call to action placeholder
-                        </div>
-                    </Cell>
-                </Grid >
+                    )}
+                    {(
+                        <a>
+                            <img src="https://bespoken.io/wp-content/uploads/2018/01/placeholder.jpg"/>
+                        </a>
+                    )}
+                </LandingAmazonPageTwoPane>
             </Measure>
         );
     }

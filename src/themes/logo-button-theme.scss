@@ -6,16 +6,18 @@
     background-image: url("https://bespoken.io/wp-content/uploads/2017/07/Bespoken-Alpaca-RGB-social.png");
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center 5px;
+    background-position: center 0;
     height: 100%;
+    min-width: 9.2rem;
     border-radius: 0;
     box-shadow: none;
+    border-bottom: 1px solid rgb(246, 246, 244);
 
     &:hover {
         background-color: #fff!important;
         background-image: url("https://bespoken.io/wp-content/uploads/2017/07/Bespoken-Alpaca-RGB-social.png")!important;
         background-size: contain!important;
         background-repeat: no-repeat!important;
-        background-position: center 5px!important;
+        background-position: center 0px!important;
     }
 }

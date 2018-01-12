@@ -62,7 +62,7 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
             </div>
         );
 
-        return this.props.amazonFlow ? (<AmazonPane noSpacing={true} style={{padding: 0}} />) :
+        return this.props.amazonFlow ? (<AmazonPane spacing={true} />) :
             (
                 <TwoPane
                     spacing={true}

@@ -1,0 +1,46 @@
+@import "dashboard";
+
+.gray_top_bar {
+    height: 30px;
+    background-color: #E6EAED;
+}
+
+.container {
+    height: 90px;
+    padding-left: 0;
+    &.bg_white {
+        background-color: #fff;
+    }
+}
+
+.title {
+    height: 100%;
+    color: #fff;
+    margin-left: 25px;
+    h4 {
+        margin: 0;
+        height: 50%;
+        padding-top: 5%;
+    }
+    span {
+        font-size: 1.3rem;
+        margin-right: 10px;
+    }
+}
+
+.back_to_site_link {
+    margin-left: 9.2rem;
+    letter-spacing: -2px;
+    text-decoration: none;
+    color: #939598;
+    font-size: 1.8rem;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.user_control_button button {
+    width: 65px;
+    height: 65px;
+    padding: 0;
+}

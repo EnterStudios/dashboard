@@ -4,6 +4,8 @@ import User from "../models/user";
 import { Icon, ICON } from "./Icon";
 import { Menu, MenuItem } from "./Menu";
 
+const TopBarTheme = require("../themes/topbar_theme.scss");
+
 interface UserProps {
   user?: User;
   login: () => void;
@@ -20,18 +22,19 @@ export default class UserControl extends React.Component<UserProps, any> {
     let icon = this.props.user && this.props.user.photoUrl ? (
       <img
         style={{ borderRadius: "50%" }}
-        width="45"
-        height="45"
+        width="65"
+        height="65"
         src={this.props.user.photoUrl}
         />
     ) : (
         <Icon
-          style={{width: 45, height: 45}}
+          style={{width: 65, height: 65}}
           icon={ICON.DEFAULT_AVATAR}
           />
       );
     return (
       <Menu
+          className={TopBarTheme.user_control_button}
         icon={icon}
         position="topRight"
         menuRipple={true}>

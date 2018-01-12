@@ -53,7 +53,6 @@ interface DashboardProps {
 
 interface DashboardState {
   showModal: boolean;
-  amazonFlow: boolean;
   emailVerificationStatus: "loading" | "asking" | "sent" | "done";
 }
 
@@ -107,7 +106,6 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
     this.state = {
       showModal: false,
-      amazonFlow: true,
       emailVerificationStatus: "loading",
     };
 
@@ -119,8 +117,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
   }
 
   headerClasses() {
-    const noHeaderMargin = this.state.amazonFlow || this.props && this.props.currentSource ? "" : "no-header-margin";
-    return classNames(CLASSES.COLOR.CYAN_BESPOKEN, CLASSES.TEXT.GREY_600, noHeaderMargin);
+    return classNames(CLASSES.COLOR.CYAN_BESPOKEN, CLASSES.TEXT.GREY_600);
   }
 
   async componentDidMount() {
@@ -315,10 +312,6 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
           handleCloseModal={this.handleCloseModal}
           handleEnterContest={this.handleEnterContest}
         />
-        {
-            this.state && this.state.amazonFlow &&
-            <a onClick={this.handleHomeClick} className="back_to_site_link">{"<< Back to site"}</a>
-        }
         <Header
           className={this.headerClasses()}
           currentSourceId={this.props.currentSource ? this.props.currentSource.id : undefined}

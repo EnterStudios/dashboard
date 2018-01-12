@@ -2,7 +2,7 @@
 
 .help_menu_button {
     top: -8px;
-    font-size: 1.2em;
+    font-size: 1.3em;
     height: 24px;
     line-height: 24px;
     background-color: transparent!important;
@@ -17,10 +17,11 @@
 .menu_container {
     display: inline-block;
     position: absolute;
-    right: 50px;
+    right: 10%;
+    margin-top: -7px;
     + div {
         position: absolute;
-        right: 1%;
+        right: 5%;
     }
 }
 

@@ -19,6 +19,7 @@ const IconButtonTheme = require("../themes/icon-button-primary-theme.scss");
 const LogoButtonTheme = require("../themes/logo-button-theme.scss");
 const MenuButtonTheme = require("../themes/button_menu_theme.scss");
 const TabMenuTheme = require("../themes/tab_menu_theme.scss");
+const TopBarTheme = require("../themes/topbar_theme.scss");
 const theme = require("../themes/autosuggest.scss");
 
 export interface Dropdownable {
@@ -45,6 +46,7 @@ export interface HeaderProps {
 
 export interface HeaderState {
   selectedSourceId?: string;
+  amazonFlow?: boolean;
 }
 
 /**
@@ -57,7 +59,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
 
   constructor(props: HeaderProps) {
     super(props);
-    this.state = { selectedSourceId: this.props.currentSourceId };
+    this.state = { selectedSourceId: this.props.currentSourceId, amazonFlow: true };
   }
 
   componentWillReceiveProps(nextProps: HeaderProps, context: any) {
@@ -82,53 +84,60 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
 
   render() {
     return (
-      <header className={this.classes()}>
-        <div className="mdl-layout__header-row" style={{ paddingLeft: "0px" }}>
-
-          <Home
-            handleHomeClick={this.props.onHomeClicked}
-            showHome={this.props.displayHomeButton} />
-
-          <Title
-            sources={this.props.sources}
-            handleItemSelect={this.handleItemSelect}
-            selectedSourceId={this.state.selectedSourceId} />
-
-          <PageSwap
-            source={this.props.currentSourceId}
-            sources={this.props.sources}
-            pageButtons={this.props.pageButtons}
-            onPageSelected={this.props.onPageSelected} />
-
-          <div className="mdl-layout-spacer" />
-
-          <ButtonMenu className={MenuButtonTheme.help_menu_button} raised={true} position="topRight" label="Need Help?">
-              <MenuItem
-                  key="1"
-                  to="https://github.com/bespoken/dashboard/issues/new?labels=bug"
-                  icon="bug_report"
-                  caption="File Bug" />
-              <MenuItem
-                  key="2"
-                  to="https://github.com/bespoken/dashboard/issues/new?labels=feature%20request&body="
-                  icon="build"
-                  caption="Request Feature" />
-              <MenuItem
-                  key="3"
-                  to="https://gitter.im/bespoken/bst?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"
-                  icon="question_answer"
-                  caption="Talk to Us" />
-              <MenuItem
-                  key="4"
-                  to="mailto:contact@bespoken.io"
-                  icon="email"
-                  caption="Email" />
-          </ButtonMenu>
-
-          {this.props.children}
-
-        </div>
-      </header>
+        <header className={this.classes()}>
+            <div className={classNames("mdl-layout__header-row", TopBarTheme.gray_top_bar)} />
+            <div className={classNames("mdl-layout__header-row", TopBarTheme.container)}>
+                <Home
+                    handleHomeClick={this.props.onHomeClicked}
+                    showHome={this.props.displayHomeButton}/>
+                <div className={classNames(TopBarTheme.title)}>
+                    <h4>Voice Apps</h4>
+                    <span>-> Skills</span>
+                    <span>-> Actions</span>
+                    <span>-> Hybrids</span>
+                </div>
+                <ButtonMenu className={MenuButtonTheme.help_menu_button} raised={true} position="topRight"
+                            label="Need Help?">
+                    <MenuItem
+                        key="1"
+                        to="https://github.com/bespoken/dashboard/issues/new?labels=bug"
+                        icon="bug_report"
+                        caption="File Bug"/>
+                    <MenuItem
+                        key="2"
+                        to="https://github.com/bespoken/dashboard/issues/new?labels=feature%20request&body="
+                        icon="build"
+                        caption="Request Feature"/>
+                    <MenuItem
+                        key="3"
+                        to="https://gitter.im/bespoken/bst?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"
+                        icon="question_answer"
+                        caption="Talk to Us"/>
+                    <MenuItem
+                        key="4"
+                        to="mailto:contact@bespoken.io"
+                        icon="email"
+                        caption="Email"/>
+                </ButtonMenu>
+                {this.props.children}
+            </div>
+            <div className={classNames("mdl-layout__header-row", TopBarTheme.container, TopBarTheme.bg_white)}>
+                {
+                    this.state && this.state.amazonFlow &&
+                    <a onClick={this.props.onHomeClicked} className={classNames(TopBarTheme.back_to_site_link)}>{"<< Back to the site"}</a>
+                }
+                <Title
+                    sources={this.props.sources}
+                    handleItemSelect={this.handleItemSelect}
+                    selectedSourceId={this.state.selectedSourceId}/>
+                <PageSwap
+                    source={this.props.currentSourceId}
+                    sources={this.props.sources}
+                    pageButtons={this.props.pageButtons}
+                    onPageSelected={this.props.onPageSelected}/>
+                <div className="mdl-layout-spacer"/>
+            </div>
+        </header>
     );
   }
 }

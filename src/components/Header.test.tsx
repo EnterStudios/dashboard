@@ -172,7 +172,7 @@ describe("Header", function () {
             expect(componentWillReceivePropsSpy).to.have.been.calledOnce;
             expect(wrapper.state().selectedSourceId).to.equal("id");
             expect(setStateSpy).to.have.been.calledOnce;
-            expect(setStateSpy).to.have.been.calledWith({ selectedSourceId: "id" });
+            expect(setStateSpy).to.have.been.calledWith({ selectedSourceId: "id", amazonFlow: true });
 
             const titleWrapper = wrapper.find(Title);
             expect(titleWrapper.prop("selectedSourceId")).to.equal("id");

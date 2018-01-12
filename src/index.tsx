@@ -1,6 +1,7 @@
 import * as Firebase from "firebase";
 import { createHistory } from "history";
 import "isomorphic-fetch";
+import * as moment from "moment";
 import * as Raven from "raven-js";
 import * as ReactDOM from "react-dom";
 import * as ReactGA from "react-ga";
@@ -15,6 +16,7 @@ import { setUser } from "./actions/session";
 import Dashboard from "./frames/Dashboard";
 
 import Login from "./frames/Login";
+import LogQuery from "./models/log-query";
 import Source from "./models/source";
 import { FirebaseUser } from "./models/user";
 import AudioPage from "./pages/audioplayerpage/AudioPlayerPage";
@@ -29,6 +31,7 @@ import SourcePage from "./pages/sourcepage/SourcePage";
 import SourcesLinkPage from "./pages/SourcesLinkPage";
 import ValidationPage from "./pages/validation/ValidationPage";
 import rootReducer from "./reducers";
+import logService from "./services/log";
 
 import IndexUtils from "./index-utils";
 import configureStore from "./store";
@@ -58,7 +61,7 @@ persistStore(store, { whitelist: ["session"] });
 const history = syncHistoryWithStore(browserHistory, store);
 
 // Bootstrap Firebase
-let firebaseConfig = {
+const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.FIREBASE_AUTH_DOMAIN,
     databaseURL: process.env.FIREBASE_DATABASE_URL,
@@ -105,7 +108,7 @@ Firebase.auth().onAuthStateChanged(function (user: Firebase.User) {
  *
  * See below on the onEnter method.
  */
-let checkAuth = function (nextState: RouterState, replace: RedirectFunction): boolean {
+const checkAuth = function (nextState: RouterState, replace: RedirectFunction): boolean {
     const session: any = store.getState().session;
     if (!session.user) {
         replace({
@@ -118,7 +121,7 @@ let checkAuth = function (nextState: RouterState, replace: RedirectFunction): bo
     return true;
 };
 
-let onEnterDashboard: EnterHook = function (nextState: RouterState, replace: RedirectFunction) {
+const onEnterDashboard: EnterHook = function (nextState: RouterState, replace: RedirectFunction) {
     if (!checkAuth(nextState, replace)) return;
     if (nextState.location.pathname === "/") return replace({ ...location, pathname: "/skills" }); // in order to redirect from dashboard base location to skills page without adding a redirect on the componentDidMount
     if (nextState.location.query.id &&
@@ -132,27 +135,36 @@ let onEnterDashboard: EnterHook = function (nextState: RouterState, replace: Red
     }
 };
 
-let onUpdate = function () {
+const onUpdate = function () {
     ReactGA.pageview(window.location.pathname);
 };
 
-let setSource: EnterHook = function (nextState: RouterState, redirect: RedirectFunction) {
-    let sources: Source[] = store.getState().source.sources;
-    let sourceId: string = nextState.params["sourceId"];
-    let loc: Location = nextState.location as Location;
-    IndexUtils.dispatchSelectedSourceSource(store.dispatch, sourceId, sources, loc)
-        .catch(function (a?: Error) {
-            console.error(a);
-            // Can't use the redirect because this is asynchronous.
-            store.dispatch(replace("/skills"));
+const setSource: EnterHook = function (nextState: RouterState, redirect: RedirectFunction) {
+    const sources: Source[] = store.getState().source.sources;
+    const sourceId: string = nextState.params["sourceId"];
+    const loc: Location = nextState.location as Location;
+    IndexUtils.dispatchSelectedSourceSource(store.dispatch, sourceId, sources, loc).then(async function (source) {
+        const query: LogQuery = new LogQuery({
+            source,
+            startTime: moment().subtract(7, "days"), // change 7 for the right time span once implemented
+            endTime: moment(),
+            limit: 50
         });
+        if (!(await logService.getLogs(query, undefined)).length) {
+            store.dispatch(replace(`/skills/${sourceId}/validation`));
+        }
+    }).catch(function (a?: Error) {
+        console.error(a);
+        // Can't use the redirect because this is asynchronous.
+        store.dispatch(replace("/skills"));
+    });
 };
 
-let removeSource: LeaveHook = function () {
+const removeSource: LeaveHook = function () {
     IndexUtils.removeSelectedSource(store.dispatch);
 };
 
-let render = function () {
+const render = function () {
     ReactDOM.render((
         <Provider store={store}>
             <Router history={history} onUpdate={onUpdate}>

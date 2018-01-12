@@ -65,6 +65,18 @@ $label-filled-padding-left: 0;
     transition-property: top, font-size, color, padding;
 }
 
+.vendor_id_input input {
+    width: 70%;
+    border: 1px solid #D5D5D5;
+    height: 24px;
+    border-radius: 5px;
+    margin: auto;
+}
+
+.vendor_id_input label, .vendor_id_input span {
+    display: none;
+}
+
 :global {
     .custom-json {
         padding: 0;
