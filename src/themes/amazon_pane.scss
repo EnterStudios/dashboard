@@ -6,13 +6,13 @@
 
 .left_cell {
     background-color: #EEF2F5;
-    width: 75%;
+    width: 73% !important;
     margin: 0;
     padding: 8px;
 }
 
 .left_container {
-    margin: 30px 20px 30px 60px;
+    margin: 25px 20px 30px 75px;
     background-color: #fff;
     > div {
         padding: 13% 15%;
@@ -43,8 +43,10 @@
     }
 
     .validation_button {
+        padding: 0 30px;
+        margin: 0 35px 10px 0;
         border-radius: 10px;
-        font-size: 1rem;
+        font-size: 1.2rem;
         height: 2.5rem;
         line-height: 2.5rem;
         font-weight: normal;
@@ -52,18 +54,79 @@
         color: #fff!important;
         background-color: $color-primary!important;
     }
+
+    .info_button {
+        position: absolute;
+        top: 0;
+        left: 91%;
+        color: #949494!important;
+        span {
+            font-size: 1.8rem;
+        }
+    }
+
+    .main_content {
+        color: #898989;
+        h5 {
+            marginBottom: 0;
+            letter-spacing: -1px;
+        }
+        h4 {
+            position: relative;
+            display: inline-block;
+            margin: 0;
+            letter-spacing: -1px;
+        }
+        .info_button {
+            position: absolute;
+            top: -18px;
+            left: 96%;
+            color: #949494!important;
+            span {
+                font-size: 1.2rem;
+            }
+        }
+    }
+
+    .enable_monitoring {
+        color: #E69198;
+        text-align: right;
+        > div {
+            margin-top: 40px;
+            text-align: right;
+            width: 70%;
+            display: inline-block;
+            span {
+                display: block;
+                font-size: 1.5rem;
+            }
+        }
+        button {
+            span {
+                margin-top: -10px;
+                color: #E69198;
+                font-size: 4rem;
+            }
+        }
+    }
 }
 
 .right_cell {
-    width: 25%;
+    width: 27% !important;
     margin: 0;
-    padding: 8px;
+    padding: 0;
     border-bottom: 1px solid #939598;
 }
 
 .right_container {
     margin: 0;
     background-color: #fff;
+    a {
+        width: 100%;
+        img {
+            width: 100%;
+        }
+    }
 }
 
 @media (max-width: 839px) {

@@ -39,7 +39,7 @@ export class SourcePageTwoPane extends React.Component<SourcePageTwoPaneProps, T
                         {leftObj}
                     </div>
                 </Cell>
-                <Cell col={3} hidePhone={true} tablet={2}>
+                <Cell className={SourcePagePaneStyle.right_cell} col={3} hidePhone={true} tablet={2}>
                     <div className={SourcePagePaneStyle.right_container} style={this.props.rightStyle}>
                         {rightObj}
                     </div>

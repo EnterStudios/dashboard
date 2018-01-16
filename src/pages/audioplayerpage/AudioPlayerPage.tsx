@@ -75,7 +75,7 @@ export class AudioPlayerPage extends React.Component<AudioPlayerPageProps, Audio
                             <Cell col={12}>
                                 <Grid className={AudioPlayerPageStyle.padding_left}>
                                     <Cell col={12} phone={4}>
-                                        <h3 className={`${AudioPlayerPageStyle.primary_text_color} ${AudioPlayerPageStyle.no_margin}`}>AudioPlayer Metrics</h3>
+                                        <h3 className={`${AudioPlayerPageStyle.primary_text_color} ${AudioPlayerPageStyle.no_margin}`}>AUDIOPLAYER METRICS</h3>
                                     </Cell>
                                 </Grid>
                             </Cell>

@@ -42,6 +42,7 @@ export interface HeaderProps {
   onPageSelected?: (button: PageButton) => void;
   displayHomeButton?: boolean;
   className?: string;
+  isValidationPage?: boolean;
 }
 
 export interface HeaderState {
@@ -59,7 +60,9 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
 
   constructor(props: HeaderProps) {
     super(props);
-    this.state = { selectedSourceId: this.props.currentSourceId, amazonFlow: true };
+    this.state = { selectedSourceId: this.props.currentSourceId, amazonFlow: false };
+
+    this.handleSettingsPageClick = this.handleSettingsPageClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps: HeaderProps, context: any) {
@@ -69,6 +72,10 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
 
   classes() {
     return classNames("mdl-layout__header", this.props.className);
+  }
+
+  handleSettingsPageClick () {
+      this.props.onPageSelected({name: "settings", icon: "settings", tooltip: "settings"});
   }
 
   handleItemSelect = (value: string) => {
@@ -120,16 +127,25 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                         caption="Email"/>
                 </ButtonMenu>
                 {this.props.children}
+                {
+                    this.props && this.props.pageButtons && this.props.pageButtons.length &&
+                    <IconButton className={TabMenuTheme.settings_button} onClick={this.handleSettingsPageClick} icon={"settings"} />
+                }
             </div>
             <div className={classNames("mdl-layout__header-row", TopBarTheme.container, TopBarTheme.bg_white)}>
                 {
                     this.state && this.state.amazonFlow &&
                     <a onClick={this.props.onHomeClicked} className={classNames(TopBarTheme.back_to_site_link)}>{"<< Back to the site"}</a>
                 }
-                <Title
-                    sources={this.props.sources}
-                    handleItemSelect={this.handleItemSelect}
-                    selectedSourceId={this.state.selectedSourceId}/>
+                {
+                    !this.props.isValidationPage &&
+                    (
+                        <Title
+                            sources={this.props.sources}
+                            handleItemSelect={this.handleItemSelect}
+                            selectedSourceId={this.state.selectedSourceId}/>
+                    )
+                }
                 <PageSwap
                     source={this.props.currentSourceId}
                     sources={this.props.sources}
@@ -406,6 +422,9 @@ async function allowTab(tab: string, props: any) {
             } catch (err) {
                 return false;
             }
+        }
+        case "settings": {
+            return false;
         }
         default:
             return true;

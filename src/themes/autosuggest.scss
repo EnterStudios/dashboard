@@ -1,7 +1,6 @@
 .container {
-    position: relative;
-    top: 64px;
-    left: -100px;
+    position: absolute;
+    left: 2%;
 }
 
 .input {
@@ -65,6 +64,85 @@
     .container {
         top: 128px;
         left: -100px;
+    }
+}
+
+.title_container {
+    position: relative;
+    padding: 10px 0 0 20px;
+    img {
+        position: relative;
+        top: 0;
+        width: 90px;
+    }
+
+    .container {
+        position: absolute;
+        top: 15px;
+        left: 130px;
+    }
+
+    .soure_name_placeholder {
+        position: absolute;
+        top: 19px;
+        left: 130px;
+        font-size: 1.8rem;
+        color: #596170;
+        &::after {
+            content: '';
+            position: absolute;
+            left: calc(100% + 5px);
+            top: 6px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #9A9A9A;
+            clear: both;
+        }
+    }
+
+    span {
+        position: absolute;
+        top: 46px;
+        left: 130px;
+        color: #C7C9CA;
+        font-size: 1.1rem;
+        &::after {
+            content: '';
+            position: relative;
+            left: 5%;
+            top: 11px;
+            width: 0;
+            height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-top: 7px solid #9A9A9A;
+            clear: both;
+        }
+        & + span {
+            top: 70px;
+            color: #596170;
+            font-size: 1.3rem;
+            &::after {
+                display: none;
+            }
+        }
+    }
+
+    .input {
+        padding: 0;
+        border: 0;
+        font-size: 1.8rem;
+        color: #596170;
+        opacity: 0;
+        &::placeholder {
+            color: #fff;
+        }
+    }
+
+    .inputFocused {
+        opacity: 1;
     }
 }
 

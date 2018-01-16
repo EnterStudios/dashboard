@@ -1,19 +1,14 @@
 import * as pusher from "pusher-js";
 import * as React from "react";
 import { connect } from "react-redux";
+import {replace} from "react-router-redux";
 import {Card, CardText, CardTitle} from "react-toolbox/lib/card";
-import Checkbox from "react-toolbox/lib/checkbox";
-import Input from "react-toolbox/lib/input";
 
-import Dialog from "react-toolbox/lib/dialog";
-import ProgressBar from "react-toolbox/lib/progress_bar";
-import Snackbar from "react-toolbox/lib/snackbar";
-
-import Button from "../../components/Button";
+import {getSources, setCurrentSource} from "../../actions/source";
 import {CodeSheet} from "../../components/CodeSheet";
-import {Cell} from "../../components/Grid";
 import { Dimensions } from "../../components/Measure";
 import SourcePageTwoPane from "../../components/SourcePageTwoPane";
+import ValidationParentComponent from "../../components/ValidationParentComponent";
 import Source from "../../models/source";
 import {User, UserDetails} from "../../models/user";
 import { State } from "../../reducers";
@@ -21,10 +16,7 @@ import auth from "../../services/auth";
 import SourceService from "../../services/source";
 import { Location } from "../../utils/Location";
 
-const dashboardTheme = require("../../themes/dashboard.scss");
 const inputTheme = require("../../themes/input.scss");
-const checkboxTheme = require("../../themes/checkbox-theme.scss");
-const buttonStyle = require("../../themes/amazon_pane.scss");
 
 interface ValidationPageState {
     dialogActive: boolean;
@@ -49,13 +41,32 @@ interface ValidationPageProps {
     location?: Location;
     user: User;
     source: Source;
+    sources: Source[];
+    getSources: () => Promise<Source[]>;
+    setSource: (source: Source) => (dispatch: Redux.Dispatch<any>) => void;
+    goTo: (path: string) => (dispatch: Redux.Dispatch<any>) => void;
 }
 
 function mapStateToProps(state: State.All) {
-  return {
-    source: state.source.currentSource,
-    user: state.session.user
-  };
+    return {
+        source: state.source.currentSource,
+        user: state.session.user,
+        sources: state.source.sources,
+    };
+}
+
+function mapDispatchToProps(dispatch: any) {
+    return {
+        getSources: function (): Promise<Source[]> {
+            return dispatch(getSources());
+        },
+        setSource: function (source: Source) {
+            return dispatch(setCurrentSource(source));
+        },
+        goTo: function (path: string) {
+            return dispatch(replace(path));
+        },
+    };
 }
 
 export class ValidationPage extends React.Component<ValidationPageProps, ValidationPageState> {
@@ -106,6 +117,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
         this.handleVendorIDChange = this.handleVendorIDChange.bind(this);
         this.handleGetTokenClick = this.handleGetTokenClick.bind(this);
         this.handleSnackbarClick = this.handleSnackbarClick.bind(this);
+        this.handleSelectedSource = this.handleSelectedSource.bind(this);
     }
 
     onMeasure(dimensions: Dimensions) {
@@ -287,75 +299,63 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
         this.setState({...this.state, showSnackbar: false});
     }
 
+    handleSelectedSource(value: any) {
+        for (const item of this.props.sources) {
+            if (item.id === value) {
+                this.props.setSource(item);
+
+                const currentPath = this.props.location.pathname;
+                const newPath = currentPath.replace(this.props.source.id, item.id);
+
+                this.props.goTo(newPath);
+            }
+        }
+    }
+
     render() {
+        const dropdownableSources = this.props.sources && this.props.sources.length && this.props.sources.map(source => ({source, label: source.name, value: source.id}));
         return (
             <SourcePageTwoPane>
                 {(
-                    <form className="mdl-grid" onSubmit={this.handleRun}>
-                        <Cell col={3} tablet={12}>
-                            <Input className="sm-input" label="Validation Token" value={this.state.token}
-                                   onChange={this.handleTokenChange} required={true}/>
-                            Don't have a token yet? <a href="#" onClick={this.handleGetTokenClick}>Get it here</a>
-                            <Snackbar className="sm-snackbar" action="Dismiss" type="cancel"
-                                      active={this.state.showSnackbar}
-                                      label={this.state.snackbarLabel}
-                                      onClick={this.handleSnackbarClick}/>
-                        </Cell>
-                        <Cell col={3} tablet={12}>
-                            <Input className="sm-input" label="Vendor ID" value={this.state.vendorID}
-                                   onChange={this.handleVendorIDChange} required={true}/>
-                            To retrieve your vendor ID, <a href="https://developer.amazon.com/mycid.html"
-                                                           target="_blank">click
-                            here</a>. Please make sure it is for the correct organization if you belong to multiple.
-                        </Cell>
-                        <Cell col={12}>
-                            <Cell col={6}>
-                                <Input className="script-input" multiline={true}
-                                       value={this.state.script}
-                                       onChange={this.handleScriptChange}
-                                       hint={ValidationPage.scriptHint} required={true}/>
-                                <p>Scripts will “speak” the sequence of commands listed above,
-                                    testing for the proper result - <a href="#" onClick={this.handleHelpChange}>click
-                                        here
-                                        for help</a>.
-                                </p>
-                            </Cell>
-                        </Cell>
-                        <Cell col={12}>
-                            {this.state.showHelp ? <ValidationHelp/> : undefined}
-                        </Cell>
-                        <Cell col={12}>
-                            <Button className={buttonStyle.validation_button} primary={true} raised={true} disabled={this.state.loadingValidationResults}>
-                                {this.state.loadingValidationResults
-                                    ?
-                                    <ProgressBar className="circularProgressBar" type="circular" mode="indeterminate"/>
-                                    : <span>Run Skill ></span>}
-                            </Button>
-                            <Dialog
-                                className={`${dashboardTheme.dialog}`}
-                                active={this.state.dialogActive}
-                                onEscKeyDown={this.handleDialogToggle}
-                                onOverlayClick={this.handleDialogToggle}>
-                                <div dangerouslySetInnerHTML={{__html: this.state.validationResults}}/>
-                            </Dialog>
-                        </Cell>
-                        <Cell style={{display: "none"}} col={12} className={`${inputTheme.checkbox}`}>
-                            <Checkbox
-                                theme={checkboxTheme}
-                                label={"Enable Monitoring"}
-                                checked={this.state.monitorEnabled}
-                                onChange={this.handleMonitorEnabledCheckChange}/>
-                        </Cell>
-                    </form>
+                    <ValidationParentComponent
+                        source={this.props.source}
+                        sources={dropdownableSources}
+                        token={this.state.token}
+                        vendorID={this.state.vendorID}
+                        script={this.state.script}
+                        scriptHint={ValidationPage.scriptHint}
+                        showSnackbar={this.state.showSnackbar}
+                        snackbarLabel={this.state.snackbarLabel}
+                        showHelp={this.state.showHelp}
+                        validationHelp={<ValidationHelp/>}
+                        validationResults={this.state.validationResults}
+                        loadingValidationResults={this.state.loadingValidationResults}
+                        dialogActive={this.state.dialogActive}
+                        monitorEnabled={this.state.monitorEnabled}
+                        handleRun={this.handleRun}
+                        handleSelectedSource={this.handleSelectedSource}
+                        handleTokenChange={this.handleTokenChange}
+                        handleSnackbarClick={this.handleSnackbarClick}
+                        handleVendorIDChange={this.handleVendorIDChange}
+                        handleScriptChange={this.handleScriptChange}
+                        handleHelpChange={this.handleHelpChange}
+                        handleDialogToggle={this.handleDialogToggle}
+                        handleMonitorEnabledCheckChange={this.handleMonitorEnabledCheckChange}
+                    />
                 )}
-                {"call to action placeholder (sidebar)"}
+                {(
+                    <a>
+                        <img src="https://bespoken.io/wp-content/uploads/2018/01/placeholder.jpg"/>
+                    </a>
+                )}
             </SourcePageTwoPane>
         );
     }
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+    mapDispatchToProps
 )(ValidationPage);
 
 class ValidationHelp extends React.Component<any, any> {

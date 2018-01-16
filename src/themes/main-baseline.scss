@@ -40,9 +40,8 @@
     }
 
     .responsive-page-swap {
-        position: relative;
-        top: 64px;
-        left: -80px;
+        position: absolute;
+        right: 20px;
     }
 
     @media (max-width: 667px) {

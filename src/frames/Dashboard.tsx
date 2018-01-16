@@ -54,6 +54,7 @@ interface DashboardProps {
 interface DashboardState {
   showModal: boolean;
   emailVerificationStatus: "loading" | "asking" | "sent" | "done";
+  isValidationPage?: boolean; // temporal boolean to remove source title on validationPage
 }
 
 function mapStateToProps(state: State.All) {
@@ -107,6 +108,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     this.state = {
       showModal: false,
       emailVerificationStatus: "loading",
+      isValidationPage: false,
     };
 
     showAskingSnackbar = !this.props.user.emailVerified;
@@ -215,6 +217,11 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
                 tooltip: "summary"
             },
             {
+                icon: "audioMetrics",
+                name: "Audio Metrics",
+                tooltip: "audio player session metrics"
+            },
+            {
                 icon: "logs",
                 name: "Check Logs",
                 tooltip: "logs"
@@ -223,11 +230,6 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
                 icon: "integration",
                 name: "Integrations",
                 tooltip: "integration"
-            },
-            {
-                icon: "audioMetrics",
-                name: "Audio Metrics",
-                tooltip: "audio player session metrics"
             },
             {
                 icon: "settings",
@@ -241,6 +243,9 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
   }
 
   handlePageSwap(button: PageButton) {
+    this.setState(prevState => {
+        return {...prevState, isValidationPage: false};
+    });
     if (button.name === "Check Stats") {
       this.props.goTo("/skills/" + this.props.currentSource.id);
     } else if (button.name === "Check Logs") {
@@ -248,6 +253,9 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     } else if (button.name === "Integrations") {
       this.props.goTo("/skills/" + this.props.currentSource.id + "/integration");
     } else if (button.name === "Validate") {
+      this.setState(prevState => {
+          return {...prevState, isValidationPage: false};
+      });
       this.props.goTo("/skills/" + this.props.currentSource.id + "/validation");
     } else if (button.name === "Audio Metrics") {
         this.props.goTo("/skills/" + this.props.currentSource.id + "/audio");
@@ -313,6 +321,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
           handleEnterContest={this.handleEnterContest}
         />
         <Header
+          isValidationPage={this.state.isValidationPage}
           className={this.headerClasses()}
           currentSourceId={this.props.currentSource ? this.props.currentSource.id : undefined}
           sources={this.props.currentSource ? this.dropdownableSources() : undefined}

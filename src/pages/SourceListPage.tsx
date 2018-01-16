@@ -39,7 +39,7 @@ function mapStateToProps(state: State.All) {
 export class SourceListPage extends React.Component<SourceListPageProps, SourceListPageState> {
     static defaultProps: SourceListPageProps = {
         sources: [],
-        amazonFlow: true,
+        amazonFlow: false,
         finishLoading: false,
     };
 
