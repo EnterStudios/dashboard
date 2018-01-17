@@ -15,6 +15,7 @@
     "coverage": "istanbul cover --include-all-sources --root src/ -x \"**/*test.js\" _mocha \"src/**/*.test.js\" -- --require ignore-styles -R spec && remap-istanbul -i ./coverage/coverage.json -o ./coverage/ts-report -t html && ./node_modules/.bin/remap-istanbul -i coverage/coverage.json -t lcovonly > coverage/lcov-ts.info",
     "coveralls": "npm run coverage && ./node_modules/coveralls/bin/coveralls.js < coverage/lcov-ts.info",
     "start": "node scripts/server.js",
+    "browsersync": "node scripts/browsersync-server.js",
     "preversion": "npm run build && git add . && git commit -m 'dist-builds'",
     "postversion": "git push && git push --tags",
     "build": "webpack && NODE_ENV=production webpack",

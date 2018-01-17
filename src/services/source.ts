@@ -1,9 +1,9 @@
 import "isomorphic-fetch";
 
-import {Query} from "../models/query";
-import {Source} from "../models/source";
-import {User} from "../models/user";
-import {remoteservice} from "./remote-service";
+import { Query } from "../models/query";
+import { Source } from "../models/source";
+import { User } from "../models/user";
+import { remoteservice } from "./remote-service";
 
 export namespace source {
 
@@ -13,6 +13,8 @@ export namespace source {
     const NAME_GENERATING_URL: string = SOURCE_URL + "sourceId";
     const LINK_URL: string = SOURCE_URL + "linkSource";
     const VALIDATE_URL: string = SOURCE_URL + "validateSource";
+    const AUTH_TOKEN_URL: string = SOURCE_URL + "authToken";
+    export const LINK_AVS_URL: string = SOURCE_URL + "linkAVS";
 
     export interface SourceName {
         id: string;
@@ -26,6 +28,11 @@ export namespace source {
         source: Source;
     }
 
+    export interface AuthResult {
+        authToken: string;
+        newUser: boolean;
+    }
+
     /**
      * A function that will generate a unique source name.
      * @param id
@@ -34,7 +41,7 @@ export namespace source {
     export function generateSourceId(id?: string): Promise<SourceName> {
         const query: Query = new Query();
         if (id) {
-            query.add({parameter: "id", value: id});
+            query.add({ parameter: "id", value: id });
         }
 
         const finalURL = NAME_GENERATING_URL + "?" + query.query();
@@ -55,8 +62,8 @@ export namespace source {
      */
     export function linkSource(sourceName: SourceName, user: User): Promise<LinkResult> {
         const query: Query = new Query();
-        query.add({parameter: "source", value: sourceName});
-        query.add({parameter: "user", value: {userId: user.userId}});
+        query.add({ parameter: "source", value: sourceName });
+        query.add({ parameter: "user", value: { userId: user.userId } });
 
         return fetch(LINK_URL, {
             method: "POST",
@@ -73,12 +80,39 @@ export namespace source {
         });
     }
 
+    /**
+     * This service will return an authorization token for a given email.  If the user does not exist,
+     * it will create it first.
+     *
+     * @param email the user's email.
+     * @param displayName the user's display name (optional)
+     */
+    export async function getAuthToken(email: string, displayName?: string): Promise<AuthResult> {
+        const query: Query = new Query();
+        query.add({ parameter: "email", value: email });
+        query.add({ parameter: "displayName", value: displayName });
+
+        const result: any = await fetch(AUTH_TOKEN_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: query.json()
+        });
+
+        if (result.status === 200) {
+            return result.json();
+        } else {
+            return Promise.reject(new Error(result.statusText));
+        }
+    }
+
     export function createSource(source: Source, auth: remoteservice.auth.Auth = remoteservice.defaultService().auth(), db: remoteservice.database.Database = remoteservice.defaultService().database()): Promise<Source> {
         let user = auth.currentUser;
         let ref = db.ref();
         let sourcesPath = ref.child("sources");
         // Create a new mutable source from the source passed in
-        const mutableSource: any = {...{}, ...source};
+        const mutableSource: any = { ...{}, ...source };
         return generateSourceId(source.id)
             .then(function (idResult: SourceName) {
                 mutableSource.id = idResult.id;
@@ -171,14 +205,14 @@ export namespace source {
             sourceToSend.aws_secret_access_key = source.aws_secret_access_key || "";
             db.ref().child("/sources/" + source.id)
                 .update(sourceToSend,
-                    (err: Error): firebase.Promise<any> => {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resolve();
-                        }
-                        return;
-                    });
+                (err: Error): firebase.Promise<any> => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve();
+                    }
+                    return;
+                });
         });
     }
 
@@ -186,13 +220,13 @@ export namespace source {
         timestamp: number, vendorID: string, smAPIAccessToken: string,
         redirectURL: string): Promise<any> {
         const query: Query = new Query();
-        query.add({parameter: "user_id", value: userId});
-        query.add({parameter: "script", value: script});
-        query.add({parameter: "token", value: token});
-        query.add({parameter: "timestamp", value: timestamp});
-        query.add({parameter: "vendor_id", value: vendorID});
-        query.add({parameter: "sm_api_access_token", value: smAPIAccessToken});
-        query.add({parameter: "redirect_url", value: redirectURL});
+        query.add({ parameter: "user_id", value: userId });
+        query.add({ parameter: "script", value: script });
+        query.add({ parameter: "token", value: token });
+        query.add({ parameter: "timestamp", value: timestamp });
+        query.add({ parameter: "vendor_id", value: vendorID });
+        query.add({ parameter: "sm_api_access_token", value: smAPIAccessToken });
+        query.add({ parameter: "redirect_url", value: redirectURL });
         return fetch(VALIDATE_URL, {
             method: "POST",
             headers: {
@@ -207,7 +241,7 @@ export default source;
 
 function removeMembers(memeberId: string, source: Source): Promise<Source> {
     return new Promise(function (resolve, reject) {
-        const mutableSource: any = {...{}, ...source};
+        const mutableSource: any = { ...{}, ...source };
         mutableSource.members[memeberId] = undefined;
         resolve(mutableSource);
     });

@@ -2,7 +2,7 @@
 import { connect } from "react-redux";
 
 
-import { login, loginWithAmazon, loginWithGithub, resetPassword, signUpWithEmail, SuccessCallback } from "../actions/session";
+import { AmazonFlowFlag, login, loginWithAmazon, loginWithGithub, resetPassword, setAmazonFlow, signUpWithEmail, SuccessCallback } from "../actions/session";
 import AuthForm from "../components/AuthForm";
 import Card from "../components/Card";
 import { Cell, Grid } from "../components/Grid";
@@ -23,6 +23,7 @@ interface LoginPageProps {
     login: (email: string, password: string, redirectStrat?: SuccessCallback) => Promise<User>;
     loginWithGithub: (redirectStrat?: SuccessCallback) => Promise<User>;
     loginWithAmazon: (redirectStrat?: SuccessCallback) => Promise<User>;
+    setAmazonFlow: (amazonFlow: boolean) => AmazonFlowFlag;
     signUpWithEmail: (email: string, password: string, confirmPassword: string, redirectStrat?: SuccessCallback) => Promise<User>;
     resetPassword: (email: string) => Promise<void>;
 };
@@ -40,6 +41,9 @@ function mapDispatchToProps(dispatch: Redux.Dispatch<any>) {
     return {
         login: function (email: string, password: string, redirectStrat?: SuccessCallback): Promise<User> {
             return dispatch(login(email, password, redirectStrat));
+        },
+        setAmazonFlow: function (amazonFlow: boolean): AmazonFlowFlag {
+            return dispatch(setAmazonFlow(amazonFlow));
         },
         signUpWithEmail: function (email: string, password: string, confirmPassword: string, redirectStrat?: SuccessCallback): Promise<User> {
             return dispatch(signUpWithEmail(email, password, confirmPassword, redirectStrat));
@@ -91,12 +95,14 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
             });
     }
 
-    handleFormLoginWithAmazon() {
-        this.props.loginWithAmazon()
-            .catch((err: Error) => {
-                this.state.error = err.message;
-                this.setState(this.state);
-            });
+    async handleFormLoginWithAmazon() {
+        try {
+            await this.props.loginWithAmazon();
+            this.props.setAmazonFlow(true);
+        } catch (err) {
+            this.state.error = err.message;
+            this.setState(this.state);
+        }
     }
 
     handleFormSignUpWithEmail(email: string, pass: string, confirmPass: string) {
@@ -109,9 +115,9 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
 
     render() {
         return (
-            <Grid style={{marginTop: "10%"}}>
+            <Grid style={{ marginTop: "10%" }}>
                 <Cell col={4} tablet={2} hidePhone={true} />
-                <Cell col={4} tablet={4} phone={4} align={"middle"} style={{display: "flex", justifyContent: "center"}}>
+                <Cell col={4} tablet={4} phone={4} align={"middle"} style={{ display: "flex", justifyContent: "center" }}>
                     <Card style={{ overflow: "visible" }}>
                         <AuthForm
                             error={this.state.error}
@@ -120,7 +126,7 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
                             onLoginWithAmazon={this.handleFormLoginWithAmazon}
                             onSignUpWithEmail={this.handleFormSignUpWithEmail}
                             onResetPassword={this.handleResetPassword}
-                            />
+                        />
                     </Card>
                 </Cell>
                 <Cell col={4} tablet={2} hidePhone={true} />

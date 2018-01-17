@@ -21,18 +21,18 @@ const ButtonTheme = require("../themes/button_theme.scss");
 export interface SourceListPageProps {
     sources: Source[];
     finishLoading: boolean;
-    amazonFlow?: boolean;
+    amazonFlow: boolean;
 }
 
 interface SourceListPageState {
     listItems: JSX.Element[];
-    amazonFlow: boolean;
 }
 
 function mapStateToProps(state: State.All) {
     return {
         sources: state.source.sources,
         finishLoading: state.source.finishLoading,
+        amazonFlow: state.session.amazonFlow
     };
 }
 

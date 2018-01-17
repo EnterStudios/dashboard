@@ -14,6 +14,7 @@ describe("LoginPage", () => {
     it("should render an AuthForm", function () {
         const login = sinon.spy();
         const loginWithGithub = sinon.spy();
+        const setAmazonFlow = sinon.spy();
         const signUpWithEmail = sinon.spy();
         const resetPassword = sinon.spy();
         const loginWithAmazon = sinon.spy();
@@ -24,6 +25,7 @@ describe("LoginPage", () => {
                 loginWithGithub={loginWithGithub}
                 signUpWithEmail={signUpWithEmail}
                 resetPassword={resetPassword}
+                setAmazonFlow={setAmazonFlow}
             />
         ));
         // It contains the AuthForm

@@ -5,6 +5,7 @@ import { User, UserDetails } from "../models/user";
 import { BrowserStorage, LocalStorage } from "../store/local-storage";
 import browser from "../utils/browser";
 import { remoteservice } from "./remote-service";
+import { source } from "./source";
 
 /**
  * Auth Service
@@ -19,8 +20,36 @@ namespace auth {
         return loginWithProvider(provider, auth, storage, db);
     }
 
-    export function loginWithAmazon(auth?: remoteservice.auth.Auth, storage?: LocalStorage, db: remoteservice.database.Database = remoteservice.defaultService().database()): Promise<User> {
-        return Promise.resolve(undefined);
+    export async function loginWithAmazon(auth?: remoteservice.auth.Auth, storage?: LocalStorage, db: remoteservice.database.Database = remoteservice.defaultService().database()): Promise<User> {
+        const options = { scope: "profile", interactive: "always" };
+        const accessToken = await amazonAuthorize(options);
+        const amazonProfile: any = await amazonRetrieveProfile(accessToken);
+        const authResponse = await source.getAuthToken(amazonProfile.PrimaryEmail, amazonProfile.Name);
+        return loginWithCustomToken(authResponse.authToken);
+    }
+
+    function amazonAuthorize(options: any): Promise<string> {
+        return new Promise(function (resolve, reject) {
+            globalWindow.amazon.Login.authorize(options, function (result: any) {
+                if (result.error) {
+                    reject(result.error);
+                    return;
+                };
+                resolve(result.access_token);
+            });
+        });
+    }
+
+    function amazonRetrieveProfile(accessToken: string) {
+        return new Promise(function (resolve, reject) {
+            globalWindow.amazon.Login.retrieveProfile(accessToken, function (result: any) {
+                if (result.error) {
+                    reject(result.error);
+                    return;
+                };
+                resolve(result.profile);
+            });
+        });
     }
 
     async function loginWithProvider(provider: remoteservice.auth.AuthProvider, auth: remoteservice.auth.Auth = remoteservice.defaultService().auth(), storage?: LocalStorage, db: remoteservice.database.Database = remoteservice.defaultService().database()): Promise<User> {
@@ -133,6 +162,19 @@ namespace auth {
                 localStorage.setItem("user", JSON.stringify(modelUser));
                 return modelUser;
             });
+    }
+
+    export async function loginWithCustomToken(token: string, auth: remoteservice.auth.Auth = remoteservice.defaultService().auth(), localStorage: LocalStorage = new BrowserStorage()): Promise<User> {
+        const user: remoteservice.user.User = await auth.signInWithCustomToken(token);
+        ReactGA.event({
+            category: "Authorization",
+            action: "Login With Custom Token"
+        });
+        const modelUser: User = new FirebaseUser(user);
+        identify(modelUser, "custom token");
+        localStorage.setItem("user", JSON.stringify(modelUser));
+        return modelUser;
+        ;
     }
 
     export function logout(auth: remoteservice.auth.Auth = remoteservice.defaultService().auth(), localStorage: LocalStorage = new BrowserStorage()): Promise<any> {

@@ -69,6 +69,19 @@
 <script src="https://unpkg.com/react-dom@15.3.2/dist/react-dom.js"></script>
 <!-- Import the dashboard dependency -->
 <script src="/scripts/dashboard.js"></script>
+<!-- Login with Amazon -->
+<div id="amazon-root"></div>
+<script>
+    window.onAmazonLoginReady = function() {
+    amazon.Login.setClientId('amzn1.application-oa2-client.675b266c8bca4d408e5dceed285e18bd');
+  };
+  (function(d) {
+    var a = d.createElement('script'); a.type = 'text/javascript';
+    a.async = true; a.id = 'amazon-login-sdk';
+    a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
+    d.getElementById('amazon-root').appendChild(a);
+  })(document);
+</script>
 </body>
 
 </html>

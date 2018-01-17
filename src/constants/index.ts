@@ -14,6 +14,9 @@ export const AUTH_FORM_ERROR: AUTH_FORM_ERROR = "bst/AUTH_FORM_ERROR";
 export type SET_USER = "bst/SET_USER";
 export const SET_USER: SET_USER = "bst/SET_USER";
 
+export type SET_AMAZON_FLOW = "bst/SET_AMAZON_FLOW";
+export const SET_AMAZON_FLOW: SET_AMAZON_FLOW = "bst/SET_AMAZON_FLOW";
+
 export const SENDING_REQUEST = "SENDING_REQUEST";
 
 export const LOGIN_USER_PENDING = "bst/LOGIN_USER_PENDING";

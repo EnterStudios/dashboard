@@ -12,7 +12,7 @@ import Popup from "../components/Popup";
 import UserControl from "../components/UserControl";
 import { CLASSES } from "../constants";
 import Source from "../models/source";
-import User, {UserDetails} from "../models/user";
+import User, { UserDetails } from "../models/user";
 import { State } from "../reducers";
 import auth from "../services/auth";
 import { remoteservice } from "../services/remote-service";
@@ -23,7 +23,7 @@ import { Location } from "../utils/Location";
 /**
  * Simple Adapter so a Source can conform to Dropdownable
  */
-const globalWindow: any = typeof(window) !== "undefined" ? window : {};
+const globalWindow: any = typeof (window) !== "undefined" ? window : {};
 class SourceDropdownableAdapter implements Dropdownable {
 
   constructor(readonly source: Source) {
@@ -43,6 +43,7 @@ interface DashboardProps {
   currentSource: Source;
   sources: Source[];
   location: Location;
+  amazonFlow: boolean;
   login: () => (dispatch: Redux.Dispatch<any>) => void;
   logout: () => (dispatch: Redux.Dispatch<any>) => void;
   getSources: () => Promise<Source[]>;
@@ -61,7 +62,8 @@ function mapStateToProps(state: State.All) {
   return {
     user: state.session.user,
     currentSource: state.source.currentSource,
-    sources: state.source.sources
+    sources: state.source.sources,
+    amazonFlow: state.session.amazonFlow
   };
 }
 
@@ -145,14 +147,14 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     }
     await this.props.getSources();
     const userValidationInfo: UserDetails = await auth.currentUserDetails();
-       userValidationInfo && globalWindow && globalWindow.Intercom("boot", {
-        app_id: "ah6uagcl",
-        name: this.props.user.displayName,
-        email: this.props.user.email,
-        skillsAmmount: this.props.sources.length,
-        usingMonitoring: this.props.sources.some(source => source.monitoring_enabled),
-        usingValidation: !!userValidationInfo.smAPIAccessToken,
-        hide_default_launcher: false,
+    userValidationInfo && globalWindow && globalWindow.Intercom("boot", {
+      app_id: "ah6uagcl",
+      name: this.props.user.displayName,
+      email: this.props.user.email,
+      skillsAmmount: this.props.sources.length,
+      usingMonitoring: this.props.sources.some(source => source.monitoring_enabled),
+      usingValidation: !!userValidationInfo.smAPIAccessToken,
+      hide_default_launcher: false,
     });
   }
 
@@ -166,10 +168,10 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
   }
 
   componentWillUnmount() {
-      globalWindow && globalWindow.Intercom("boot", {
-          app_id: "ah6uagcl",
-          hide_default_launcher: true,
-      });
+    globalWindow && globalWindow.Intercom("boot", {
+      app_id: "ah6uagcl",
+      hide_default_launcher: true,
+    });
   }
 
   handleSelectedSource(sourceDropdownableAdapter: SourceDropdownableAdapter) {
@@ -205,38 +207,38 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
   pageButtons(): PageButton[] | undefined {
     if (this.props.currentSource) {
-        return [
-            {
-                icon: "validation",
-                name: "Validate",
-                tooltip: "validation (beta)"
-            },
-            {
-                icon: "stats",
-                name: "Check Stats",
-                tooltip: "summary"
-            },
-            {
-                icon: "audioMetrics",
-                name: "Audio Metrics",
-                tooltip: "audio player session metrics"
-            },
-            {
-                icon: "logs",
-                name: "Check Logs",
-                tooltip: "logs"
-            },
-            {
-                icon: "integration",
-                name: "Integrations",
-                tooltip: "integration"
-            },
-            {
-                icon: "settings",
-                name: "settings",
-                tooltip: "settings"
-            },
-        ];
+      return [
+        {
+          icon: "validation",
+          name: "Validate",
+          tooltip: "validation (beta)"
+        },
+        {
+          icon: "stats",
+          name: "Check Stats",
+          tooltip: "summary"
+        },
+        {
+          icon: "audioMetrics",
+          name: "Audio Metrics",
+          tooltip: "audio player session metrics"
+        },
+        {
+          icon: "logs",
+          name: "Check Logs",
+          tooltip: "logs"
+        },
+        {
+          icon: "integration",
+          name: "Integrations",
+          tooltip: "integration"
+        },
+        {
+          icon: "settings",
+          name: "settings",
+          tooltip: "settings"
+        },
+      ];
     } else {
       return undefined;
     }
@@ -244,7 +246,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
   handlePageSwap(button: PageButton) {
     this.setState(prevState => {
-        return {...prevState, isValidationPage: false};
+      return { ...prevState, isValidationPage: false };
     });
     if (button.name === "Check Stats") {
       this.props.goTo("/skills/" + this.props.currentSource.id);
@@ -254,11 +256,11 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       this.props.goTo("/skills/" + this.props.currentSource.id + "/integration");
     } else if (button.name === "Validate") {
       this.setState(prevState => {
-          return {...prevState, isValidationPage: false};
+        return { ...prevState, isValidationPage: false };
       });
       this.props.goTo("/skills/" + this.props.currentSource.id + "/validation");
     } else if (button.name === "Audio Metrics") {
-        this.props.goTo("/skills/" + this.props.currentSource.id + "/audio");
+      this.props.goTo("/skills/" + this.props.currentSource.id + "/audio");
     } else if (button.name === "settings") {
       this.props.goTo("/skills/" + this.props.currentSource.id + "/settings");
     }
@@ -329,7 +331,8 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
           onPageSelected={this.handlePageSwap}
           onSourceSelected={this.handleSelectedSource}
           onHomeClicked={this.handleHomeClick}
-          displayHomeButton={this.props.location.pathname !== "/"}>
+          displayHomeButton={this.props.location.pathname !== "/"}
+          amazonFlow={this.props.amazonFlow}>
           <UserControl
             login={this.props.login}
             logout={this.props.logout}

@@ -1,6 +1,6 @@
 import { authFormError } from "../actions/auth-form";
 import { displaySnackbar } from "../actions/notification";
-import { SENDING_REQUEST, SET_USER } from "../constants";
+import { SENDING_REQUEST, SET_AMAZON_FLOW, SET_USER } from "../constants";
 import User from "../models/user";
 import auth from "../services/auth";
 
@@ -16,10 +16,22 @@ export type SetUser = {
   user: User | undefined
 };
 
+export type AmazonFlowFlag = {
+  type: SET_AMAZON_FLOW,
+  amazonFlow: boolean
+};
+
 export function setUser(user: User | undefined): SetUser {
   return {
     type: SET_USER,
     user: user
+  };
+}
+
+export function setAmazonFlow(amazonFlow: boolean): AmazonFlowFlag {
+  return {
+    type: SET_AMAZON_FLOW,
+    amazonFlow: amazonFlow
   };
 }
 

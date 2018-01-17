@@ -43,6 +43,7 @@ export interface HeaderProps {
   displayHomeButton?: boolean;
   className?: string;
   isValidationPage?: boolean;
+  amazonFlow?: boolean;
 }
 
 export interface HeaderState {
@@ -60,7 +61,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
 
   constructor(props: HeaderProps) {
     super(props);
-    this.state = { selectedSourceId: this.props.currentSourceId, amazonFlow: false };
+    this.state = { selectedSourceId: this.props.currentSourceId, amazonFlow: this.props.amazonFlow };
 
     this.handleSettingsPageClick = this.handleSettingsPageClick.bind(this);
   }
