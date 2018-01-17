@@ -68,19 +68,21 @@ export class AudioPlayerPage extends React.Component<AudioPlayerPageProps, Audio
             return (<div />);
         }
         return (
-            <div style={{margin: 25}}>
-                <Grid noSpacing={true}>
-                    <Cell col={4}>
+            <div style={{backgroundColor: "#F2F0F1", display: "flex"}}>
+                <Grid noSpacing={true} className={AudioPlayerPageStyle.main_grid}>
+                    <Cell col={5}>
                         <Grid noSpacing={true}>
                             <Cell col={12}>
-                                <Grid className={AudioPlayerPageStyle.padding_left}>
-                                    <Cell col={12} phone={4}>
-                                        <h3 className={`${AudioPlayerPageStyle.primary_text_color} ${AudioPlayerPageStyle.no_margin}`}>AUDIOPLAYER METRICS</h3>
+                                <span className={`${AudioPlayerPageStyle.half_circle} ${AudioPlayerPageStyle.left}`} />
+                                <span className={`${AudioPlayerPageStyle.half_circle} ${AudioPlayerPageStyle.right}`} />
+                                <Grid className={`${AudioPlayerPageStyle.padding_left} ${AudioPlayerPageStyle.no_padding_bottom}`}>
+                                    <Cell col={12} phone={6}>
+                                        <h3 className={`${AudioPlayerPageStyle.primary_text_color} ${AudioPlayerPageStyle.no_margin} ${AudioPlayerPageStyle.title}`}>AUDIOPLAYER METRICS</h3>
                                     </Cell>
                                 </Grid>
                             </Cell>
-                            <Cell col={12}>
-                                <Grid className={AudioPlayerPageStyle.padding_left}>
+                            <Cell style={{paddingRight: 50}} col={12}>
+                                <Grid className={`${AudioPlayerPageStyle.padding_left} ${AudioPlayerPageStyle.no_padding_bottom} ${AudioPlayerPageStyle.border_bottom_dashed}`}>
                                     <Cell col={6} phone={4}>
                                         <DatePicker theme={datePickerThemeStart} label="Start Date" onChange={this.handleStartDateChange} value={this.state.startDate} />
                                     </Cell>
@@ -90,7 +92,8 @@ export class AudioPlayerPage extends React.Component<AudioPlayerPageProps, Audio
                                 </Grid>
                             </Cell>
                             <Cell col={12}>
-                                <Grid className={`${AudioPlayerPageStyle.padding_left} ${AudioPlayerPageStyle.padding_top}`}>
+                                <Grid className={`${AudioPlayerPageStyle.padding_left} ${AudioPlayerPageStyle.padding_top} ${AudioPlayerPageStyle.position_relative}`}>
+                                    <span className={AudioPlayerPageStyle.stats_border} />
                                     <Cell tablet={8} col={12}>
                                         <AudioPlayerStats
                                             source={sourceName}
@@ -101,10 +104,10 @@ export class AudioPlayerPage extends React.Component<AudioPlayerPageProps, Audio
                             </Cell>
                         </Grid>
                     </Cell>
-                    <Cell col={8}>
+                    <Cell col={7}>
                         <Grid noSpacing={true}>
                             <Cell style={{marginBottom: 20}} col={12}>
-                                <div className={AudioPlayerPageStyle.border_chart}>
+                                <div className={`${AudioPlayerPageStyle.border_chart} ${AudioPlayerPageStyle.first_item}`}>
                                     <AudioSessionDuration
                                         source={sourceName}
                                         startDate={moment(this.state.startDate)}
@@ -112,7 +115,7 @@ export class AudioPlayerPage extends React.Component<AudioPlayerPageProps, Audio
                                 </div>
                             </Cell>
                             <Cell col={12}>
-                                <div className={AudioPlayerPageStyle.border_chart}>
+                                <div className={`${AudioPlayerPageStyle.border_chart} ${AudioPlayerPageStyle.second_item}`}>
                                     <AudioSessionNumber
                                         source={sourceName}
                                         startDate={moment(this.state.startDate)}

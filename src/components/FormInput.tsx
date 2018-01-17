@@ -44,6 +44,7 @@ interface FormInputProps {
     hidden?: boolean;
     error?: ErrorHandler;
     showable?: boolean;
+    className?: string;
 }
 
 interface FormState {
@@ -65,7 +66,7 @@ export class FormInput extends MDLComponent<FormInputProps, FormState> {
     }
 
     classes() {
-        return classNames("mdl-textfield mdl-js-textfield", {
+        return classNames("mdl-textfield mdl-js-textfield", this.props.className, {
             "mdl-textfield--floating-label": this.props.floatingLabel
         });
     }

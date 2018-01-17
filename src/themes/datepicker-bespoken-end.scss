@@ -17,16 +17,33 @@
     color: $color-primary!important;
 }
 
+.input {
+    padding-bottom: 0;
+}
+
+
+.inputElement {
+    border: none;
+    font-size: 1.8rem;
+    letter-spacing: -2px;
+}
+
+.label {
+    color: #8D8D8D;
+    font-size: 1.3rem!important;
+    letter-spacing: -1px;
+}
+
 .label::after {
     content: '';
-    position: relative;
-    left: 100%;
-    top: 20px;
+    position: absolute;
+    left: 110%;
+    top: 0;
     width: 0;
     height: 0;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-top: 20px solid #e8e8e8;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-top: 18px solid #8D8D8D;
     clear: both;
 }
 

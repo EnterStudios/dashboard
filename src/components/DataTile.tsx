@@ -9,12 +9,14 @@ interface DateTileProps {
     hidden?: boolean;
     showable?: boolean;
     smallWidth?: boolean;
+    className?: string;
 }
 
 export class DataTile extends React.Component<DateTileProps, any> {
     render() {
         return (
             <FormInput
+                className={this.props.className}
                 theme={this.props.theme}
                 type={this.props.hidden ? "password" : "text"}
                 style={{paddingBottom: 0, width: this.props.smallWidth ? "75%" : "100%"}}

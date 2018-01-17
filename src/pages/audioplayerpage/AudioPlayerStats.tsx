@@ -10,6 +10,8 @@ import LogService from "../../services/log";
 const DEFAULT_VALUE: string = "N/A";
 const LOADING_VALUE: string = "Loading...";
 
+const AudioPlayerPageStyle = require("./AudioPlayerPageStyle");
+
 type ENTRY = "stats";
 
 interface AudioPlayerStatsProps extends LoadingComponent.LoadingComponentProps {
@@ -114,6 +116,7 @@ export class AudioPlayerStats extends LoadingComponent.Component<LogService.Audi
                     <Grid style={{marginBottom: 20}} noSpacing={true}>
                         <Cell phone={4} tablet={4} col={8}>
                             <DataTile
+                                className={AudioPlayerPageStyle.audio_stat}
                                 smallWidth={true}
                                 value={avgDuration}
                                 label={"Average Duration"}/>
@@ -124,6 +127,7 @@ export class AudioPlayerStats extends LoadingComponent.Component<LogService.Audi
                     <Grid noSpacing={true}>
                         <Cell style={{fontSize: "1.2rem"}} phone={4} tablet={4} col={8}>
                             <DataTile
+                                className={`${AudioPlayerPageStyle.audio_stat} ${AudioPlayerPageStyle.second_item}`}
                                 smallWidth={true}
                                 value={avgSessionsNumber}
                                 label={"Number of Sessions"}/>

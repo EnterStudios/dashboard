@@ -1,6 +1,6 @@
 @import "../../themes/dashboard";
 .primary_text_color {
-    color: $color-primary;
+    color: #0FAAC8;
 }
 
 .padding_left {
@@ -13,11 +13,95 @@
 
 .border_chart {
     border: 2px solid $color-faded;
-    height: 300px;
+    margin: 30px 60px;
+    height: 210px;
+    &.first_item {
+        margin-bottom: 0;
+    }
+    &.second_item {
+        margin-top: 0;
+    }
 }
 
 .no_margin {
     margin: 0;
+}
+
+.no_padding_bottom {
+    padding-bottom: 0;
+}
+
+no_padding_top {
+    padding-top: 0;
+}
+
+.border_bottom_dashed {
+    border-bottom: 2px dashed $color-primary;
+}
+
+.audio_stat {
+    margin-top: 30px;
+    &.second_item {
+        margin-top: 40px;
+    }
+    input {
+        border-bottom: none!important;
+        font-size: 1.8rem;
+        letter-spacing: -2px;
+        padding: 0.8rem 0;
+    }
+
+    label {
+        font-size: 1.3rem!important;
+        letter-spacing: -1px;
+    }
+}
+
+.position_relative {
+    position: relative;
+}
+
+.stats_border {
+    position: absolute;
+    display: inline-block;
+    width: calc(100% - 10px);
+    border-bottom: 2px dashed #E3E3E3;
+    top: 130px;
+    left: -40px;
+}
+
+.title {
+    letter-spacing: -3px;
+    font-size: 2.5rem;
+    margin-top: 35px;
+}
+
+.main_grid {
+    margin: 30px 40px;
+    background-color: #fff;
+}
+
+.half_circle {
+    position: absolute;
+    background: #F2F0F1;
+    display: inline-block;
+    margin: 0 1em 1em 0;
+    top: 207px;
+    border-radius: 90px/45px;
+
+    &.right,
+    &.left {
+        height: 50px;
+        width: 120px;
+    }
+
+    &.right {
+        left: -50px;
+    }
+
+    &.left {
+        right: -60px;
+    }
 }
 
 @media (max-width: 479px) {
