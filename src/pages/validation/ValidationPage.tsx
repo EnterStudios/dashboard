@@ -269,7 +269,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
     virtualDeviceLinkAccountURL(): string {
         const virtualDeviceURL = process.env.VIRTUAL_DEVICE_URL
             ? process.env.VIRTUAL_DEVICE_URL
-            : "https://virtual-device.bespoken.io/";
+            : "https://virtual-device-dev.bespoken.io/";
         return this.props.user
             ? `${virtualDeviceURL}` +
             `link_account?dashboard_user_id=${this.props.user.userId}` +
