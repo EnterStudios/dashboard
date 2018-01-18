@@ -144,16 +144,16 @@ describe("Source Service", function () {
         before(function () {
             sourceName = { id: "ABC123", secretKey: "SuperSecretKey" };
             fullSource = new SourceModel.Source({
-              id: sourceName.id,
-              secretKey: sourceName.secretKey,
-              name: "Test Source",
-              url: "https://romantic-shelley-8zIRae.bespoken.link",
-              aws_secret_access_key: "",
-              aws_access_key_id: "",
-              lambda_arn: "",
-              monitoring_enabled: false,
-              proxy_enabled: true,
-              debug_enabled: true,
+                id: sourceName.id,
+                secretKey: sourceName.secretKey,
+                name: "Test Source",
+                url: "https://romantic-shelley-8zIRae.bespoken.link",
+                aws_secret_access_key: "",
+                aws_access_key_id: "",
+                lambda_arn: "",
+                monitoring_enabled: false,
+                proxy_enabled: true,
+                debug_enabled: true,
             });
             user = new User({ userId: "TestUserID", email: "test@test.com", emailVerified: false });
             mockResponse = { user: { userId: user.userId }, source: fullSource };
@@ -277,15 +277,15 @@ describe("Source Service", function () {
 
             before(function () {
                 mockResponse = {
-                  id: "test-source-bhjas3",
-                  secretKey: "ABC123456",
-                  url: "https://romantic-shelley-8zIRae.bespoken.link",
-                  aws_secret_access_key: "",
-                  aws_access_key_id: "",
-                  lambda_arn: "",
-                  monitoring_enabled: false,
-                  proxy_enabled: true,
-                  debug_enabled: true,
+                    id: "test-source-bhjas3",
+                    secretKey: "ABC123456",
+                    url: "https://romantic-shelley-8zIRae.bespoken.link",
+                    aws_secret_access_key: "",
+                    aws_access_key_id: "",
+                    lambda_arn: "",
+                    monitoring_enabled: false,
+                    proxy_enabled: true,
+                    debug_enabled: true,
                 };
                 fetchMock.get(/https:\/\/source-api\.bespoken\.tools\/v1\/sourceId\?.*/, mockResponse);
             });
@@ -532,6 +532,26 @@ describe("Source Service", function () {
                 expect(obj).to.not.be.undefined;
                 expect(obj).to.be.a("Error");
             });
+        });
+    });
+
+    describe("Tests the  \"getAuthToken\" method.", function () {
+        let mockResponse: SourceService.AuthResult;
+
+        before(function () {
+            mockResponse = { authToken: "an auth token", newUser: true };
+            fetchMock.post(/https:\/\/source-api\.bespoken\.tools\/v1\/authToken/, mockResponse);
+        });
+
+        after(function () {
+            fetchMock.restore();
+        });
+
+        it("Tests the auth token is returned.", async function () {
+            const authResult: SourceService.AuthResult = await SourceService.getAuthToken("anEmail@test.com", "a display name");
+            expect(authResult).to.exist;
+            expect(fetchMock.called()).to.equal(true);
+            expect(authResult.newUser).to.equal(true);
         });
     });
 });

@@ -20,17 +20,18 @@ namespace auth {
         return loginWithProvider(provider, auth, storage, db);
     }
 
-    export async function loginWithAmazon(auth?: remoteservice.auth.Auth, storage?: LocalStorage, db: remoteservice.database.Database = remoteservice.defaultService().database()): Promise<User> {
+    export async function loginWithAmazon(auth?: remoteservice.auth.Auth, storage?: LocalStorage, window?: any): Promise<User> {
         const options = { scope: "profile", interactive: "always" };
-        const accessToken = await amazonAuthorize(options);
-        const amazonProfile: any = await amazonRetrieveProfile(accessToken);
+        window = window ? window : globalWindow;
+        const accessToken = await amazonAuthorize(options, window);
+        const amazonProfile: any = await amazonRetrieveProfile(accessToken, window);
         const authResponse = await source.getAuthToken(amazonProfile.PrimaryEmail, amazonProfile.Name);
-        return loginWithCustomToken(authResponse.authToken);
+        return loginWithCustomToken(authResponse.authToken, auth, storage);
     }
 
-    function amazonAuthorize(options: any): Promise<string> {
+    function amazonAuthorize(options: any, window: any): Promise<string> {
         return new Promise(function (resolve, reject) {
-            globalWindow.amazon.Login.authorize(options, function (result: any) {
+            window.amazon.Login.authorize(options, function (result: any) {
                 if (result.error) {
                     reject(result.error);
                     return;
@@ -40,9 +41,9 @@ namespace auth {
         });
     }
 
-    function amazonRetrieveProfile(accessToken: string) {
+    function amazonRetrieveProfile(accessToken: string, window: any) {
         return new Promise(function (resolve, reject) {
-            globalWindow.amazon.Login.retrieveProfile(accessToken, function (result: any) {
+            window.amazon.Login.retrieveProfile(accessToken, function (result: any) {
                 if (result.error) {
                     reject(result.error);
                     return;
@@ -174,7 +175,6 @@ namespace auth {
         identify(modelUser, "custom token");
         localStorage.setItem("user", JSON.stringify(modelUser));
         return modelUser;
-        ;
     }
 
     export function logout(auth: remoteservice.auth.Auth = remoteservice.defaultService().auth(), localStorage: LocalStorage = new BrowserStorage()): Promise<any> {

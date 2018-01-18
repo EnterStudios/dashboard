@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {Link} from "react-router";
 
 import {Button} from "react-toolbox/lib/button";
-import AmazonPane from "../components/AmazonVendorPane";
+import AmazonVendorPane from "../components/AmazonVendorPane";
 import List from "../components/List/List";
 import ListItem from "../components/List/ListItem";
 import TwoPane from "../components/TwoPane";
@@ -62,7 +62,7 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
             </div>
         );
 
-        return this.props.amazonFlow ? (<AmazonPane spacing={true} />) :
+        return this.props.amazonFlow ? (<AmazonVendorPane spacing={true} />) :
             (
                 <TwoPane
                     spacing={true}

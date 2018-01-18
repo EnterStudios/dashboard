@@ -43,7 +43,7 @@
             n.parentNode.insertBefore(a, n);
             for (var o = function (e) {
                 return function () {
-                    heap.push([e].concat(Array.prototype.slice.call(arguments, 0)))
+                    heap && heap.push && heap.push([e].concat(Array.prototype.slice.call(arguments, 0)))
                 }
             }, p = ["addEventProperties", "addUserProperties", "clearEventProperties", "identify", "removeEventProperty", "setEventProperties", "track", "unsetEventProperty"], c = 0; c < p.length; c++)heap[p[c]] = o(p[c])
         };

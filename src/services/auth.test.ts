@@ -7,6 +7,7 @@ import { MemoryCacheStorage } from "../store/local-storage";
 import browser from "../utils/browser";
 import auth from "./auth";
 import remoteservice from "./remote-service";
+import { source } from "./source";
 
 chai.use(sinonChai);
 let expect = chai.expect;
@@ -127,6 +128,60 @@ describe("Auth ts not mocked", function () {
         });
     });
 
+    describe("Log in with Amazon.", function () {
+        const windowMock = {
+            amazon: {
+                Login: {
+                    authorize: (options: any, callback: any) => {
+                        return callback({ access_token: "abcde" });
+                    },
+                    retrieveProfile: (accessToken: any, callback: any) => {
+                        return callback({ profile: { PrimaryEmail: "test@test.com", Name: "Test Amazon Profile" } });
+                    }
+                }
+            }
+        };
+
+        let getAuthTokenStub: sinon.SinonStub;
+
+        before(function () {
+            localStorage = new MemoryCacheStorage();
+            getAuthTokenStub = sinon.stub(source, "getAuthToken").returns(new Promise<any>((resolve, reject) => {
+                resolve("fakeToken");
+            }));
+        });
+
+        afterEach(function () {
+            localStorage.clear();
+            getAuthTokenStub.reset();
+        });
+
+        after(function () {
+            getAuthTokenStub.restore();
+        });
+
+        it("Tests a successful amazon login.", async function () {
+            authService.signInWithCustomToken = sinon.stub().returns(successResult);
+            const user = await auth.loginWithAmazon(authService, localStorage, windowMock);
+            expect(user).to.not.be.undefined;
+            expect(localStorage.length).to.equal(1);
+            expect(authService.signInWithCustomToken).to.be.calledOnce;
+
+        });
+
+        it("Tests an unsuccessful amazon login.", async function () {
+            authService.signInWithCustomToken = sinon.stub().returns(unsuccessfulResult);
+
+            try {
+                await auth.loginWithAmazon(authService, localStorage, windowMock);
+            } catch (error) {
+                expect(error).to.not.be.undefined;
+                expect(localStorage.length).to.equal(0);
+                expect(authService.signInWithCustomToken).to.be.calledOnce;
+            }
+        });
+    });
+
     describe("Login with email.", function () {
 
         afterEach(function () {
@@ -155,6 +210,36 @@ describe("Auth ts not mocked", function () {
                 expect(authService.signInWithEmailAndPassword).to.be.calledOnce;
                 expect(authService.signInWithEmailAndPassword).to.have.been.calledWith(username, password);
             });
+        });
+    });
+
+    describe("Login with custom token.", function () {
+
+        afterEach(function () {
+            localStorage.clear();
+        });
+
+        it("Tests successful login.", async function () {
+            authService.signInWithCustomToken = sinon.stub().returns(successResult);
+
+            const customToken = "abcde";
+            const user = await auth.loginWithCustomToken(customToken, authService, localStorage);
+            expect(user).to.not.be.undefined;
+            expect(authService.signInWithCustomToken).to.be.calledOnce;
+            expect(authService.signInWithCustomToken).to.have.been.calledWith(customToken);
+        });
+
+        it("Tests unsuccessful login.", async function () {
+            authService.signInWithCustomToken = sinon.stub().returns(unsuccessfulResult);
+
+            const customToken = "i'm a bad token";
+            try {
+                await auth.loginWithCustomToken(customToken, authService, localStorage);
+            } catch (error) {
+                expect(error).to.not.be.undefined;
+                expect(authService.signInWithCustomToken).to.be.calledOnce;
+                expect(authService.signInWithCustomToken).to.have.been.calledWith(customToken);
+            }
         });
     });
 

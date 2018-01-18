@@ -27,17 +27,26 @@ describe("Source List Page", function () {
 
         jsdom();
 
-        it("should render correctly", function () {
+        it("should render correctly without the amazon flow", function () {
             const wrapper = mount(<SourceListPage sources={sources} finishLoading={true} amazonFlow={false} />);
 
-            let twoPaneWrapper = wrapper.find("TwoPane");
-            let leftSide = twoPaneWrapper.find(".source_list_page_left");
-            let rightSide = twoPaneWrapper.find(".source_list_page_right");
+            const twoPaneWrapper = wrapper.find("TwoPane");
+            const leftSide = twoPaneWrapper.find(".source_list_page_left");
+            const rightSide = twoPaneWrapper.find(".source_list_page_right");
+            const amazonPaneWrapper = wrapper.find("AmazonVendorPane");
 
             expect(leftSide.find(List)).to.have.prop("length", 4);
             expect(leftSide.find(Button)).to.have.length(1);
-
+            expect(amazonPaneWrapper).to.have.length(0);
             expect(rightSide.find(WelcomePage)).to.have.length(1);
+        });
+
+        it("should render correctly with the amazon flow", function () {
+            const wrapper = mount(<SourceListPage sources={sources} finishLoading={true} amazonFlow={true} />);
+            const twoPaneWrapper = wrapper.find("TwoPane");
+            const amazonPaneWrapper = wrapper.find("AmazonVendorPane");
+            expect(twoPaneWrapper).to.have.length(0);
+            expect(amazonPaneWrapper).to.have.length(1);
         });
     });
 });

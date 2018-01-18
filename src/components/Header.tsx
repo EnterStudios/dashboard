@@ -2,13 +2,13 @@ import * as classNames from "classnames";
 import * as moment from "moment";
 import * as React from "react";
 import { Button, IconButton } from "react-toolbox/lib/button";
-import {Tab, Tabs} from "react-toolbox/lib/tabs";
+import { Tab, Tabs } from "react-toolbox/lib/tabs";
 import Tooltip from "react-toolbox/lib/tooltip";
 import ButtonMenu from "../components/ButtonMenu";
 import { MenuItem } from "../components/Menu";
 import Log from "../models/log";
 import LogQuery from "../models/log-query";
-import Query, {EndTimeParameter, SourceParameter, StartTimeParameter} from "../models/query";
+import Query, { EndTimeParameter, SourceParameter, StartTimeParameter } from "../models/query";
 import Source from "../models/source";
 import logService from "../services/log";
 
@@ -62,21 +62,24 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
   constructor(props: HeaderProps) {
     super(props);
     this.state = { selectedSourceId: this.props.currentSourceId, amazonFlow: this.props.amazonFlow };
-
     this.handleSettingsPageClick = this.handleSettingsPageClick.bind(this);
   }
 
   componentWillReceiveProps(nextProps: HeaderProps, context: any) {
-    this.state.selectedSourceId = nextProps.currentSourceId;
-    this.setState(this.state);
+    if (this.props.currentSourceId !== nextProps.currentSourceId) {
+      this.setState((prevState, props) => { return { ...this.state, selectedSourceId: nextProps.currentSourceId }; });
+    }
+    if (this.props.amazonFlow !== nextProps.amazonFlow) {
+      this.setState((prevState, props) => { return { ...this.state, amazonFlow: nextProps.amazonFlow }; });
+    }
   }
 
   classes() {
     return classNames("mdl-layout__header", this.props.className);
   }
 
-  handleSettingsPageClick () {
-      this.props.onPageSelected({name: "settings", icon: "settings", tooltip: "settings"});
+  handleSettingsPageClick() {
+    this.props.onPageSelected({ name: "settings", icon: "settings", tooltip: "settings" });
   }
 
   handleItemSelect = (value: string) => {
@@ -92,69 +95,69 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
 
   render() {
     return (
-        <header className={this.classes()}>
-            <div className={classNames("mdl-layout__header-row", TopBarTheme.gray_top_bar)} />
-            <div className={classNames("mdl-layout__header-row", TopBarTheme.container)}>
-                <Home
-                    handleHomeClick={this.props.onHomeClicked}
-                    showHome={this.props.displayHomeButton}/>
-                <div className={classNames(TopBarTheme.title)}>
-                    <h4>Voice Apps</h4>
-                    <span>-> Skills</span>
-                    <span>-> Actions</span>
-                    <span>-> Hybrids</span>
-                </div>
-                <ButtonMenu className={MenuButtonTheme.help_menu_button} raised={true} position="topRight"
-                            label="Need Help?">
-                    <MenuItem
-                        key="1"
-                        to="https://github.com/bespoken/dashboard/issues/new?labels=bug"
-                        icon="bug_report"
-                        caption="File Bug"/>
-                    <MenuItem
-                        key="2"
-                        to="https://github.com/bespoken/dashboard/issues/new?labels=feature%20request&body="
-                        icon="build"
-                        caption="Request Feature"/>
-                    <MenuItem
-                        key="3"
-                        to="https://gitter.im/bespoken/bst?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"
-                        icon="question_answer"
-                        caption="Talk to Us"/>
-                    <MenuItem
-                        key="4"
-                        to="mailto:contact@bespoken.io"
-                        icon="email"
-                        caption="Email"/>
-                </ButtonMenu>
-                {this.props.children}
-                {
-                    this.props && this.props.pageButtons && this.props.pageButtons.length &&
-                    <IconButton className={TabMenuTheme.settings_button} onClick={this.handleSettingsPageClick} icon={"settings"} />
-                }
-            </div>
-            <div className={classNames("mdl-layout__header-row", TopBarTheme.container, TopBarTheme.bg_white)}>
-                {
-                    this.state && this.state.amazonFlow &&
-                    <a onClick={this.props.onHomeClicked} className={classNames(TopBarTheme.back_to_site_link)}>{"<< Back to the site"}</a>
-                }
-                {
-                    !this.props.isValidationPage &&
-                    (
-                        <Title
-                            sources={this.props.sources}
-                            handleItemSelect={this.handleItemSelect}
-                            selectedSourceId={this.state.selectedSourceId}/>
-                    )
-                }
-                <PageSwap
-                    source={this.props.currentSourceId}
-                    sources={this.props.sources}
-                    pageButtons={this.props.pageButtons}
-                    onPageSelected={this.props.onPageSelected}/>
-                <div className="mdl-layout-spacer"/>
-            </div>
-        </header>
+      <header className={this.classes()}>
+        <div className={classNames("mdl-layout__header-row", TopBarTheme.gray_top_bar)} />
+        <div className={classNames("mdl-layout__header-row", TopBarTheme.container)}>
+          <Home
+            handleHomeClick={this.props.onHomeClicked}
+            showHome={this.props.displayHomeButton} />
+          <div className={classNames(TopBarTheme.title)}>
+            <h4>Voice Apps</h4>
+            <span>-> Skills</span>
+            <span>-> Actions</span>
+            <span>-> Hybrids</span>
+          </div>
+          <ButtonMenu className={MenuButtonTheme.help_menu_button} raised={true} position="topRight"
+            label="Need Help?">
+            <MenuItem
+              key="1"
+              to="https://github.com/bespoken/dashboard/issues/new?labels=bug"
+              icon="bug_report"
+              caption="File Bug" />
+            <MenuItem
+              key="2"
+              to="https://github.com/bespoken/dashboard/issues/new?labels=feature%20request&body="
+              icon="build"
+              caption="Request Feature" />
+            <MenuItem
+              key="3"
+              to="https://gitter.im/bespoken/bst?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"
+              icon="question_answer"
+              caption="Talk to Us" />
+            <MenuItem
+              key="4"
+              to="mailto:contact@bespoken.io"
+              icon="email"
+              caption="Email" />
+          </ButtonMenu>
+          {this.props.children}
+          {
+            this.props && this.props.pageButtons && this.props.pageButtons.length &&
+            <IconButton className={TabMenuTheme.settings_button} onClick={this.handleSettingsPageClick} icon={"settings"} />
+          }
+        </div>
+        <div className={classNames("mdl-layout__header-row", TopBarTheme.container, TopBarTheme.bg_white)}>
+          {
+            this.state && this.state.amazonFlow &&
+            <a onClick={this.props.onHomeClicked} className={classNames(TopBarTheme.back_to_site_link)}>{"<< Back to the site"}</a>
+          }
+          {
+            !this.props.isValidationPage &&
+            (
+              <Title
+                sources={this.props.sources}
+                handleItemSelect={this.handleItemSelect}
+                selectedSourceId={this.state.selectedSourceId} />
+            )
+          }
+          <PageSwap
+            source={this.props.currentSourceId}
+            sources={this.props.sources}
+            pageButtons={this.props.pageButtons}
+            onPageSelected={this.props.onPageSelected} />
+          <div className="mdl-layout-spacer" />
+        </div>
+      </header>
     );
   }
 }
@@ -331,34 +334,36 @@ export class PageSwap extends React.Component<PageSwapProps, PageSwapState> {
   async buildButtons(props: PageSwapProps) {
     let i = 0;
     if (props.pageButtons) {
-        const tabs = [];
-        for (const button of props.pageButtons) {
-            if (await allowTab(button.name, props)) { tabs.push(button); }
-        }
-        this.setState({...this.state, tabs: tabs.map(button => {
-            const handleSelectTab = () => {
-                this.handleSelected(button);
-            };
-            return <Tab className={button.icon.toString()} key={++i} label={button.name} onActive={handleSelectTab} />;
-        })});
+      const tabs = [];
+      for (const button of props.pageButtons) {
+        if (await allowTab(button.name, props)) { tabs.push(button); }
+      }
+      this.setState({
+        ...this.state, tabs: tabs.map(button => {
+          const handleSelectTab = () => {
+            this.handleSelected(button);
+          };
+          return <Tab className={button.icon.toString()} key={++i} label={button.name} onActive={handleSelectTab} />;
+        })
+      });
     };
   }
 
   render() {
     const handleTabChange = (index: any) => {
-        this.setState({...this.state, index});
+      this.setState({ ...this.state, index });
     };
     return (
-        <div className="responsive-page-swap" style={this.props.style}>
-            {
-                this.state && this.state.tabs.length ?
-                (
-                    <Tabs style={{overflowX: "scroll"}} theme={TabMenuTheme} index={this.state.index} onChange={handleTabChange}>
-                        {this.state && this.state.tabs}
-                    </Tabs>
-                ) : undefined
-            }
-        </div>
+      <div className="responsive-page-swap" style={this.props.style}>
+        {
+          this.state && this.state.tabs.length ?
+            (
+              <Tabs style={{ overflowX: "scroll" }} theme={TabMenuTheme} index={this.state.index} onChange={handleTabChange}>
+                {this.state && this.state.tabs}
+              </Tabs>
+            ) : undefined
+        }
+      </div>
     );
   }
 }
@@ -398,36 +403,36 @@ export class HeaderButton extends React.Component<HeaderButtonProps, any> {
 }
 
 async function allowTab(tab: string, props: any) {
-    switch (tab) {
-        case "Check Stats":
-        case "Check Logs": {
-            const currentSource = props.sources.find((source: any) => {
-                return source.value === props.source;
-            });
-            const query: LogQuery = new LogQuery({
-                source: (currentSource && currentSource.source) || {} as Source,
-                startTime: moment().subtract(7, "days"), // change 7 for the right time span once implemented
-                endTime: moment(),
-                limit: 50
-            });
-            let endpoint;
-            return !!(await logService.getLogs(query, endpoint)).length;
-        }
-        case "Audio Metrics": {// should we have this conditional tab as well?
-            const query: Query = new Query();
-            query.add(new SourceParameter(props.source));
-            query.add(new StartTimeParameter(moment().subtract(7, "days"))); // change 7 for the right time span once implemented
-            query.add(new EndTimeParameter(moment()));
-            try {
-                return !!(await logService.getAudioSessions(query)).audioSessions.length;
-            } catch (err) {
-                return false;
-            }
-        }
-        case "settings": {
-            return false;
-        }
-        default:
-            return true;
+  switch (tab) {
+    case "Check Stats":
+    case "Check Logs": {
+      const currentSource = props.sources.find((source: any) => {
+        return source.value === props.source;
+      });
+      const query: LogQuery = new LogQuery({
+        source: (currentSource && currentSource.source) || {} as Source,
+        startTime: moment().subtract(7, "days"), // change 7 for the right time span once implemented
+        endTime: moment(),
+        limit: 50
+      });
+      let endpoint;
+      return !!(await logService.getLogs(query, endpoint)).length;
     }
+    case "Audio Metrics": {// should we have this conditional tab as well?
+      const query: Query = new Query();
+      query.add(new SourceParameter(props.source));
+      query.add(new StartTimeParameter(moment().subtract(7, "days"))); // change 7 for the right time span once implemented
+      query.add(new EndTimeParameter(moment()));
+      try {
+        return !!(await logService.getAudioSessions(query)).audioSessions.length;
+      } catch (err) {
+        return false;
+      }
+    }
+    case "settings": {
+      return false;
+    }
+    default:
+      return true;
+  }
 }

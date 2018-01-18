@@ -4,7 +4,7 @@ import configureMockStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import * as sinon from "sinon";
 
-import { AUTH_FORM_ERROR, SET_SNACKBAR_MESSAGE, SET_USER } from "../constants";
+import { AUTH_FORM_ERROR, SET_AMAZON_FLOW, SET_SNACKBAR_MESSAGE, SET_USER } from "../constants";
 import User from "../models/user";
 import auth from "../services/auth";
 import * as session from "./session";
@@ -52,6 +52,17 @@ describe("Session.ts", function () {
             let action: any = store.getActions()[0];
             expect(action.type).to.equal(SET_USER);
         });
+
+        it("sets the Amazon flow flag", function () {
+            const initialState = {};
+
+            const store = mockStore(initialState);
+            store.dispatch(session.setAmazonFlow(true));
+
+            expect(store.getActions().length).to.equal(1);
+            const action: any = store.getActions()[0];
+            expect(action.type).to.equal(SET_AMAZON_FLOW);
+        });
     });
 
     describe("Successful login With Github", function () {
@@ -80,6 +91,35 @@ describe("Session.ts", function () {
 
         it("Tests the login flow works properly on successful github login with overridden login strategy.", function () {
             return verifySuccessLogin("/NextPath", session.loginWithGithub(new ToPathCallback("/NextPath")));
+        });
+    });
+
+    describe("Successful login With Amazon", function () {
+
+        let loginAmazonStub: sinon.SinonStub;
+        let setUserStub: sinon.SinonStub;
+
+        before("Stubbing auth namespace.", function () {
+            loginAmazonStub = sinon.stub(auth, "loginWithAmazon").returns(new Promise<User>((resolve, reject) => {
+                resolve(user);
+            }));
+
+            setUserStub = sinon.stub(auth, "user", () => {
+                return new User({ email: "testEmail" });
+            });
+        });
+
+        after(function () {
+            loginAmazonStub.restore();
+            setUserStub.restore();
+        });
+
+        it("Tests the login flow works properly on a successful amazon login with a default login strategy.", function () {
+            return verifySuccessLogin(undefined, session.loginWithAmazon());
+        });
+
+        it("Tests the login flow works properly on successful amazon login with overridden login strategy.", function () {
+            return verifySuccessLogin("/NextPath", session.loginWithAmazon(new ToPathCallback("/NextPath")));
         });
     });
 
@@ -186,6 +226,30 @@ describe("Session.ts", function () {
 
         it("Tests the login flow works properly on an unsuccessful login attempt.", function () {
             return verifyUnsuccessfullLogin(session.loginWithGithub());
+        });
+    });
+
+    describe("Unsuccessful login with Amazon", function () {
+        let loginStub: sinon.SinonStub;
+        let setUserStub: sinon.SinonStub;
+
+        before("Stubbing auth namespace.", function () {
+            loginStub = sinon.stub(auth, "loginWithAmazon").returns(new Promise<any>((resolve, reject) => {
+                reject(new Error("Error failed do to requirements of the test."));
+            }));
+
+            setUserStub = sinon.stub(auth, "user", (): User => {
+                return undefined;
+            });
+        });
+
+        after(function () {
+            loginStub.restore();
+            setUserStub.restore();
+        });
+
+        it("Tests the login flow works properly on an unsuccessful login attempt.", function () {
+            return verifyUnsuccessfullLogin(session.loginWithAmazon());
         });
     });
 

@@ -97,7 +97,7 @@ describe("Header", function () {
                 expect(wrapper.find(Button)).to.have.length(1);
             });
 
-            it("Displays the button when props say true.", function () {
+            it("Does not display the button when props say false.", function () {
                 const wrapper = shallow(<Home handleHomeClick={handleHomeClick} showHome={false} />);
                 expect(wrapper.find(Button)).to.have.length(0);
             });
@@ -108,6 +108,22 @@ describe("Header", function () {
                 iconButton.simulate("click");
                 expect(handleHomeClick).to.have.been.calledOnce;
             });
+        });
+    });
+
+    describe("AmazonFlow property", function () {
+
+        it("displays a Back to the site link when the property is set to true", function () {
+            const wrapper = shallow(<Header amazonFlow={true} />);
+            const linkWrapper = wrapper.find("a");
+            expect(linkWrapper).to.have.length(1);
+            expect(linkWrapper.text()).to.equal("<< Back to the site");
+        });
+
+        it("does not display a Back to the site link when the property is set to false", function () {
+            const wrapper = shallow(<Header amazonFlow={false} />);
+            const linkWrapper = wrapper.find("a");
+            expect(linkWrapper).to.have.length(0);
         });
     });
 
