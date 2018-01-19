@@ -157,7 +157,7 @@ describe("Source Service", function () {
             });
             user = new User({ userId: "TestUserID", email: "test@test.com", emailVerified: false });
             mockResponse = { user: { userId: user.userId }, source: fullSource };
-            fetchMock.post(/https:\/\/source-api\.bespoken\.tools\/v1\/linkSource/, mockResponse);
+            fetchMock.post(/https:\/\/source-api(?:-dev)?\.bespoken\.tools\/v1\/linkSource/, mockResponse);
         });
 
         afterEach(function () {
@@ -202,12 +202,12 @@ describe("Source Service", function () {
             before(function () {
                 errorResponse = new Response(undefined, { status: 400, statusText: "Error per requirement of the test." });
                 fetchMock.restore();
-                fetchMock.post(/https:\/\/source-api\.bespoken\.tools\/v1\/linkSource/, errorResponse);
+                fetchMock.post(/https:\/\/source-api(?:-dev)?\.bespoken\.tools\/v1\/linkSource/, errorResponse);
             });
 
             after(function () {
                 fetchMock.restore();
-                fetchMock.post(/https:\/\/source-api\.bespoken\.tools\/v1\/linkSource/, mockResponse);
+                fetchMock.post(/https:\/\/source-api(?:-dev)?\.bespoken\.tools\/v1\/linkSource/, mockResponse);
             });
 
             it("Tests that an error is thrown to the catch.", function () {
@@ -227,12 +227,12 @@ describe("Source Service", function () {
             before(function () {
                 errorResponse = () => { return Promise.reject("Error per requirements of the test."); };
                 fetchMock.restore();
-                fetchMock.post(/https:\/\/source-api\.bespoken\.tools\/v1\/linkSource/, errorResponse);
+                fetchMock.post(/https:\/\/source-api(?:-dev)?\.bespoken\.tools\/v1\/linkSource/, errorResponse);
             });
 
             after(function () {
                 fetchMock.restore();
-                fetchMock.post(/https:\/\/source-api\.bespoken\.tools\/v1\/linkSource/, mockResponse);
+                fetchMock.post(/https:\/\/source-api(?:-dev)?\.bespoken\.tools\/v1\/linkSource/, mockResponse);
             });
 
             it("Tests that an error is thrown to the catch.", function () {
@@ -252,7 +252,7 @@ describe("Source Service", function () {
 
         before(function () {
             mockResponse = { id: "test-source-bhjas3", secretKey: "ABC123456" };
-            fetchMock.get(/https:\/\/source-api\.bespoken\.tools\/v1\/sourceId\?.*/, mockResponse);
+            fetchMock.get(/https:\/\/source-api(?:-dev)?\.bespoken\.tools\/v1\/sourceId\?.*/, mockResponse);
         });
 
         after(function () {
@@ -287,7 +287,7 @@ describe("Source Service", function () {
                     proxy_enabled: true,
                     debug_enabled: true,
                 };
-                fetchMock.get(/https:\/\/source-api\.bespoken\.tools\/v1\/sourceId\?.*/, mockResponse);
+                fetchMock.get(/https:\/\/source-api(?:-dev)?\.bespoken\.tools\/v1\/sourceId\?.*/, mockResponse);
             });
 
             beforeEach(function () {
@@ -333,7 +333,7 @@ describe("Source Service", function () {
             let createSourceError = new Error("First argument contains undefined in property 'sources.naughty-orwell-s5mdjF.url'");
 
             before(function () {
-                fetchMock.get(/https:\/\/source-api\.bespoken\.tools\/v1\/sourceId\?.*/, new Promise((resolve, reject) => {
+                fetchMock.get(/https:\/\/source-api(?:-dev)?\.bespoken\.tools\/v1\/sourceId\?.*/, new Promise((resolve, reject) => {
                     reject(createSourceError);
                 }));
             });
@@ -540,7 +540,7 @@ describe("Source Service", function () {
 
         before(function () {
             mockResponse = { authToken: "an auth token", newUser: true };
-            fetchMock.post(/https:\/\/source-api\.bespoken\.tools\/v1\/authToken/, mockResponse);
+            fetchMock.post(/https:\/\/source-api(?:-dev)?\.bespoken\.tools\/v1\/authToken/, mockResponse);
         });
 
         after(function () {

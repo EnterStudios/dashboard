@@ -16,11 +16,11 @@ var buildId = process.env.TRAVIS_BUILD_ID
 var git_hash = childProcess.execSync("git rev-parse HEAD").toString();
 
 var logless_base = "";
-var firebase_api_key = "AIzaSyAs4iTZjSqvcAwFB08Cca3kABoypk3SAaA";
-var firebase_auth_domain = "dev-dashboard-bbcee.firebaseapp.com";
-var firebase_database_url = "https://dev-dashboard-bbcee.firebaseio.com";
-var firebase_storage_bucket = "dev-dashboard-bbcee.appspot.com";
-var firebase_messaging_sender_id = "439343509371";
+var firebase_api_key = "AIzaSyBfHBDy0cVUYnBL4l6_9RYubIdZSC3fG-A";
+var firebase_auth_domain = "dev-bespoken-tools.firebaseapp.com";
+var firebase_database_url = "https://dev-bespoken-tools.firebaseio.com";
+var firebase_storage_bucket = "dev-bespoken-tools.appspot.com";
+var firebase_messaging_sender_id = "686431405396";
 var travis_tag = process.env.TRAVIS_TAG;
 if (travis_tag) {
     const env = travis_tag.match(/^(prod|dev).*$/);
