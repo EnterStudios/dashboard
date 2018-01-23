@@ -58,6 +58,16 @@ $label-filled-padding-left: 0;
     }
 }
 
+.input.disabled > .inputElement {
+    font-size: $input-font-size;
+    padding-bottom: $input-padding-bottom;
+    padding-top: $input-padding-top;
+    &.filled {
+        padding-bottom: $input-filled-padding-bottom;
+        padding-top: $input-filled-padding-top;
+    }
+}
+
 .label {
     font-size: $label-font-size;
     color: $label-color-light;
@@ -71,6 +81,16 @@ $label-filled-padding-left: 0;
     height: 24px;
     border-radius: 5px;
     margin: auto;
+    text-align: center;
+}
+
+.validation_token_input input {
+    width: 100%;
+    border: 1px solid #D5D5D5;
+    height: 24px;
+    border-radius: 5px;
+    margin: auto;
+    text-align: center;
 }
 
 .vendor_id_input label, .vendor_id_input span {
