@@ -20,16 +20,16 @@ namespace auth {
         return loginWithProvider(provider, auth, storage, db);
     }
 
-    export async function loginWithAmazon(auth?: remoteservice.auth.Auth, storage?: LocalStorage, window?: any): Promise<User> {
-        const options = { scope: "profile", interactive: "always" };
+    export async function loginWithAmazon(accessToken: string, auth?: remoteservice.auth.Auth, storage?: LocalStorage, window?: any): Promise<User> {
         window = window ? window : globalWindow;
-        const accessToken = await amazonAuthorize(options, window);
         const amazonProfile: any = await amazonRetrieveProfile(accessToken, window);
         const authResponse = await source.getAuthToken(amazonProfile.PrimaryEmail, amazonProfile.Name);
         return loginWithCustomToken(authResponse.authToken, auth, storage);
     }
 
-    function amazonAuthorize(options: any, window: any): Promise<string> {
+    export function amazonAuthorize(window?: any): Promise<string> {
+        const options = { scope: "profile", interactive: "always" };
+        window = window ? window : globalWindow;
         return new Promise(function (resolve, reject) {
             window.amazon.Login.authorize(options, function (result: any) {
                 if (result.error) {

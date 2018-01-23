@@ -160,9 +160,14 @@ describe("Auth ts not mocked", function () {
             getAuthTokenStub.restore();
         });
 
+        it("Tests a successful amazon authorize.", async function () {
+            const accessToken = await auth.amazonAuthorize(windowMock);
+            expect(accessToken).to.not.be.undefined;
+        });
+
         it("Tests a successful amazon login.", async function () {
             authService.signInWithCustomToken = sinon.stub().returns(successResult);
-            const user = await auth.loginWithAmazon(authService, localStorage, windowMock);
+            const user = await auth.loginWithAmazon("a good access token", authService, localStorage, windowMock);
             expect(user).to.not.be.undefined;
             expect(localStorage.length).to.equal(1);
             expect(authService.signInWithCustomToken).to.be.calledOnce;
@@ -173,7 +178,7 @@ describe("Auth ts not mocked", function () {
             authService.signInWithCustomToken = sinon.stub().returns(unsuccessfulResult);
 
             try {
-                await auth.loginWithAmazon(authService, localStorage, windowMock);
+                await auth.loginWithAmazon("a bad access token", authService, localStorage, windowMock);
             } catch (error) {
                 expect(error).to.not.be.undefined;
                 expect(localStorage.length).to.equal(0);

@@ -115,11 +115,11 @@ describe("Session.ts", function () {
         });
 
         it("Tests the login flow works properly on a successful amazon login with a default login strategy.", function () {
-            return verifySuccessLogin(undefined, session.loginWithAmazon());
+            return verifySuccessLogin(undefined, session.loginWithAmazon("an access token"));
         });
 
         it("Tests the login flow works properly on successful amazon login with overridden login strategy.", function () {
-            return verifySuccessLogin("/NextPath", session.loginWithAmazon(new ToPathCallback("/NextPath")));
+            return verifySuccessLogin("/NextPath", session.loginWithAmazon("an access token", new ToPathCallback("/NextPath")));
         });
     });
 
@@ -249,7 +249,7 @@ describe("Session.ts", function () {
         });
 
         it("Tests the login flow works properly on an unsuccessful login attempt.", function () {
-            return verifyUnsuccessfullLogin(session.loginWithAmazon());
+            return verifyUnsuccessfullLogin(session.loginWithAmazon("a bad access token"));
         });
     });
 
