@@ -1,0 +1,44 @@
+.container {
+    width: calc(56% - 36px);
+    margin-left: 36px;
+
+    .title {
+        width: 48%;
+        display: inline-block;
+        text-align: center;
+        &.second_item {
+            margin-left: 2%;
+        }
+        span {
+            width: 100%;
+            display: inline-block;
+            font-size: 1.8rem;
+            color: #787878;
+            font-weight: bold;
+            letter-spacing: -1px;
+            &.secondary_text {
+                font-size: 1.2rem;
+                font-weight: normal;
+            }
+        }
+    }
+
+    .validation_test_row {
+        > div {
+            width: 48%;
+            display: inline-block;
+            &.second_input {
+                margin-left: 2%;
+            }
+        }
+    }
+
+    .add_button_container {
+        margin-top: 20px;
+        .add_row_text {
+            font-size: 1.4rem;
+            color: #7B7B7B;
+            margin-left: 5px;
+        }
+    }
+}

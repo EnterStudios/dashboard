@@ -8,7 +8,7 @@ import {getSources, setCurrentSource} from "../../actions/source";
 import {CodeSheet} from "../../components/CodeSheet";
 import { Dimensions } from "../../components/Measure";
 import SourcePageTwoPane from "../../components/SourcePageTwoPane";
-import ValidationParentComponent from "../../components/ValidationParentComponent";
+import ValidationParentComponent from "../../components/Validation/ValidationParentComponent";
 import Source from "../../models/source";
 import {User, UserDetails} from "../../models/user";
 import { State } from "../../reducers";
@@ -336,6 +336,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                         handleRun={this.handleRun}
                         handleSelectedSource={this.handleSelectedSource}
                         handleTokenChange={this.handleTokenChange}
+                        handleGetTokenClick={this.handleGetTokenClick}
                         handleSnackbarClick={this.handleSnackbarClick}
                         handleVendorIDChange={this.handleVendorIDChange}
                         handleScriptChange={this.handleScriptChange}

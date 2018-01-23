@@ -97,6 +97,22 @@ $label-filled-padding-left: 0;
     display: none;
 }
 
+.validation_test_component input {
+    width: calc(100% - 12px);
+    font-size: 1.4rem!important;
+    letter-spacing: -1px;
+    border: 2px solid #E7E7E7;
+    height: 34px;
+    border-radius: 0px;
+    margin: auto;
+    padding: 0 0 0 8px!important;
+    color: #7E7E7E!important;
+}
+
+.validation_test_component label, .validation_test_component span {
+    display: none;
+}
+
 .validation_input {
     padding: 0!important;
     width: 50%;

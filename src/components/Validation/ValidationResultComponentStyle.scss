@@ -1,0 +1,60 @@
+@import "../../themes/dashboard";
+
+.container {
+    width: 44%;
+
+    .title {
+        width: 100%;
+        display: inline-block;
+        text-align: center;
+        span {
+            width: 100%;
+            display: inline-block;
+            font-size: 1.8rem;
+            color: #787878;
+            font-weight: bold;
+            letter-spacing: -1px;
+            &.secondary_text {
+                font-size: 1.2rem;
+                font-weight: normal;
+            }
+        }
+    }
+
+    .validation_result_row {
+        height: 52px;
+        text-align: center;
+        > div {
+            width: 80%;
+            display: inline-block;
+            padding-top: 1rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: left;
+            &.align_center {
+                text-align: center;
+            }
+        }
+    }
+
+    .align_center {
+        text-align: center;
+    }
+
+    .result_text {
+        font-size: 1.4rem;
+        background-color: #EBEBEB;
+        padding: 5px 0 6px 15px;
+        height: 2.5rem;
+        line-height: 2.5rem;
+        letter-spacing: -1px;
+        margin-left: -10px;
+        &.success {
+            color: $color-success;
+        }
+        &.error {
+            color: $color-error;
+        }
+    }
+}

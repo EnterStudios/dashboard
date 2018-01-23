@@ -7,7 +7,7 @@ import * as sinonChai from "sinon-chai";
 
 let jsdom = require("mocha-jsdom");
 
-import {ValidationParentComponent} from "../../components/ValidationParentComponent";
+import {ValidationParentComponent} from "../../components/Validation/ValidationParentComponent";
 import Source from "../../models/source";
 import { User } from "../../models/user";
 import auth from "../../services/auth";

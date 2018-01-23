@@ -95,69 +95,69 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
 
   render() {
     return (
-      <header className={this.classes()}>
-        <div className={classNames("mdl-layout__header-row", TopBarTheme.gray_top_bar)} />
-        <div className={classNames("mdl-layout__header-row", TopBarTheme.container)}>
-          <Home
-            handleHomeClick={this.props.onHomeClicked}
-            showHome={this.props.displayHomeButton} />
-          <div className={classNames(TopBarTheme.title)}>
-            <h4>Voice Apps</h4>
-            <span>-> Skills</span>
-            <span>-> Actions</span>
-            <span>-> Hybrids</span>
-          </div>
-          <ButtonMenu className={MenuButtonTheme.help_menu_button} raised={true} position="topRight"
-            label="Need Help?">
-            <MenuItem
-              key="1"
-              to="https://github.com/bespoken/dashboard/issues/new?labels=bug"
-              icon="bug_report"
-              caption="File Bug" />
-            <MenuItem
-              key="2"
-              to="https://github.com/bespoken/dashboard/issues/new?labels=feature%20request&body="
-              icon="build"
-              caption="Request Feature" />
-            <MenuItem
-              key="3"
-              to="https://gitter.im/bespoken/bst?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"
-              icon="question_answer"
-              caption="Talk to Us" />
-            <MenuItem
-              key="4"
-              to="mailto:contact@bespoken.io"
-              icon="email"
-              caption="Email" />
-          </ButtonMenu>
-          {this.props.children}
-          {
-            this.props && this.props.pageButtons && this.props.pageButtons.length &&
-            <IconButton className={TabMenuTheme.settings_button} onClick={this.handleSettingsPageClick} icon={"settings"} />
-          }
-        </div>
-        <div className={classNames("mdl-layout__header-row", TopBarTheme.container, TopBarTheme.bg_white)}>
-          {
-            this.state && this.state.amazonFlow &&
-            <a onClick={this.props.onHomeClicked} className={classNames(TopBarTheme.back_to_site_link)}>{"<< Back to the site"}</a>
-          }
-          {
-            !this.props.isValidationPage &&
-            (
-              <Title
-                sources={this.props.sources}
-                handleItemSelect={this.handleItemSelect}
-                selectedSourceId={this.state.selectedSourceId} />
-            )
-          }
-          <PageSwap
-            source={this.props.currentSourceId}
-            sources={this.props.sources}
-            pageButtons={this.props.pageButtons}
-            onPageSelected={this.props.onPageSelected} />
-          <div className="mdl-layout-spacer" />
-        </div>
-      </header>
+        <header className={this.classes()}>
+            <div className={classNames("mdl-layout__header-row", TopBarTheme.gray_top_bar)} />
+            <div className={classNames("mdl-layout__header-row", TopBarTheme.container)}>
+                <Home
+                    handleHomeClick={this.props.onHomeClicked}
+                    showHome={this.props.displayHomeButton}/>
+                <div className={classNames(TopBarTheme.title)}>
+                    <h4>Voice Apps</h4>
+                    <span>-> Skills</span>
+                    <span>-> Actions</span>
+                    <span>-> Hybrids</span>
+                </div>
+                <ButtonMenu className={MenuButtonTheme.help_menu_button} raised={true} position="topRight"
+                            label="Need Help?">
+                    <MenuItem
+                        key="1"
+                        to="https://github.com/bespoken/dashboard/issues/new?labels=bug"
+                        icon="bug_report"
+                        caption="File Bug"/>
+                    <MenuItem
+                        key="2"
+                        to="https://github.com/bespoken/dashboard/issues/new?labels=feature%20request&body="
+                        icon="build"
+                        caption="Request Feature"/>
+                    <MenuItem
+                        key="3"
+                        to="https://gitter.im/bespoken/bst?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge"
+                        icon="question_answer"
+                        caption="Talk to Us"/>
+                    <MenuItem
+                        key="4"
+                        to="mailto:contact@bespoken.io"
+                        icon="email"
+                        caption="Email"/>
+                </ButtonMenu>
+                {this.props.children}
+                {
+                    this.props && this.props.pageButtons && this.props.pageButtons.length &&
+                    <IconButton className={TabMenuTheme.settings_button} onClick={this.handleSettingsPageClick} icon={"settings"} />
+                }
+            </div>
+            <div className={classNames("mdl-layout__header-row", TopBarTheme.container, TopBarTheme.bg_white)}>
+                {
+                    this.state && this.state.amazonFlow &&
+                    <a onClick={this.props.onHomeClicked} className={classNames(TopBarTheme.back_to_site_link)}>{"<< Back to the site"}</a>
+                }
+                {
+                    this.props.isValidationPage &&
+                    (
+                        <Title
+                            sources={this.props.sources}
+                            handleItemSelect={this.handleItemSelect}
+                            selectedSourceId={this.state.selectedSourceId}/>
+                    )
+                }
+                <PageSwap
+                    source={this.props.currentSourceId}
+                    sources={this.props.sources}
+                    pageButtons={this.props.pageButtons}
+                    onPageSelected={this.props.onPageSelected}/>
+                <div className="mdl-layout-spacer"/>
+            </div>
+        </header>
     );
   }
 }
