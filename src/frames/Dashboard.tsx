@@ -354,7 +354,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
             timeout={10000}
             onTimeout={this.handleSnackbarHiding} />
         </Content>
-        <a className="git-hash" href={`https://github.com/bespoken/dashboard/commit/${process.env.GIT_HASH}`} target="_blank">{process.env.GIT_HASH.slice(0, 7)}</a>
+          {process.env.NODE_ENV === "development" && <a className="git-hash" href={`https://github.com/bespoken/dashboard/commit/${process.env.GIT_HASH}`} target="_blank">{process.env.GIT_HASH.slice(0, 7)}</a>}
       </Layout>
     );
   }

@@ -15,7 +15,7 @@
     margin: 25px 20px 30px 75px;
     background-color: #fff;
     > div {
-        padding: 13% 15%;
+        padding: 10% 15%;
         text-align: center;
         > span {
             display: block;
@@ -35,7 +35,7 @@
 
     .vendor_button {
         border-radius: 10px;
-        font-size: 1.1rem;
+        font-size: 1.3rem;
         height: 2.7rem;
         line-height: 2.7rem;
         text-transform: none;
@@ -68,7 +68,7 @@
     .main_content {
         color: #898989;
         h5 {
-            marginBottom: 0;
+            margin-bottom: 2rem;
             letter-spacing: -1px;
         }
         h4 {
@@ -91,6 +91,7 @@
     .enable_monitoring {
         color: #E69198;
         text-align: right;
+        margin-right: 10px;
         > div {
             margin-top: 40px;
             text-align: right;
@@ -98,7 +99,7 @@
             display: inline-block;
             span {
                 display: block;
-                font-size: 1.5rem;
+                font-size: 1.7rem;
             }
         }
         button {
@@ -115,17 +116,89 @@
     width: 27% !important;
     margin: 0;
     padding: 0;
-    border-bottom: 1px solid #939598;
+    border-bottom: none;
 }
 
 .right_container {
     margin: 0;
     background-color: #fff;
+    position: relative;
     a {
         width: 100%;
         img {
             width: 100%;
         }
+    }
+    .right_backdrop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #000;
+        opacity: .7;
+    }
+    .right_content {
+        margin-top: 4.5rem;
+        text-align: center;
+        color: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        u {
+            text-decoration-color: $color-primary;
+        }
+        h4 {
+            margin-bottom: 0;
+            line-height: 2rem;
+            + h4 {
+                margin-top: 0;
+            }
+        }
+        ul {
+            width: 80%;
+            margin: 3rem auto 4.5rem auto;
+            list-style: none;
+            padding: 0;
+            font-size: 20px;
+            text-align: center;
+            li {
+                margin: auto;
+                margin-bottom: 25px;
+                width: 85%;
+                span {
+                    color: #FDBC60;
+                }
+                + li {
+                    width: 75%;
+                    span {
+                        color: $color-primary;
+                    }
+                }
+            }
+        }
+        div {
+            width: 88%;
+            margin: auto;
+            p {
+                font-size: 1.45rem;
+                margin-bottom: 5px;
+                text-align: left;
+                letter-spacing: -1px;
+                font-weight: 100;
+            }
+            button {
+                font-size: 1.9rem;
+                width: 100%;
+                background: #FC9806!important;
+                text-transform: none;
+            }
+        }
+    }
+    .get_started {
+        border-radius: 0;
     }
 }
 

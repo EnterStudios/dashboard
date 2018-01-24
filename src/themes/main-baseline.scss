@@ -1,13 +1,35 @@
 @import "dashboard";
 
 :global {
+    .mdl-layout__content {
+        overflow: visible;
+    }
+    html, body {
+        font-size: 14px;
+    }
+    h1, h2, h3, h4, h5, h6, a, p, span, input, button, label, small {
+        font-family: Calibri, "Helvetica","Arial",sans-serif;
+    }
+    h3 {
+        font-size: 36px;
+    }
+    h4 {
+        font-size: 26px;
+    }
+    h5 {
+        font-size: 22px;
+    }
+    small {
+        font-size: 14px;
+    }
     a {
         color: $color-primary;
         &.integration_docs_link {
             color: #fff;
             text-decoration: none;
             position: absolute;
-            top: 15px;
+            top: 16px;
+            font-size: 1.1rem;
         }
     }
     .mdl-layout__header {

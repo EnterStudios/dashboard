@@ -6,11 +6,11 @@ $transition-time: 0.3s;
 
 .itemText {
     &.primary {
-        font-size: 1.3em;
+        font-size: 1.8em;
         transition: font $transition-time ease
     }
     &:not(.primary) {
-        font-size: 0.9em;
+        font-size: 1.1em;
         transition: font $transition-time ease
     }
 }
@@ -23,7 +23,7 @@ $transition-time: 0.3s;
         background: $palette-grey-200;
 
         .itemText.primary {
-            font-size: 1.6em;
+            font-size: 2em;
             transition: font $transition-time ease
         }
     }

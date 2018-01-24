@@ -2,6 +2,10 @@
 
 @import "~react-toolbox/lib/button/theme";
 
+.button {
+    font-family: Calibri, "Helvetica","Arial",sans-serif;
+}
+
 :global {
     .circularProgressBar {
         width: 22px !important;
