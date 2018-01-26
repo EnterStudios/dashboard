@@ -4,6 +4,8 @@ import { IconButton } from "react-toolbox";
 import { Button } from "react-toolbox/lib/button";
 import Input from "react-toolbox/lib/input";
 import Tooltip from "react-toolbox/lib/tooltip";
+import { AmazonFlowFlag } from "../actions/session";
+import { SET_AMAZON_FLOW } from "../constants";
 import { User, UserDetails } from "../models/user";
 import auth from "../services/auth";
 import SourceService from "../services/source";
@@ -19,6 +21,8 @@ const TooltipButton = Tooltip(IconButton);
 interface AmazonVendorPaneProps {
     user?: User;
     spacing: boolean;
+    setAmazonFlow: (amazonFlow: boolean) => AmazonFlowFlag;
+    amazonFlow: boolean;
 }
 
 interface AmazonVendorPaneState {
@@ -30,9 +34,10 @@ interface AmazonVendorPaneState {
 export default class AmazonVendorPane extends React.Component<AmazonVendorPaneProps, AmazonVendorPaneState> {
     static defaultProps: {
         user: undefined,
-        spacing: false
+        spacing: false,
+        amazonFlow: true,
+        setAmazonFlow: () => {type: SET_AMAZON_FLOW, amazonFlow: true},
     };
-
     constructor(props: AmazonVendorPaneProps) {
         super(props);
         this.state = {
@@ -67,6 +72,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
 
     async handleGetStarted() {
         await auth.updateCurrentUser({ vendorID: this.state.vendorID });
+        this.props.setAmazonFlow(false);
     }
 
     virtualDeviceLinkAccountURL(): string {
