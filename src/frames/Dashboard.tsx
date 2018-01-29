@@ -249,7 +249,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       return { ...prevState, isValidationPage: false };
     });
     if (button.name === "Check Stats") {
-      this.props.goTo("/skills/" + this.props.currentSource.id);
+      this.props.goTo("/skills/" + this.props.currentSource.id + "/stats");
     } else if (button.name === "Check Logs") {
       this.props.goTo("/skills/" + this.props.currentSource.id + "/logs");
     } else if (button.name === "Integrations") {
@@ -258,7 +258,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       this.setState(prevState => {
         return { ...prevState, isValidationPage: false };
       });
-      this.props.goTo("/skills/" + this.props.currentSource.id + "/validation");
+      this.props.goTo("/skills/" + this.props.currentSource.id);
     } else if (button.name === "Audio Metrics") {
       this.props.goTo("/skills/" + this.props.currentSource.id + "/audio");
     } else if (button.name === "settings") {

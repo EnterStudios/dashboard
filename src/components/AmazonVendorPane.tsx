@@ -5,6 +5,7 @@ import { Button } from "react-toolbox/lib/button";
 import Input from "react-toolbox/lib/input";
 import Tooltip from "react-toolbox/lib/tooltip";
 import { AmazonFlowFlag } from "../actions/session";
+import { Loader } from "../components/Loader/Loader";
 import { SET_AMAZON_FLOW } from "../constants";
 import { User, UserDetails } from "../models/user";
 import auth from "../services/auth";
@@ -23,12 +24,14 @@ interface AmazonVendorPaneProps {
     spacing: boolean;
     setAmazonFlow: (amazonFlow: boolean) => AmazonFlowFlag;
     amazonFlow: boolean;
+    goTo?: (path: string) => void;
 }
 
 interface AmazonVendorPaneState {
     myHeight: number;
     vendorID: string;
     token: string;
+    loading: boolean;
 }
 
 export default class AmazonVendorPane extends React.Component<AmazonVendorPaneProps, AmazonVendorPaneState> {
@@ -44,6 +47,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
             myHeight: 0,
             vendorID: "",
             token: "",
+            loading: false,
         };
         this.onMeasure = this.onMeasure.bind(this);
         this.handleVendorIDChange = this.handleVendorIDChange.bind(this);
@@ -71,8 +75,25 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
     }
 
     async handleGetStarted() {
+        this.setState((prevState) => {
+            return {...prevState, loading: true};
+        });
         await auth.updateCurrentUser({ vendorID: this.state.vendorID });
-        this.props.setAmazonFlow(false);
+        const userDetails = await auth.currentUserDetails();
+        if (userDetails && userDetails.smAPIAccessToken) {
+            const skillsList = await SourceService.createSkillsFromAmazon(this.props.user.userId, this.state.vendorID, userDetails.smAPIAccessToken);
+            const lastSourceId = skillsList[skillsList.length - 1];
+            await this.props.setAmazonFlow(false);
+            this.setState((prevState) => {
+                return {...prevState, loading: false};
+            });
+            this.props.goTo(`/skills/${lastSourceId}/`);
+        } else {
+            this.setState((prevState) => {
+                return {...prevState, loading: false};
+            });
+            this.props.setAmazonFlow(false);
+        }
     }
 
     virtualDeviceLinkAccountURL(): string {
@@ -167,6 +188,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
                         </a>
                     )}
                 </LandingAmazonPageTwoPane>
+                {this.state.loading && <Loader />}
             </Measure>
         );
     }

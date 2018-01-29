@@ -44,7 +44,7 @@ describe("Source List Page", function () {
         jsdom();
 
         it("should render correctly without the amazon flow", function () {
-            const wrapper = mount(<SourceListPage sources={sources} finishLoading={true} amazonFlow={false} user={undefined} setAmazonFlow={undefined} />);
+            const wrapper = mount(<SourceListPage sources={sources} finishLoading={true} amazonFlow={false} user={undefined} setAmazonFlow={undefined} goTo={undefined} />);
 
             const twoPaneWrapper = wrapper.find("TwoPane");
             const leftSide = twoPaneWrapper.find(".source_list_page_left");
@@ -59,7 +59,7 @@ describe("Source List Page", function () {
 
         it("should render correctly with the amazon flow", function () {
 
-            const wrapper = mount(<SourceListPage sources={sources} finishLoading={true} amazonFlow={true} user={undefined} setAmazonFlow={undefined} />);
+            const wrapper = mount(<SourceListPage sources={sources} finishLoading={true} amazonFlow={true} user={undefined} setAmazonFlow={undefined} goTo={undefined} />);
             const twoPaneWrapper = wrapper.find("TwoPane");
             const amazonPaneWrapper = wrapper.find("AmazonVendorPane");
             expect(twoPaneWrapper).to.have.length(0);

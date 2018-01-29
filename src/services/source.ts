@@ -13,6 +13,7 @@ export namespace source {
     const NAME_GENERATING_URL: string = SOURCE_URL + "sourceId";
     const LINK_URL: string = SOURCE_URL + "linkSource";
     const VALIDATE_URL: string = SOURCE_URL + "validateSource";
+    const CREATE_SOURCES_FROM_AMAZON: string = SOURCE_URL + "createSourcesFromAmazon";
     const AUTH_TOKEN_URL: string = SOURCE_URL + "authToken";
     export const LINK_AVS_URL: string = SOURCE_URL + "linkAVS";
 
@@ -234,6 +235,34 @@ export namespace source {
             },
             body: query.json()
         }).then((result: any) => result.text());
+    }
+
+    export async function createSkillsFromAmazon(userId: string, vendorId: string, SMAPIAccessToken: string): Promise<string[]> {
+        const requestBody = JSON.stringify({
+            "user_id": userId,
+            "vendor_id": vendorId,
+            "sm_api_access_token": SMAPIAccessToken,
+        });
+        try {
+            const result: Response = await fetch(CREATE_SOURCES_FROM_AMAZON, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-access-token": process.env.SOURCE_API_ACCESS_TOKEN,
+                },
+                body: requestBody,
+            }).catch(err => {
+                return err;
+            });
+            const sources = await result.json();
+            if (sources.length) {
+                return Promise.resolve(sources);
+            } else {
+                return Promise.reject(new Error(result.statusText));
+            }
+        } catch (err) {
+            return Promise.reject(err);
+        }
     }
 }
 

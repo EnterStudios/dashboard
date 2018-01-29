@@ -2,6 +2,7 @@ import * as moment from "moment";
 import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
+import { replace } from "react-router-redux";
 
 import { Button } from "react-toolbox/lib/button";
 import {AmazonFlowFlag, setAmazonFlow} from "../actions/session";
@@ -24,6 +25,7 @@ export interface SourceListPageProps {
     user: User;
     amazonFlow: boolean;
     setAmazonFlow: (amazonFlow: boolean) => AmazonFlowFlag;
+    goTo: (path: string) => (dispatch: Redux.Dispatch<any>) => void;
 }
 
 interface SourceListPageState {
@@ -44,6 +46,9 @@ function mapDispatchToProps(dispatch: Redux.Dispatch<any>) {
         setAmazonFlow: function (amazonFlow: boolean): AmazonFlowFlag {
             return dispatch(setAmazonFlow(amazonFlow));
         },
+        goTo: function (path: string): any {
+            return dispatch(replace(path));
+        },
     };
 }
 
@@ -54,6 +59,7 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
         finishLoading: false,
         user: undefined,
         setAmazonFlow: undefined,
+        goTo: undefined,
     };
 
     render() {
@@ -75,7 +81,7 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
             </div>
         );
 
-        return this.props.amazonFlow ? (<AmazonVendorPane spacing={true} user={this.props.user} amazonFlow={this.props.amazonFlow} setAmazonFlow={this.props.setAmazonFlow} />) :
+        return this.props.amazonFlow ? (<AmazonVendorPane spacing={true} user={this.props.user} amazonFlow={this.props.amazonFlow} setAmazonFlow={this.props.setAmazonFlow} goTo={this.props.goTo} />) :
             (
                 <TwoPane
                     spacing={true}
