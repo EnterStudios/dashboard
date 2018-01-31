@@ -16,6 +16,7 @@ var buildId = process.env.TRAVIS_BUILD_ID
 var git_hash = childProcess.execSync("git rev-parse HEAD").toString();
 
 var logless_base = "";
+var source_api_access_token = process.env.SOURCE_API_ACCESS_TOKEN;
 var firebase_api_key = "AIzaSyBfHBDy0cVUYnBL4l6_9RYubIdZSC3fG-A";
 var firebase_auth_domain = "dev-bespoken-tools.firebaseapp.com";
 var firebase_database_url = "https://dev-bespoken-tools.firebaseio.com";
@@ -44,6 +45,7 @@ var buildVariables = {
     NODE_ENV: JSON.stringify(node_env),
     LOGLESS_BASE: JSON.stringify(logless_base),
     SOURCE_URL: JSON.stringify(source_url),
+    SOURCE_API_ACCESS_TOKEN: JSON.stringify(source_api_access_token),
     VIRTUAL_DEVICE_URL: JSON.stringify(virtual_device_url),
     PUSHER_APP_KEY: pusher_app_key ? JSON.stringify(pusher_app_key) : JSON.stringify("f633d48c65e61876b8df"),
     GIT_HASH: JSON.stringify(git_hash),
