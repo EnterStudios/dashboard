@@ -2,3 +2,17 @@
     display: flex;
     flex-flow: row wrap;
 }
+
+.button_container {
+    display: inline-block;
+    &.right {
+        text-align: right;
+    }
+    &.left {
+        margin-left: 36px;
+        width: calc(16.6666666667% - 54px);
+        button {
+            width: 100%;
+        }
+    }
+}

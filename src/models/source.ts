@@ -16,6 +16,7 @@ export interface SourceProperties {
     proxy_enabled?: boolean;
     debug_enabled?: boolean;
     customJson?: string;
+    validation_script?: string;
 }
 
 export class Source implements SourceProperties {
@@ -33,6 +34,7 @@ export class Source implements SourceProperties {
     public proxy_enabled?: boolean | undefined;
     public debug_enabled?: boolean | undefined;
     public customJson?: string | undefined;
+    public validation_script?: string | undefined;
 
     constructor(props: SourceProperties) {
 
@@ -48,6 +50,7 @@ export class Source implements SourceProperties {
         this.proxy_enabled = props.proxy_enabled;
         this.debug_enabled = props.debug_enabled;
         if (props.customJson) this.customJson = props.customJson;
+        if (props.validation_script) this.validation_script = props.validation_script;
         if (props.created) {
             if (props.created instanceof Date) {
                 this.created = props.created.toISOString();

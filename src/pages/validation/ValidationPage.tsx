@@ -131,24 +131,28 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
         }
     }
 
-    checkLastScript(source: Source) {
-        if (window && window.localStorage) {
-            const lastScriptRaw = window.localStorage.getItem(this.lastScriptKey(source));
-            if (lastScriptRaw) {
-                this.setState({...this.state, script: decodeURIComponent(lastScriptRaw)});
-            }
+    async checkLastScript(source: Source) {
+        if (source) {
+            const fbSource = await SourceService.getSourceObj(source.id);
+            const script = fbSource && fbSource.validation_script;
+            this.setState(() => ({
+                ...this.state,
+                script,
+            }));
         }
     }
 
     componentDidMount() {
         const self = this;
-        self.checkLastScript(this.props.source);
+        const currentScript = (this.props.source && this.props.source.validation_script) || "";
         auth.currentUserDetails()
             .then((userDetails: UserDetails) => {
                 self.setState({...this.state,
                     token: userDetails.silentEchoToken,
                     vendorID: userDetails.vendorID,
-                    smAPIAccessToken: userDetails.smAPIAccessToken});
+                    smAPIAccessToken: userDetails.smAPIAccessToken,
+                    script: currentScript,
+                });
             });
     }
 
@@ -180,7 +184,9 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
     }
 
     handleScriptChange(value: string) {
-        this.setState({...this.state, script: value});
+        this.setState((prevState: ValidationPageState) => {
+            return {...this.state, script: value};
+        });
     }
 
     handleHelpChange(e: any) {
@@ -321,6 +327,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                     <ValidationParentComponent
                         source={this.props.source}
                         sources={dropdownableSources}
+                        setSource={this.props.setSource}
                         token={this.state.token}
                         vendorID={this.state.vendorID}
                         script={this.state.script}

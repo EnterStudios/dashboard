@@ -198,12 +198,13 @@ export namespace source {
                 proxy_enabled: source.proxy_enabled,
                 monitoring_enabled: source.monitoring_enabled,
                 debug_enabled: source.debug_enabled,
-                customJson: source.customJson,
             };
             sourceToSend.url = source.url || "";
             sourceToSend.lambda_arn = source.lambda_arn || "";
             sourceToSend.aws_access_key_id = source.aws_access_key_id || "";
             sourceToSend.aws_secret_access_key = source.aws_secret_access_key || "";
+            sourceToSend.customJson = source.customJson || "";
+            sourceToSend.validation_script = source.validation_script || "";
             db.ref().child("/sources/" + source.id)
                 .update(sourceToSend,
                 (err: Error): firebase.Promise<any> => {

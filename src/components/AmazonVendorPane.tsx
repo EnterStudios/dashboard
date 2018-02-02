@@ -5,11 +5,11 @@ import { Button } from "react-toolbox/lib/button";
 import Input from "react-toolbox/lib/input";
 import Tooltip from "react-toolbox/lib/tooltip";
 import { AmazonFlowFlag } from "../actions/session";
-import { Loader } from "../components/Loader/Loader";
 import { SET_AMAZON_FLOW } from "../constants";
 import { User, UserDetails } from "../models/user";
 import auth from "../services/auth";
 import SourceService from "../services/source";
+import { Loader } from "./Loader/Loader";
 import { Dimensions, Measure } from "./Measure";
 import LandingAmazonPageTwoPane from "./SourcePageTwoPane";
 
@@ -81,13 +81,22 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
         await auth.updateCurrentUser({ vendorID: this.state.vendorID });
         const userDetails = await auth.currentUserDetails();
         if (userDetails && userDetails.smAPIAccessToken) {
-            const skillsList = await SourceService.createSkillsFromAmazon(this.props.user.userId, this.state.vendorID, userDetails.smAPIAccessToken);
-            const lastSourceId = skillsList[skillsList.length - 1];
-            await this.props.setAmazonFlow(false);
-            this.setState((prevState) => {
-                return {...prevState, loading: false};
-            });
-            this.props.goTo(`/skills/${lastSourceId}/`);
+            try {
+                const skillsList = await SourceService.createSkillsFromAmazon(this.props.user.userId, this.state.vendorID, userDetails.smAPIAccessToken);
+                if (skillsList && skillsList.length) {
+                    const lastSourceId = skillsList[skillsList.length - 1];
+                    await this.props.setAmazonFlow(false);
+                    this.setState((prevState) => {
+                        return {...prevState, loading: false};
+                    });
+                    this.props.goTo(`/skills/${lastSourceId}/`);
+                }
+            } catch (err) {
+                this.setState((prevState) => {
+                    return {...prevState, loading: false};
+                });
+                this.props.setAmazonFlow(false);
+            }
         } else {
             this.setState((prevState) => {
                 return {...prevState, loading: false};

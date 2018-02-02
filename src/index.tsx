@@ -53,9 +53,6 @@ const browserHistory = useRouterHistory(createHistory)({
 // Configure the store
 const store = configureStore(browserHistory, rootReducer, autoRehydrate() as Redux.StoreEnhancer<State.All>);
 persistStore(store, { whitelist: ["session"] });
-store.subscribe(() => {
-    persistStore(store, { whitelist: ["session"] });
-});
 
 // And our history
 const history = syncHistoryWithStore(browserHistory, store);

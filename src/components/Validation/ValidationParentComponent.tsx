@@ -10,6 +10,7 @@ import {Cell, Grid} from "../Grid/index";
 import {Title} from "../Title";
 import EventHandler = __React.EventHandler;
 import Source from "../../models/source";
+import SourceService from "../../services/source";
 import {ValidationResultComponent} from "./ValidationResultComponent";
 import {ValidationTestComponent} from "./ValidationTestComponent";
 
@@ -22,6 +23,7 @@ export interface ValidationParentComponentProps {
     handleRun: (e: any) => void;
     source: Source;
     sources: any[];
+    setSource: (source: Source) => (dispatch: Redux.Dispatch<any>) => void;
     handleSelectedSource: (value: any) => void;
     handleTokenChange: (value: string) => void;
     handleGetTokenClick: EventHandler<any>;
@@ -54,13 +56,26 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
 
     constructor(props: ValidationParentComponentProps) {
         super(props);
-        this.state = {
-        };
 
+        this.handleSaveScript = this.handleSaveScript.bind(this);
+    }
+
+    async handleSaveScript () {
+        try {
+            const sourceToUpdate = {...this.props.source, validation_script: this.props.script};
+            // update source with script on firebase
+            await SourceService.updateSourceObj(sourceToUpdate);
+            const updatedSource = await SourceService.getSourceObj(this.props.source.id);
+            await this.props.setSource(updatedSource);
+        } catch (err) {
+            // TODO: return error to user if needed
+            console.log(err);
+        }
     }
 
     render() {
         const redirectoToVendorIdpage = () => window.open("https://developer.amazon.com/mycid.html", "_blank");
+        const scriptIsNotSaved = this.props && this.props.source && (this.props.script !== this.props.source.validation_script);
         return (
             <form onSubmit={this.props.handleRun}>
                 <Cell col={12} tablet={12}>
@@ -103,7 +118,12 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                 <Cell col={12}>
                     {this.props.showHelp ? this.props.validationHelp : undefined}
                 </Cell>
-                <Cell offset={10} col={2} style={{textAlign: "right"}}>
+                <Cell className={`${validationStyle.button_container} ${validationStyle.left}`} col={2}>
+                    <Button type="button" onClick={this.handleSaveScript} className={buttonStyle.validation_button} primary={true} raised={true} disabled={!scriptIsNotSaved}>
+                        <span>Save script</span>
+                    </Button>
+                </Cell>
+                <Cell className={`${validationStyle.button_container} ${validationStyle.right}`} offset={8} col={2}>
                     <Button className={buttonStyle.validation_button} primary={true} raised={true} disabled={this.props.loadingValidationResults}>
                         {this.props.loadingValidationResults
                             ?

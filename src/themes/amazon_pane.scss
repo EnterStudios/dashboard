@@ -53,6 +53,9 @@
         text-transform: none;
         color: #fff!important;
         background-color: $color-primary!important;
+        &:disabled {
+            background-color: rgba(0,0,0,.12)!important;;
+        }
     }
 
     .info_button {

@@ -84,7 +84,7 @@ export class ValidationTestComponent extends React.Component<ValidationTestCompo
     handleInputChange (value: string, event: any) {
         const index = Number(event.target.name.replace("input", ""));
         this.setState((prevState) => {
-            const {testRows} = prevState;
+            const {testRows} = this.state;
             const updatedRows = testRows.map(row => {
                 if (row.id === index) {
                     return {...row, input: value};
