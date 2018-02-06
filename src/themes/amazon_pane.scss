@@ -92,9 +92,17 @@
     }
 
     .enable_monitoring {
-        color: #E69198;
+        color: #949494;
         text-align: right;
         margin-right: 10px;
+        &.enabled {
+            color: #E69198;
+            button {
+                span {
+                    color: #E69198;
+                }
+            }
+        }
         > div {
             margin-top: 40px;
             text-align: right;
@@ -106,9 +114,12 @@
             }
         }
         button {
+            width: 4rem;
+            top: -10px;
+            left: 5px;
+            padding: 0;
             span {
-                margin-top: -10px;
-                color: #E69198;
+                color: #949494;
                 font-size: 4rem;
             }
         }

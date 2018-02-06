@@ -11,6 +11,7 @@ import {Title} from "../Title";
 import EventHandler = __React.EventHandler;
 import Source from "../../models/source";
 import SourceService from "../../services/source";
+import { Loader } from "../Loader/Loader";
 import {ValidationResultComponent} from "./ValidationResultComponent";
 import {ValidationTestComponent} from "./ValidationTestComponent";
 
@@ -48,6 +49,9 @@ export interface ValidationParentComponentProps {
 }
 
 interface ValidationParentComponentState {
+    enableValidation?: boolean;
+    showMessage?: boolean;
+    loading?: boolean;
 }
 
 const TooltipButton = Tooltip(IconButton);
@@ -58,24 +62,69 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         super(props);
 
         this.handleSaveScript = this.handleSaveScript.bind(this);
+        this.updateSourceObject = this.updateSourceObject.bind(this);
+        this.handleEnableValidation = this.handleEnableValidation.bind(this);
+
+        this.state = {
+            enableValidation: false,
+            showMessage: false,
+            loading: false,
+        };
+    }
+
+    componentWillReceiveProps(nextProps: ValidationParentComponentProps) {
+        if (nextProps.source) {
+            this.setState((prevState) => ({
+                ...prevState,
+                enableValidation: nextProps.source.validation_enabled,
+            }));
+        }
+    }
+
+    async updateSourceObject (source: Source) {
+        this.setState((prevState) => ({
+            ...prevState,
+            loading: true,
+        }));
+        await SourceService.updateSourceObj(source);
+        const updatedSource = await SourceService.getSourceObj(this.props.source.id);
+        await this.props.setSource(updatedSource);
+        this.setState((prevState) => ({
+            showMessage: false,
+            loading: false,
+            enableValidation: !prevState.enableValidation,
+        }));
     }
 
     async handleSaveScript () {
         try {
             const sourceToUpdate = {...this.props.source, validation_script: this.props.script};
             // update source with script on firebase
-            await SourceService.updateSourceObj(sourceToUpdate);
-            const updatedSource = await SourceService.getSourceObj(this.props.source.id);
-            await this.props.setSource(updatedSource);
+            await this.updateSourceObject(sourceToUpdate);
         } catch (err) {
             // TODO: return error to user if needed
             console.log(err);
         }
     }
 
+    async handleEnableValidation () {
+        const scriptIsSaved = this.props && this.props.source && (this.props.script === this.props.source.validation_script);
+        if (scriptIsSaved) {
+            const validation_enabled = !this.state.enableValidation;
+            const sourceToUpdate = {...this.props.source, validation_enabled};
+            await this.updateSourceObject(sourceToUpdate);
+        } else {
+            this.setState( (prevState) => ({
+                ...prevState,
+                showMessage: true,
+            }));
+        }
+    }
+
     render() {
         const redirectoToVendorIdpage = () => window.open("https://developer.amazon.com/mycid.html", "_blank");
         const scriptIsNotSaved = this.props && this.props.source && (this.props.script !== this.props.source.validation_script);
+        const validationEnabledStyle = this.state.enableValidation ? buttonStyle.enabled : "";
         return (
             <form onSubmit={this.props.handleRun}>
                 <Cell col={12} tablet={12}>
@@ -93,12 +142,12 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                         </Cell>
                         <Cell style={{position: "relative"}} col={3} hideTablet={true} hidePhone={true}>
                             <TooltipButton className={buttonStyle.info_button} onClick={redirectoToVendorIdpage} icon={"info"} tooltip={"To retrieve your vendor ID go to https://developer.amazon.com/mycid.html Please make sure it is for the correct organization if you belong to multiple."} />
-                            <div className={buttonStyle.enable_monitoring} >
+                            <div className={`${buttonStyle.enable_monitoring} ${validationEnabledStyle}`} >
                                 <div>
                                     <span>ENABLE</span>
                                     <span>MONITORING</span>
                                 </div>
-                                <IconButton icon={"power_settings_new"} />
+                                <IconButton icon={"power_settings_new"} onClick={this.handleEnableValidation} />
                             </div>
                             <Input theme={inputTheme} className={`sm-input ${inputTheme.validation_input}`} label="Validation Token" value={this.props.token}
                                    onChange={this.props.handleTokenChange} required={true}/>
@@ -131,6 +180,12 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                             : <span>Run Skill ></span>}
                     </Button>
                 </Cell>
+                <Cell col={12}>
+                    {
+                        this.state.showMessage &&
+                        <span className={validationStyle.validation_text}>Your script is not updated with the last changes you've made, make sure you save your script so the monitoring gets the latest changes</span>
+                    }
+                </Cell>
                 <Cell style={{display: "none"}} col={12} className={`${inputTheme.checkbox}`}>
                     <Checkbox
                         theme={checkboxTheme}
@@ -138,6 +193,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                         checked={this.props.monitorEnabled}
                         onChange={this.props.handleMonitorEnabledCheckChange}/>
                 </Cell>
+                {this.state.loading && <Loader />}
             </form>
         );
     }
