@@ -195,9 +195,10 @@ export namespace source {
         return new Promise((resolve, reject) => {
             const sourceToSend: any = {
                 name: source.name,
-                proxy_enabled: source.proxy_enabled,
-                monitoring_enabled: source.monitoring_enabled,
-                debug_enabled: source.debug_enabled,
+                monitoring_enabled: !!source.monitoring_enabled,
+                proxy_enabled: !!source.proxy_enabled,
+                validation_enabled: !!source.validation_enabled,
+                debug_enabled: !!source.debug_enabled,
             };
             sourceToSend.url = source.url || "";
             sourceToSend.lambda_arn = source.lambda_arn || "";
@@ -205,7 +206,6 @@ export namespace source {
             sourceToSend.aws_secret_access_key = source.aws_secret_access_key || "";
             sourceToSend.customJson = source.customJson || "";
             sourceToSend.validation_script = source.validation_script || "";
-            sourceToSend.validation_enabled = source.validation_enabled || "";
             db.ref().child("/sources/" + source.id)
                 .update(sourceToSend,
                 (err: Error): firebase.Promise<any> => {
