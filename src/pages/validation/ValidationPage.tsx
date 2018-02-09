@@ -2,12 +2,12 @@ import * as pusher from "pusher-js";
 import * as React from "react";
 import { connect } from "react-redux";
 import {replace} from "react-router-redux";
-import { Button } from "react-toolbox/lib/button";
 import {Card, CardText, CardTitle} from "react-toolbox/lib/card";
 
 import {getSources, setCurrentSource} from "../../actions/source";
 import {CodeSheet} from "../../components/CodeSheet";
 import { Dimensions } from "../../components/Measure";
+import RightPanel from "../../components/RightPanel";
 import SourcePageTwoPane from "../../components/SourcePageTwoPane";
 import ValidationParentComponent from "../../components/Validation/ValidationParentComponent";
 import Source from "../../models/source";
@@ -17,9 +17,7 @@ import auth from "../../services/auth";
 import SourceService from "../../services/source";
 import { Location } from "../../utils/Location";
 
-const ButtonTheme = require("../../themes/button_theme.scss");
 const inputTheme = require("../../themes/input.scss");
-const VendorPaneStyle = require("../../themes/amazon_pane.scss");
 
 interface ValidationPageState {
     dialogActive: boolean;
@@ -361,29 +359,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                     />
                 )}
                 {(
-                    <a>
-                        <img src="https://bespoken.io/wp-content/uploads/2018/01/Input_Results-AfterToken.jpg" />
-                        <div className={VendorPaneStyle.right_backdrop} />
-                        <div className={VendorPaneStyle.right_content} >
-                            <h3><strong>UNLEASH THE <u>BEAST!</u></strong></h3>
-                            <h4>Integrate your Skill with:</h4>
-                            <h4>Bespoken Tools</h4>
-                            <ul>
-                                <li>- Check your voice application <span>logs</span> and find out errors </li>
-                                <li>- Proactive <span>alerting</span> when there are problems</li>
-                            </ul>
-                            <div>
-                                <p>We value your time: <strong>5 min set-up</strong></p>
-                                <Button
-                                    className={VendorPaneStyle.get_started}
-                                    theme={ButtonTheme}
-                                    raised={true}
-                                    primary={true}
-                                    onClick={this.handleGetStarted}
-                                    label="Get Started - FREE"/>
-                            </div>
-                        </div>
-                    </a>
+                    <RightPanel handleGetStarted={this.handleGetStarted} />
                 )}
             </SourcePageTwoPane>
         );

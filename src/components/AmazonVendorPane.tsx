@@ -12,6 +12,7 @@ import auth from "../services/auth";
 import SourceService from "../services/source";
 import { Loader } from "./Loader/Loader";
 import { Dimensions, Measure } from "./Measure";
+import RightPanel from "./RightPanel";
 import LandingAmazonPageTwoPane from "./SourcePageTwoPane";
 
 const ButtonTheme = require("../themes/button_theme.scss");
@@ -187,29 +188,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
                         </div>
                     )}
                     {(
-                        <a>
-                            <img src="https://bespoken.io/wp-content/uploads/2018/01/Input_Results-AfterToken.jpg" />
-                            <div className={VendorPaneStyle.right_backdrop} />
-                            <div className={VendorPaneStyle.right_content} >
-                                <h3><strong>UNLEASH THE <u>BEAST!</u></strong></h3>
-                                <h4>Integrate your Skill with:</h4>
-                                <h4>Bespoken Tools</h4>
-                                <ul>
-                                    <li>- Check your voice application <span>logs</span> and find out errors </li>
-                                    <li>- Proactive <span>alerting</span> when there are problems</li>
-                                </ul>
-                                <div>
-                                    <p>We value your time: <strong>5 min set-up</strong></p>
-                                    <Button
-                                        className={VendorPaneStyle.get_started}
-                                        theme={ButtonTheme}
-                                        raised={true}
-                                        primary={true}
-                                        onClick={this.handleGetStarted}
-                                        label="Get Started - FREE"/>
-                                </div>
-                            </div>
-                        </a>
+                        <RightPanel handleGetStarted={this.handleGetStarted} />
                     )}
                 </LandingAmazonPageTwoPane>
                 {(this.state.loading || !this.props.isParentLoading) && <Loader />}

@@ -102,7 +102,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                     handleHomeClick={this.props.onHomeClicked}
                     showHome={this.props.displayHomeButton}/>
                 <div className={classNames(TopBarTheme.title)}>
-                    <h4>Voice Apps</h4>
+                    <h4>Bespoken Dashboard</h4>
                     {/*<span>-> Skills</span>
                     <span>-> Actions</span>
                     <span>-> Hybrids</span>*/}

@@ -218,7 +218,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       return [
         {
           icon: "validation",
-          name: "Validate",
+          name: "Validation",
           tooltip: "validation (beta)"
         },
         {
@@ -238,7 +238,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         },
         {
           icon: "integration",
-          name: "Integrations",
+          name: "Integration",
           tooltip: "integration"
         },
         {
@@ -260,11 +260,11 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       this.props.goTo("/skills/" + this.props.currentSource.id + "/stats");
     } else if (button.name === "Check Logs") {
       this.props.goTo("/skills/" + this.props.currentSource.id + "/logs");
-    } else if (button.name === "Integrations") {
+    } else if (button.name === "Integration") {
       this.props.goTo("/skills/" + this.props.currentSource.id + "/integration");
-    } else if (button.name === "Validate") {
+    } else if (button.name === "Validation") {
       this.setState(prevState => {
-        return { ...prevState, isValidationPage: false };
+        return { ...prevState, isValidationPage: true };
       });
       this.props.goTo("/skills/" + this.props.currentSource.id);
     } else if (button.name === "Audio Metrics") {
