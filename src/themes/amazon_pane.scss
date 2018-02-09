@@ -68,6 +68,20 @@
         }
     }
 
+    .vendor_id_tooltip {
+        position: absolute;
+        top: 119px;
+        left: 75%;
+        color: #949494!important;
+        width: 1.3rem;
+        height: 1.3rem;
+        padding: 0;
+        span {
+            line-height: 1.3rem;
+            font-size: 1.3rem;
+        }
+    }
+
     .main_content {
         color: #898989;
         h5 {
@@ -92,14 +106,14 @@
     }
 
     .enable_monitoring {
-        color: #949494;
+        color: #E69198;
         text-align: right;
         margin-right: 10px;
         &.enabled {
-            color: #E69198;
+            color: #00ce7d;
             button {
                 span {
-                    color: #E69198;
+                    color: #00ce7d;
                 }
             }
         }
@@ -119,7 +133,7 @@
             left: 5px;
             padding: 0;
             span {
-                color: #949494;
+                color: #E69198;
                 font-size: 4rem;
             }
         }

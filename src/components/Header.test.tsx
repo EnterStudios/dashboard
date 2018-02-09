@@ -151,8 +151,8 @@ describe("Header", function () {
 
             it("Renders the span with only one source.", function () {
                 const wrapper = shallow(<Title handleItemSelect={handleItemSelect} selectedSourceId={""} sources={sources} />);
-                expect(wrapper.find("span")).to.have.length(1);
-                expect(wrapper.find("span").text()).to.have.equal("name");
+                expect(wrapper.find("div")).to.have.length(2);
+                expect(wrapper.find("div").at(1).text()).to.have.equal("name");
             });
         });
     });

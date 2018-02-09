@@ -24,11 +24,17 @@
     }
 
     .validation_test_row {
+        position: relative;
         > div {
             width: 48%;
             display: inline-block;
             &.second_input {
                 margin-left: 2%;
+            }
+            &:first-child {
+                position: absolute;
+                top: 20px;
+                left: -30px;
             }
         }
     }

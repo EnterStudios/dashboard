@@ -6,6 +6,7 @@ import Input from "react-toolbox/lib/input";
 import Tooltip from "react-toolbox/lib/tooltip";
 import { AmazonFlowFlag } from "../actions/session";
 import { SET_AMAZON_FLOW } from "../constants";
+import Source from "../models/source";
 import { User, UserDetails } from "../models/user";
 import auth from "../services/auth";
 import SourceService from "../services/source";
@@ -25,6 +26,8 @@ interface AmazonVendorPaneProps {
     setAmazonFlow: (amazonFlow: boolean) => AmazonFlowFlag;
     amazonFlow: boolean;
     goTo?: (path: string) => void;
+    sources?: Source[];
+    isParentLoading?: boolean;
 }
 
 interface AmazonVendorPaneState {
@@ -40,6 +43,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
         spacing: false,
         amazonFlow: true,
         setAmazonFlow: () => {type: SET_AMAZON_FLOW, amazonFlow: true},
+        finishLoading: false,
     };
     constructor(props: AmazonVendorPaneProps) {
         super(props);
@@ -64,6 +68,17 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
                     vendorID: userDetails.vendorID,
                 });
             });
+    }
+
+    async componentDidUpdate (prevProps: AmazonVendorPaneProps, prevState: AmazonVendorPaneState) {
+        if (prevProps.sources !== this.props.sources && this.props.sources.length) {
+            const userDetails = await auth.currentUserDetails();
+            const stepCompleted = userDetails.silentEchoToken && userDetails.vendorID;
+            if (stepCompleted) {
+                await this.props.setAmazonFlow(false);
+                this.props.goTo(`/skills/${this.props.sources[0].id}/`);
+            }
+        }
     }
 
     onMeasure(dimensions: Dimensions) {
@@ -197,7 +212,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
                         </a>
                     )}
                 </LandingAmazonPageTwoPane>
-                {this.state.loading && <Loader />}
+                {(this.state.loading || !this.props.isParentLoading) && <Loader />}
             </Measure>
         );
     }

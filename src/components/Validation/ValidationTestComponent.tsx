@@ -32,6 +32,7 @@ export class ValidationTestComponent extends React.Component<ValidationTestCompo
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleExpectedChange = this.handleExpectedChange.bind(this);
         this.handleAddRow = this.handleAddRow.bind(this);
+        this.handleRemoveRow = this.handleRemoveRow.bind(this);
         this.updateTestScript = this.updateTestScript.bind(this);
     }
 
@@ -126,6 +127,17 @@ export class ValidationTestComponent extends React.Component<ValidationTestCompo
         });
     }
 
+    handleRemoveRow (index: any) {
+        this.setState((prevState) => {
+            const {testRows} = prevState;
+            const updatedRows = testRows.filter(row => row.id !== index).map((row, index) => ({...row, id: index}));
+            this.updateTestScript(updatedRows);
+            return {
+                testRows: updatedRows,
+            };
+        });
+    }
+
     render() {
         return (
             <div className={validationStyle.container}>
@@ -151,6 +163,9 @@ export class ValidationTestComponent extends React.Component<ValidationTestCompo
                     this.state.testRows && this.state.testRows.map((row, index) => {
                         return (
                             <div className={validationStyle.validation_test_row} key={`parent_div${index}`}>
+                                <div>
+                                    {index !== 0 && <RemoveButton index={index} handleRemoveRow={this.handleRemoveRow} />}
+                                </div>
                                 <div className={validationStyle.first_input} key={`child_div1${index}`}>
                                     <Input name={`input${index}`} onChange={this.handleInputChange} className={inputTheme.validation_test_component} theme={inputTheme} key={`input${index}`} value={row.input} />
                                 </div>
@@ -164,6 +179,23 @@ export class ValidationTestComponent extends React.Component<ValidationTestCompo
                 <div className={validationStyle.add_button_container}>
                     <IconButton onClick={this.handleAddRow} primary={true} theme={iconButtonTheme} icon={"add"} /><span className={validationStyle.add_row_text}>Add Row</span>
                 </div>
+            </div>
+        );
+    }
+}
+
+export class RemoveButton extends React.Component<any, any> {
+
+    constructor(props: any) {
+        super(props);
+    }
+
+    render() {
+        const { index, handleRemoveRow } = this.props;
+        const removeRow = () => handleRemoveRow(index);
+        return (
+            <div>
+                <IconButton className={iconButtonTheme.remove_row} onClick={removeRow} primary={true} theme={iconButtonTheme} icon={"remove"} />
             </div>
         );
     }

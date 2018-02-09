@@ -159,11 +159,19 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
   }
 
   componentDidUpdate(previousProps: DashboardProps, previousState: DashboardState) {
+    const pathsArray = ["stats", "logs", "integration", "audio", "settings"];
+    const isValidationPage = pathsArray.some(path => {
+        return location.pathname.indexOf(path) < 0;
+    });
     if (showAskingSnackbar && this.state.emailVerificationStatus === "loading" && previousState.emailVerificationStatus === "loading") {
       showAskingSnackbar = false;
       this.setState((prevState, prevProps) => ({
-        ...this.state, emailVerificationStatus: "asking"
+        ...this.state, isValidationPage, emailVerificationStatus: "asking",
       }));
+    } else if (previousState.isValidationPage !== isValidationPage) {
+        this.setState((prevState, prevProps) => ({
+            ...this.state, isValidationPage,
+        }));
     }
   }
 

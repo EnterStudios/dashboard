@@ -23,4 +23,14 @@ button.toggle {
         line-height: 2.8rem!important;
         color: #fff;
     }
+    &.remove_row {
+        background-color: $color-error;
+        width: 1.8rem;
+        height: 1.8rem;
+        line-height: 1.8rem;
+        span {
+            line-height: 1.95rem!important;
+            text-indent: -1px;
+        }
+    }
 }

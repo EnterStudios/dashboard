@@ -141,7 +141,8 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                             }
                         </Cell>
                         <Cell style={{position: "relative"}} col={3} hideTablet={true} hidePhone={true}>
-                            <TooltipButton className={buttonStyle.info_button} onClick={redirectoToVendorIdpage} icon={"info"} tooltip={"To retrieve your vendor ID go to https://developer.amazon.com/mycid.html Please make sure it is for the correct organization if you belong to multiple."} />
+                            <TooltipButton className={buttonStyle.info_button} icon={"info"} tooltip={"Enable notifications and get notified immediately whenever there are problems"} />
+                            {this.props && !this.props.vendorID && <TooltipButton className={buttonStyle.vendor_id_tooltip} onClick={redirectoToVendorIdpage} icon={"info"} tooltip={"To retrieve your vendor ID go to https://developer.amazon.com/mycid.html Please make sure it is for the correct organization if you belong to multiple."} />}
                             <div className={`${buttonStyle.enable_monitoring} ${validationEnabledStyle}`} >
                                 <div>
                                     <span>ENABLE</span>
@@ -149,8 +150,16 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                                 </div>
                                 <IconButton icon={"power_settings_new"} onClick={this.handleEnableValidation} />
                             </div>
-                            <Input theme={inputTheme} className={`sm-input ${inputTheme.validation_input}`} label="Validation Token" value={this.props.token}
-                                   onChange={this.props.handleTokenChange} required={true}/>
+                            {
+                                (this.props && this.props.token &&
+                                    (
+                                        <Input theme={inputTheme} className={`sm-input ${inputTheme.validation_input}`}
+                                               label="Validation Token" value={this.props.token}
+                                               onChange={this.props.handleTokenChange} required={true}/>
+                                    )
+                                ) ||
+                                <a className={`${validationStyle.get_token}`} href="#" onClick={this.props.handleGetTokenClick}>Get validation token</a>
+                            }
                             <Snackbar className="sm-snackbar" action="Dismiss" type="cancel"
                                       active={this.props.showSnackbar}
                                       label={this.props.snackbarLabel}

@@ -103,9 +103,9 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                     showHome={this.props.displayHomeButton}/>
                 <div className={classNames(TopBarTheme.title)}>
                     <h4>Voice Apps</h4>
-                    <span>-> Skills</span>
+                    {/*<span>-> Skills</span>
                     <span>-> Actions</span>
-                    <span>-> Hybrids</span>
+                    <span>-> Hybrids</span>*/}
                 </div>
                 <ButtonMenu className={MenuButtonTheme.help_menu_button} raised={true} position="topRight"
                             label="Need Help?">
@@ -142,7 +142,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                     <a onClick={this.props.onHomeClicked} className={classNames(TopBarTheme.back_to_site_link)}>{"<< Back to the site"}</a>
                 }
                 {
-                    this.props.isValidationPage &&
+                    !this.props.isValidationPage &&
                     (
                         <Title
                             sources={this.props.sources}

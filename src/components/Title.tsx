@@ -92,8 +92,11 @@ export class Title extends React.Component<TitleProps, any> {
     if (this.props.sources.length > 0) {
       if (this.props.sources.length === 1) {
         title = (
-            <div>
-                <span className="mdl-layout-title">{this.props.sources[0].label}</span>
+            <div className={theme.title_container}>
+                <img src={"https://bespoken.io/wp-content/uploads/2018/01/amazon-alexa-logo-D1BE24A213-seeklogo.com_.png"} alt={"alexa icon"} />
+                <div className={theme.soure_name_placeholder}>{this.props.sources[0].label}</div>
+                <span>ALEXA SKILL</span>
+                {/*<span>Voice App Name</span>*/}
             </div>
         );
       } else {
@@ -111,7 +114,7 @@ export class Title extends React.Component<TitleProps, any> {
                     inputProps={inputProps}
                     theme={theme}/>
                 <span>ALEXA SKILL</span>
-                <span>Voice App Name</span>
+                {/*<span>Voice App Name</span>*/}
             </div>
         );
       }

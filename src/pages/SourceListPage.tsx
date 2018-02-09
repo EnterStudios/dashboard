@@ -81,7 +81,7 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
             </div>
         );
 
-        return this.props.amazonFlow ? (<AmazonVendorPane spacing={true} user={this.props.user} amazonFlow={this.props.amazonFlow} setAmazonFlow={this.props.setAmazonFlow} goTo={this.props.goTo} />) :
+        return this.props.amazonFlow ? (<AmazonVendorPane spacing={true} isParentLoading={this.props.finishLoading} sources={this.props.sources} user={this.props.user} amazonFlow={this.props.amazonFlow} setAmazonFlow={this.props.setAmazonFlow} goTo={this.props.goTo} />) :
             (
                 <TwoPane
                     spacing={true}

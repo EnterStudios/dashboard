@@ -117,7 +117,7 @@ $label-filled-padding-left: 0;
     padding: 0!important;
     width: 50%;
     margin-left: 28%;
-    &::after {
+    /*&::after {
         content: '';
         position: absolute;
         left: calc(100% + 5px);
@@ -128,7 +128,7 @@ $label-filled-padding-left: 0;
         border-right: 10px solid transparent;
         border-top: 10px solid #9A9A9A;
         clear: both;
-    }
+    }*/
     .inputElement {
         color: #9D9D9D!important;
         font-size: 1.2em!important;
