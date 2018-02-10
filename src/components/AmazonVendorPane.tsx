@@ -28,6 +28,7 @@ interface AmazonVendorPaneProps {
     amazonFlow: boolean;
     goTo?: (path: string) => void;
     sources?: Source[];
+    getSources: () => Promise<Source[]>;
     isParentLoading?: boolean;
 }
 
@@ -63,6 +64,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
         const self = this;
         auth.currentUserDetails()
             .then((userDetails: UserDetails) => {
+                userDetails &&
                 self.setState({
                     ...this.state,
                     token: userDetails.silentEchoToken,
@@ -73,10 +75,16 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
 
     async componentDidUpdate (prevProps: AmazonVendorPaneProps, prevState: AmazonVendorPaneState) {
         if (prevProps.sources !== this.props.sources && this.props.sources.length) {
+            this.setState((prevState) => {
+                return {...prevState, loading: true};
+            });
             const userDetails = await auth.currentUserDetails();
-            const stepCompleted = userDetails.silentEchoToken && userDetails.vendorID;
+            const stepCompleted = userDetails && userDetails.silentEchoToken && userDetails.vendorID;
             if (stepCompleted) {
                 await this.props.setAmazonFlow(false);
+                this.setState((prevState) => {
+                    return {...prevState, loading: true};
+                });
                 this.props.goTo(`/skills/${this.props.sources[0].id}/`);
             }
         }
@@ -99,6 +107,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
         if (userDetails && userDetails.smAPIAccessToken) {
             try {
                 const skillsList = await SourceService.createSkillsFromAmazon(this.props.user.userId, this.state.vendorID, userDetails.smAPIAccessToken);
+                await this.props.getSources();
                 if (skillsList && skillsList.length) {
                     const lastSourceId = skillsList[skillsList.length - 1];
                     await this.props.setAmazonFlow(false);

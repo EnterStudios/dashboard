@@ -207,7 +207,10 @@ namespace auth {
         return remoteservice.defaultService().database().ref().child("/users/" + currentUser.uid).once("value")
             .then((retVal) => {
                 const data = retVal.val();
-                return new UserDetails(data.silentEchoToken, data.smAPIAccessToken, data.vendorID);
+                if (data) {
+                    return new UserDetails(data.silentEchoToken, data.smAPIAccessToken, data.vendorID);
+                }
+                return new UserDetails(undefined, undefined, undefined);
             });
     }
 }

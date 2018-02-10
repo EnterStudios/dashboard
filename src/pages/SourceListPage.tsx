@@ -6,6 +6,7 @@ import { replace } from "react-router-redux";
 
 import { Button } from "react-toolbox/lib/button";
 import {AmazonFlowFlag, setAmazonFlow} from "../actions/session";
+import {getSources} from "../actions/source";
 import AmazonVendorPane from "../components/AmazonVendorPane";
 import List from "../components/List/List";
 import ListItem from "../components/List/ListItem";
@@ -21,6 +22,7 @@ const ButtonTheme = require("../themes/button_theme.scss");
 
 export interface SourceListPageProps {
     sources: Source[];
+    getSources: () => Promise<Source[]>;
     finishLoading: boolean;
     user: User;
     amazonFlow: boolean;
@@ -49,12 +51,16 @@ function mapDispatchToProps(dispatch: Redux.Dispatch<any>) {
         goTo: function (path: string): any {
             return dispatch(replace(path));
         },
+        getSources: function (): Promise<Source[]> {
+            return dispatch(getSources());
+        },
     };
 }
 
 export class SourceListPage extends React.Component<SourceListPageProps, SourceListPageState> {
     static defaultProps: SourceListPageProps = {
         sources: [],
+        getSources: undefined,
         amazonFlow: false,
         finishLoading: false,
         user: undefined,
@@ -81,7 +87,7 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
             </div>
         );
 
-        return this.props.amazonFlow ? (<AmazonVendorPane spacing={true} isParentLoading={this.props.finishLoading} sources={this.props.sources} user={this.props.user} amazonFlow={this.props.amazonFlow} setAmazonFlow={this.props.setAmazonFlow} goTo={this.props.goTo} />) :
+        return this.props.amazonFlow ? (<AmazonVendorPane spacing={true} isParentLoading={this.props.finishLoading} sources={this.props.sources} getSources={this.props.getSources} user={this.props.user} amazonFlow={this.props.amazonFlow} setAmazonFlow={this.props.setAmazonFlow} goTo={this.props.goTo} />) :
             (
                 <TwoPane
                     spacing={true}
