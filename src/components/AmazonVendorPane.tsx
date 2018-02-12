@@ -100,7 +100,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
 
     async handleGetStarted() {
         this.setState((prevState) => {
-            return {...prevState, loading: true};
+            return { ...prevState, loading: true };
         });
         await auth.updateCurrentUser({ vendorID: this.state.vendorID });
         const userDetails = await auth.currentUserDetails();
@@ -112,19 +112,19 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
                     const lastSourceId = skillsList[skillsList.length - 1];
                     await this.props.setAmazonFlow(false);
                     this.setState((prevState) => {
-                        return {...prevState, loading: false};
+                        return { ...prevState, loading: false };
                     });
                     this.props.goTo(`/skills/${lastSourceId}/`);
                 }
             } catch (err) {
                 this.setState((prevState) => {
-                    return {...prevState, loading: false};
+                    return { ...prevState, loading: false };
                 });
                 this.props.setAmazonFlow(false);
             }
         } else {
             this.setState((prevState) => {
-                return {...prevState, loading: false};
+                return { ...prevState, loading: false };
             });
             this.props.setAmazonFlow(false);
         }
@@ -154,7 +154,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
                                 information before we can get you started</h5>
                             <h4>
                                 Validation Token
-                                <TooltipButton className={VendorPaneStyle.info_button} icon={"info"} tooltip={"In order to get the most out of our validation features, you will be redirected to the amazon developer page and asked to give us access to your skills information."} theme={TooltipTheme}/>
+                                <TooltipButton className={VendorPaneStyle.info_button} icon={"info"} tooltip={"In order to get the most out of our validation features, you will be redirected to the amazon developer page and asked to give us access to your skills information."} theme={TooltipTheme} />
                             </h4>
                             <span>
                                 <Input
@@ -171,7 +171,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
                             </small>
                             <h4>
                                 Vendor ID
-                                <TooltipButton className={VendorPaneStyle.info_button} icon={"info"} tooltip={"To retrieve your vendor ID go to https://developer.amazon.com/mycid.html Please, make sure it is for the correct organization if you belong to more than one."} theme={TooltipTheme}/>
+                                <TooltipButton className={VendorPaneStyle.info_button} icon={"info"} tooltip={"To retrieve your vendor ID go to https://developer.amazon.com/mycid.html Please, make sure it is for the correct organization if you belong to more than one."} theme={TooltipTheme} />
                             </h4>
                             <span>
                                 <Input
@@ -186,14 +186,17 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
                             <small>To retrieve your vendor ID, <a href="https://developer.amazon.com/mycid.html"
                                 target="_blank">click here</a>
                             </small>
-                            <Button
+                            <span><Button
                                 className={VendorPaneStyle.vendor_button}
                                 theme={ButtonTheme}
                                 raised={true}
                                 primary={true}
                                 onClick={this.handleGetStarted}
                                 label="Get started"
-                                disabled={!this.state.token || !this.state.vendorID} />
+                                disabled={!this.state.token || !this.state.vendorID} /></span>
+                            <small style={{ paddingTop: "0.5rem" }}>
+                                ... or <a onClick={this.handleGetStarted} href="#">skip</a>
+                            </small>
                         </div>
                     )}
                     {(
