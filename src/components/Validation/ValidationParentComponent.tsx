@@ -129,7 +129,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
             <form onSubmit={this.props.handleRun}>
                 <Cell col={12} tablet={12}>
                     <Grid>
-                        <Cell col={9} tablet={8} phone={6}>
+                        <Cell col={7} tablet={8} phone={6}>
                             {
                                 this.props && this.props.source && this.props.source.id &&
                                 (
@@ -140,9 +140,9 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                                 )
                             }
                         </Cell>
-                        <Cell style={{position: "relative"}} col={3} hideTablet={true} hidePhone={true}>
-                            <TooltipButton className={buttonStyle.info_button} icon={"info"} tooltip={"Enable notifications and get notified immediately whenever there are problems"} />
-                            {this.props && !this.props.vendorID && <TooltipButton className={buttonStyle.vendor_id_tooltip} onClick={redirectoToVendorIdpage} icon={"info"} tooltip={"To retrieve your vendor ID go to https://developer.amazon.com/mycid.html Please make sure it is for the correct organization if you belong to multiple."} />}
+                        <Cell style={{position: "relative"}} col={5} hideTablet={true} hidePhone={true}>
+                            <TooltipButton className={buttonStyle.info_button} icon={"info"} tooltip={"Enable Monitoring and get notified instantly when there is a problem with your voice app."} />
+                            {this.props && !this.props.vendorID && <TooltipButton className={buttonStyle.vendor_id_tooltip} onClick={redirectoToVendorIdpage} icon={"info"} tooltip={"Enter the vendor ID from your Amazon account at developer.amazon.com/mycid.html."} />}
                             <div className={`${buttonStyle.enable_monitoring} ${validationEnabledStyle}`} >
                                 <div>
                                     <span>ENABLE</span>
@@ -150,22 +150,29 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                                 </div>
                                 <IconButton icon={"power_settings_new"} onClick={this.handleEnableValidation} />
                             </div>
-                            {
-                                (this.props && this.props.token &&
-                                    (
-                                        <Input theme={inputTheme} className={`sm-input ${inputTheme.validation_input}`}
-                                               label="Validation Token" value={this.props.token}
-                                               onChange={this.props.handleTokenChange} required={true}/>
-                                    )
-                                ) ||
-                                <a className={`${validationStyle.get_token}`} href="#" onClick={this.props.handleGetTokenClick}>Get validation token</a>
-                            }
+                            <div className={validationStyle.token_container}>
+                                <span>Validation Token:</span>
+                                {
+                                    (this.props && this.props.token &&
+                                        (
+                                            <Input theme={inputTheme}
+                                                   className={`sm-input ${inputTheme.validation_input}`}
+                                                   label="Validation Token" value={this.props.token}
+                                                   onChange={this.props.handleTokenChange} required={true}/>
+                                        )
+                                    ) ||
+                                    <a className={`${validationStyle.get_token}`} href="#" onClick={this.props.handleGetTokenClick}>Get validation token</a>
+                                }
+                            </div>
                             <Snackbar className="sm-snackbar" action="Dismiss" type="cancel"
                                       active={this.props.showSnackbar}
                                       label={this.props.snackbarLabel}
                                       onClick={this.props.handleSnackbarClick}/>
-                            <Input theme={inputTheme} className={`sm-input ${inputTheme.validation_input} ${inputTheme.vendor_input}`} label="Vendor ID" value={this.props.vendorID}
-                                   onChange={this.props.handleVendorIDChange} required={true}/>
+                            <div className={validationStyle.token_container}>
+                                <span>Vendor ID:</span>
+                                <Input theme={inputTheme} className={`sm-input ${inputTheme.validation_input} ${inputTheme.vendor_input}`} label="Vendor ID" value={this.props.vendorID}
+                                       onChange={this.props.handleVendorIDChange} required={true}/>
+                            </div>
                         </Cell>
                     </Grid>
                 </Cell>

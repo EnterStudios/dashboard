@@ -182,7 +182,6 @@ class CodeForm extends React.Component<CodeFormProps, CodeFormState> {
         super(props);
 
         this.goToLogs = this.goToLogs.bind(this);
-        this.goToSettings = this.goToSettings.bind(this);
 
         this.state = {
         };
@@ -190,10 +189,6 @@ class CodeForm extends React.Component<CodeFormProps, CodeFormState> {
 
     goToLogs() {
         this.props.onGoToLogs(this.props.source);
-    }
-
-    goToSettings() {
-        this.props.onGoToSettings(this.props.source);
     }
 
     render(): JSX.Element {
@@ -207,8 +202,7 @@ class CodeForm extends React.Component<CodeFormProps, CodeFormState> {
                         (
                             <Grid>
                                 <Cell col={12}>
-                                    <Button accent={true} raised={true} onClick={this.goToLogs}>Check for Logs</Button>
-                                    <Button style={{marginLeft: "30px"}} accent={true} raised={true} onClick={this.goToSettings}>Enable Monitoring</Button>
+                                    <Button accent={true} raised={true} onClick={this.goToLogs}>Continue</Button>
                                 </Cell>
                                 <Cell col={12}>
                                     <Button raised={true} onClick={onGoBack}>Create Another</Button>

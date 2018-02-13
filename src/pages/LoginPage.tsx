@@ -84,7 +84,11 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
         try {
             await this.props.login(email, pass);
         } catch (err) {
-            this.setState(() => ({ ...this.state, error: err.message }));
+            if (!email || !pass) {
+                this.setState(() => ({ ...this.state, error: "Please enter missing information." }));
+            } else {
+                this.setState(() => ({ ...this.state, error: err.message }));
+            }
         }
     }
 

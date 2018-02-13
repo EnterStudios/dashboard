@@ -44,6 +44,7 @@ export interface HeaderProps {
   className?: string;
   isValidationPage?: boolean;
   amazonFlow?: boolean;
+  window?: any;
 }
 
 export interface HeaderState {
@@ -94,6 +95,8 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
   }
 
   render() {
+    const {pathname} = (this.props.window && this.props.window.location) || {pathname: ""};
+    const hideBarOnLandingPage = pathname === "/dashboard/skills" || pathname === "/dashboard/skills/" ? TopBarTheme.hide : "";
     return (
         <header className={this.classes()}>
             <div className={classNames("mdl-layout__header-row", TopBarTheme.gray_top_bar)} />
@@ -136,7 +139,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                     <IconButton className={TabMenuTheme.settings_button} onClick={this.handleSettingsPageClick} icon={"settings"} />
                 }
             </div>
-            <div className={classNames("mdl-layout__header-row", TopBarTheme.container, TopBarTheme.bg_white)}>
+            <div className={classNames("mdl-layout__header-row", TopBarTheme.container, TopBarTheme.bg_white, hideBarOnLandingPage)}>
                 {
                     this.state && this.state.amazonFlow &&
                     <a onClick={this.props.onHomeClicked} className={classNames(TopBarTheme.back_to_site_link)}>{"<< Back to the site"}</a>

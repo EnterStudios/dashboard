@@ -1,5 +1,5 @@
 .container {
-    width: calc(56% - 36px);
+    width: calc(66.66666666666% - 36px);
     margin-left: 36px;
 
     .title {
@@ -19,6 +19,8 @@
             &.secondary_text {
                 font-size: 1.2rem;
                 font-weight: normal;
+                white-space: nowrap;
+                word-break: break-all;
             }
         }
     }

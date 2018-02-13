@@ -17,6 +17,25 @@
     }
 }
 
+.token_container {
+    width: 100%;
+    text-align: right;
+    & a {
+        display: block;
+        margin-left: auto;
+    }
+    & > div {
+        margin-left: auto;
+        width: 100%;
+        & > input {
+            text-align: right;
+        }
+        & > label {
+            right: 3px;
+        }
+    }
+}
+
 .validation_text {
     display: inline-block;
     margin: 0 28px 20px 28px;
