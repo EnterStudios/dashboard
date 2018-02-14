@@ -8,6 +8,7 @@ var childProcess = require("child_process");
 var node_env = process.env.NODE_ENV;
 var source_url = process.env.SOURCE_URL;
 var virtual_device_url = process.env.VIRTUAL_DEVICE_URL;
+var monitor_api_url = process.env.MONITOR_API_URL;
 var pusher_app_key = process.env.PUSHER_APP_KEY;
 var projectName = "dashboard";
 var version = package.version;
@@ -34,6 +35,7 @@ if (travis_tag) {
         firebase_database_url = "https://bespoken-tools.firebaseio.com";
         firebase_storage_bucket = "bespoken-tools.appspot.com";
         firebase_messaging_sender_id = "629657216103";
+        monitor_api_url = "https://monitor-api.bespoken.tools";
     }
 }
 
@@ -47,6 +49,7 @@ var buildVariables = {
     SOURCE_URL: JSON.stringify(source_url),
     SOURCE_API_ACCESS_TOKEN: JSON.stringify(source_api_access_token),
     VIRTUAL_DEVICE_URL: JSON.stringify(virtual_device_url),
+    MONITOR_API_URL: JSON.stringify(monitor_api_url),
     PUSHER_APP_KEY: pusher_app_key ? JSON.stringify(pusher_app_key) : JSON.stringify("f633d48c65e61876b8df"),
     GIT_HASH: JSON.stringify(git_hash),
     FIREBASE_API_KEY: JSON.stringify(firebase_api_key),
