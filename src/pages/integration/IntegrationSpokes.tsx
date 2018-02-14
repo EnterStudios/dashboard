@@ -195,7 +195,7 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
                 message: "Saving..."
             }
         } as IntegrationSpokesState);
-        const {source: {secretKey, id, created, members}, user, onSpokesSaved} = this.props;
+        const {source: {secretKey, id, created, members, validation_enabled, validation_script}, user, onSpokesSaved} = this.props;
         const {proxy, showPage, credentialsChanged, url} = this.state;
         const source: Source = {id, name: this.state.sourceName, secretKey, created, members};
         source.debug_enabled = !!this.state.proxy && !!this.state.proxying;
@@ -216,7 +216,7 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
         const resource = getResource({...this.state, awsSecretKey: source.aws_secret_access_key, awsAccessKey: source.aws_access_key_id} as IntegrationSpokesState);
         const spokeSaved = await SpokesService.savePipe(user, source, resource, proxy);
         if (spokeSaved && onSpokesSaved) onSpokesSaved();
-        this.resolve(SourceService.updateSourceObj(source)
+        this.resolve(SourceService.updateSourceObj({...source, validation_enabled, validation_script})
             .then(() => {
                 // this is to update parent route status so the graph wont need a page refresh to show/hide correctly
                 this.props.source.monitoring_enabled = !!this.state.monitor;
