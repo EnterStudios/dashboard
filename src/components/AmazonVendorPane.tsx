@@ -44,7 +44,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
         user: undefined,
         spacing: false,
         amazonFlow: true,
-        setAmazonFlow: () => {type: SET_AMAZON_FLOW, amazonFlow: true},
+        setAmazonFlow: () => { type: SET_AMAZON_FLOW, amazonFlow: true },
         finishLoading: false,
     };
     constructor(props: AmazonVendorPaneProps) {
@@ -58,6 +58,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
         this.onMeasure = this.onMeasure.bind(this);
         this.handleVendorIDChange = this.handleVendorIDChange.bind(this);
         this.handleGetStarted = this.handleGetStarted.bind(this);
+        this.handleSkip = this.handleSkip.bind(this);
     }
 
     componentDidMount() {
@@ -65,25 +66,25 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
         auth.currentUserDetails()
             .then((userDetails: UserDetails) => {
                 userDetails &&
-                self.setState({
-                    ...this.state,
-                    token: userDetails.silentEchoToken,
-                    vendorID: userDetails.vendorID,
-                });
+                    self.setState({
+                        ...this.state,
+                        token: userDetails.silentEchoToken ? userDetails.silentEchoToken : "",
+                        vendorID: userDetails.vendorID ? userDetails.vendorID : "",
+                    });
             });
     }
 
-    async componentDidUpdate (prevProps: AmazonVendorPaneProps, prevState: AmazonVendorPaneState) {
+    async componentDidUpdate(prevProps: AmazonVendorPaneProps, prevState: AmazonVendorPaneState) {
         if (prevProps.sources !== this.props.sources && this.props.sources.length) {
             this.setState((prevState) => {
-                return {...prevState, loading: true};
+                return { ...prevState, loading: true };
             });
             const userDetails = await auth.currentUserDetails();
             const stepCompleted = userDetails && userDetails.silentEchoToken && userDetails.vendorID;
             if (stepCompleted) {
                 await this.props.setAmazonFlow(false);
                 this.setState((prevState) => {
-                    return {...prevState, loading: true};
+                    return { ...prevState, loading: true };
                 });
                 this.props.goTo(`/skills/${this.props.sources[0].id}/`);
             }
@@ -96,6 +97,16 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
 
     handleVendorIDChange(value: string) {
         this.setState({ ...this.state, vendorID: value });
+    }
+
+    handleSkip() {
+        this.setState((prevState) => {
+            return { ...prevState, loading: true };
+        });
+        this.props.setAmazonFlow(false);
+        this.setState((prevState) => {
+            return { ...prevState, loading: false };
+        });
     }
 
     async handleGetStarted() {
@@ -123,10 +134,10 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
                 this.props.setAmazonFlow(false);
             }
         } else {
+            this.props.setAmazonFlow(false);
             this.setState((prevState) => {
                 return { ...prevState, loading: false };
             });
-            this.props.setAmazonFlow(false);
         }
     }
 
@@ -195,7 +206,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
                                 label="Get started"
                                 disabled={!this.state.token || !this.state.vendorID} /></span>
                             <small style={{ paddingTop: "0.5rem" }}>
-                                ... or <a onClick={this.handleGetStarted} href="#">skip</a>
+                                ... or <a onClick={this.handleSkip} href="#">skip</a>
                             </small>
                         </div>
                     )}
