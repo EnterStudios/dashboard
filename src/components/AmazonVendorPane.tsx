@@ -61,28 +61,22 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
         this.handleSkip = this.handleSkip.bind(this);
     }
 
-    componentDidMount() {
-        const self = this;
-        auth.currentUserDetails()
-            .then((userDetails: UserDetails) => {
-                userDetails &&
-                    self.setState({
-                        ...this.state,
-                        token: userDetails.silentEchoToken ? userDetails.silentEchoToken : "",
-                        vendorID: userDetails.vendorID ? userDetails.vendorID : "",
-                    });
+    async componentDidMount() {
+        const userDetails: UserDetails = await auth.currentUserDetails();
+        if (userDetails) {
+            this.setState({
+                ...this.state,
+                token: userDetails.silentEchoToken ? userDetails.silentEchoToken : "",
+                vendorID: userDetails.vendorID ? userDetails.vendorID : "",
             });
+        }
     }
 
-    async componentDidUpdate(prevProps: AmazonVendorPaneProps, prevState: AmazonVendorPaneState) {
+    componentDidUpdate(prevProps: AmazonVendorPaneProps, prevState: AmazonVendorPaneState) {
         if (prevProps.sources !== this.props.sources && this.props.sources.length) {
-            this.setState((prevState) => {
-                return { ...prevState, loading: true };
-            });
-            const userDetails = await auth.currentUserDetails();
-            const stepCompleted = userDetails && userDetails.silentEchoToken && userDetails.vendorID;
-            if (stepCompleted) {
-                await this.props.setAmazonFlow(false);
+            const stepsCompleted = this.state.token && this.state.vendorID;
+            if (stepsCompleted) {
+                this.props.setAmazonFlow(false);
                 this.setState((prevState) => {
                     return { ...prevState, loading: true };
                 });
@@ -128,6 +122,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
                     this.props.goTo(`/skills/${lastSourceId}/`);
                 }
             } catch (err) {
+                await this.props.getSources();
                 this.setState((prevState) => {
                     return { ...prevState, loading: false };
                 });
