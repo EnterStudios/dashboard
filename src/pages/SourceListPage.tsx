@@ -3,22 +3,18 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 import { replace } from "react-router-redux";
-
-import { Button } from "react-toolbox/lib/button";
 import {AmazonFlowFlag, setAmazonFlow} from "../actions/session";
 import {getSources} from "../actions/source";
 import AmazonVendorPane from "../components/AmazonVendorPane";
 import List from "../components/List/List";
 import ListItem from "../components/List/ListItem";
+import SourceSelector from "../components/SourceSelector/SourceSelectorParentComponent";
 import TwoPane from "../components/TwoPane";
 import Source from "../models/source";
 import { User } from "../models/user";
 import { State } from "../reducers";
-import ArrayUtils from "../utils/array";
 
 import WelcomePage from "./WelcomePage";
-
-const ButtonTheme = require("../themes/button_theme.scss");
 
 export interface SourceListPageProps {
     sources: Source[];
@@ -69,17 +65,7 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
     };
 
     render() {
-        let leftSide = (
-            <div className="source_list_page_left" style={{ position: "relative", height: "100%" }}>
-                {
-                    this.props.finishLoading &&
-                    <SourceList sources={ArrayUtils.sortArrayByProperty(this.props.sources, "name")} />
-                }
-                <Link to="/skills/new" style={{ position: "absolute", bottom: "5%", right: "5%" }}>
-                    <Button theme={ButtonTheme} icon="add" accent mini floating />
-                </Link>
-            </div>
-        );
+        const leftSide = <SourceSelector goTo={this.props.goTo} sources={this.props.sources} />;
 
         let rightSide = (
             <div className="source_list_page_right">
@@ -90,8 +76,9 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
         return this.props.amazonFlow ? (<AmazonVendorPane spacing={true} isParentLoading={this.props.finishLoading} sources={this.props.sources} getSources={this.props.getSources} user={this.props.user} amazonFlow={this.props.amazonFlow} setAmazonFlow={this.props.setAmazonFlow} goTo={this.props.goTo} />) :
             (
                 <TwoPane
+                    gridClass={"source-list-grid"}
                     spacing={true}
-                    leftStyle={{ paddingLeft: "10px", paddingRight: "5px" }}
+                    leftStyle={{ padding: "30px 15px 0px 25px", backgroundColor: "#EEF2F5" }}
                     rightStyle={{ paddingRight: "10px", paddingLeft: "5px" }}>
                     {leftSide}
                     {rightSide}
@@ -112,7 +99,7 @@ interface SourceListProps {
 interface SourceListState {
 }
 
-class SourceList extends React.Component<SourceListProps, SourceListState> {
+export class SourceList extends React.Component<SourceListProps, SourceListState> {
 
     constructor(props: SourceListProps) {
         super(props);

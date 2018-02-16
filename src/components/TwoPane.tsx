@@ -7,6 +7,7 @@ export interface TwoPaneProps {
     spacing: boolean;
     leftStyle?: React.CSSProperties;
     rightStyle?: React.CSSProperties;
+    gridClass?: string;
 }
 
 interface TwoPaneState {
@@ -48,6 +49,7 @@ export class TwoPane extends React.Component<TwoPaneProps, TwoPaneState> {
             <Measure
                 onMeasure={this.onMeasure} >
                 <Grid
+                    className={this.props.gridClass}
                     noSpacing={spacing}>
                     <Cell col={6} phone={4} tablet={4} style={leftStyle}>
                         {leftObj}

@@ -11,9 +11,7 @@ import { dummySources } from "../utils/test";
 import { SourceListPage } from "./SourceListPage";
 import WelcomePage from "./WelcomePage";
 
-import { Button } from "react-toolbox/lib/button";
-
-import List from "../components/List/List";
+import SourceSelector from "../components/SourceSelector/SourceSelectorParentComponent";
 
 let expect = chai.expect;
 
@@ -47,12 +45,11 @@ describe("Source List Page", function () {
             const wrapper = mount(<SourceListPage sources={sources} finishLoading={true} amazonFlow={false} user={undefined} setAmazonFlow={undefined} goTo={undefined} getSources={undefined} />);
 
             const twoPaneWrapper = wrapper.find("TwoPane");
-            const leftSide = twoPaneWrapper.find(".source_list_page_left");
+            const leftSide = twoPaneWrapper.find(SourceSelector);
             const rightSide = twoPaneWrapper.find(".source_list_page_right");
             const amazonPaneWrapper = wrapper.find("AmazonVendorPane");
-
-            expect(leftSide.find(List)).to.have.prop("length", 4);
-            expect(leftSide.find(Button)).to.have.length(1);
+            expect(leftSide).to.have.length(1);
+            expect(leftSide.find("div")).to.have.length(6);
             expect(amazonPaneWrapper).to.have.length(0);
             expect(rightSide.find(WelcomePage)).to.have.length(1);
         });

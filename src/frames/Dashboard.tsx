@@ -340,8 +340,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
           onSourceSelected={this.handleSelectedSource}
           onHomeClicked={this.handleHomeClick}
           displayHomeButton={this.props.location.pathname !== "/"}
-          amazonFlow={this.props.amazonFlow}
-          window={globalWindow}>
+          amazonFlow={this.props.amazonFlow}>
           <UserControl
             login={this.props.login}
             logout={this.props.logout}
