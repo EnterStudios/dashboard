@@ -24,6 +24,7 @@ export interface ValidationParentComponentProps {
     handleRun: (e: any) => void;
     source: Source;
     sources: any[];
+    getSources: () => Promise<Source[]>;
     setSource: (source: Source) => (dispatch: Redux.Dispatch<any>) => void;
     handleSelectedSource: (value: any) => void;
     handleTokenChange: (value: string) => void;
@@ -89,6 +90,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         await SourceService.updateSourceObj(source);
         const updatedSource = await SourceService.getSourceObj(this.props.source.id);
         await this.props.setSource(updatedSource);
+        await this.props.getSources();
         this.setState((prevState) => ({
             showMessage: false,
             loading: false,

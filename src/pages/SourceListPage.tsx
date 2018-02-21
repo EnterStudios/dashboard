@@ -65,7 +65,7 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
     };
 
     render() {
-        const leftSide = <SourceSelector goTo={this.props.goTo} sources={this.props.sources} />;
+        const leftSide = <SourceSelector />;
 
         let rightSide = (
             <div className="source_list_page_right">
@@ -78,7 +78,7 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
                 <TwoPane
                     gridClass={"source-list-grid"}
                     spacing={true}
-                    leftStyle={{ padding: "30px 15px 0px 25px", backgroundColor: "#EEF2F5" }}
+                    leftStyle={{ padding: "25px 15px 0px 25px", backgroundColor: "#EEF2F5" }}
                     rightStyle={{ paddingRight: "10px", paddingLeft: "5px" }}>
                     {leftSide}
                     {rightSide}

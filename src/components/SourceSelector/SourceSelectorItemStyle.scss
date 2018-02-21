@@ -1,0 +1,122 @@
+.item {
+    background-color: #fff;
+    width: 22vw;
+    height: 16vw;
+    border: 2px solid #EBEEF3;
+    margin-top: 7px;
+    cursor: pointer;
+    .source_type_text {
+        position: absolute;
+        top: 33px;
+        left: calc(3.5rem + 35px);
+        color: #C5C9D2;
+        font-size: 0.9rem;
+    }
+}
+
+.show_skill_container {
+    &.active {
+        border: 2px solid #509ADB;
+    }
+    .child_container {
+        position: relative;
+    }
+    .source_name {
+        display: inline-block;
+        margin-left: 10px;
+        font-size: 1.6rem;
+        color: #626D84;
+    }
+    .validation_items_container {
+        margin: 10px 25px 20px;
+        border: 2px solid #F0F1F4;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        .succeeded, .failed {
+            width: 48%;
+            white-space: nowrap;
+            > div {
+                display: inline-block;
+                line-height: 1rem;
+                margin-left: 5px;
+                &:first-child {
+                    font-size: 2.3rem;
+                    margin-left: 0;
+                }
+            }
+        }
+        .succeeded {
+            color: #00ce7d;
+            border-right: 2px solid #F0F1F4;
+        }
+        .failed {
+            color: #E69198;
+        }
+    }
+    > div {
+        padding: 25px;
+        &.validation_items_container {
+            padding: 15px;
+        }
+        img {
+            width: 3.5rem;
+            vertical-align: text-bottom;
+        }
+    }
+    .items_processed_Text {
+        padding: 0 25px 0 30px;
+        font-size: 1.2rem;
+        letter-spacing: -1px;
+        color: #778296;
+    }
+}
+
+.delete_button {
+    float: right;
+    margin-right: 10px;
+    span {
+        color: #C5C9D2;
+    }
+}
+
+.enable_monitoring {
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    white-space: nowrap;
+    color: #E69198;
+    text-align: right;
+    margin-right: 10px;
+    &.enabled {
+        color: #00ce7d;
+        button {
+            span {
+                color: #00ce7d;
+            }
+        }
+    }
+    > div {
+        text-align: right;
+        width: 70%;
+        display: inline-block;
+        span {
+            display: block;
+            font-size: 1.1rem;
+            letter-spacing: -1px;
+            line-height: 1.1rem;
+        }
+    }
+    button {
+        width: 2.5rem;
+        height: 2.5rem;
+        top: 1px;
+        left: 5px;
+        padding: 0;
+        span {
+            color: #E69198;
+            line-height: 2.5rem!important;
+            font-size: 2.5rem!important;
+        }
+    }
+}

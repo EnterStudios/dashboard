@@ -333,6 +333,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                     <ValidationParentComponent
                         source={this.props.source}
                         sources={dropdownableSources}
+                        getSources={this.props.getSources}
                         setSource={this.props.setSource}
                         token={this.state.token}
                         vendorID={this.state.vendorID}

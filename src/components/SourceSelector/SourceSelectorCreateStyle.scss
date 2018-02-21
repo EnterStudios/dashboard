@@ -1,0 +1,85 @@
+.item {
+    position: relative;
+    background-color: #fff;
+    width: 22vw;
+    height: 16vw;
+    border: 2px solid #EBEEF3;
+    margin-top: 7px;
+    &.create_skill {
+        background-color: #D5DADE;
+        border: 2px dashed #959595;
+    }
+    .create_skill_text {
+        position: relative;
+        bottom: 25%;
+        text-align: center;
+        color: #969797;
+        font-size: 2rem;
+    }
+    .source_type_text {
+        position: absolute;
+        top: 33px;
+        left: calc(3.5rem + 35px);
+        color: #C5C9D2;
+    }
+}
+
+.create_skill_container {
+    height: 8vw;
+    > div {
+        padding: 25px;
+        &.validate_button {
+            cursor: pointer;
+            padding: 15px 25px;
+            background-color: #99D5DD;
+            text-align: center;
+            color: #fff;
+            font-size: 1.3rem;
+        }
+        img {
+            width: 3.5rem;
+            vertical-align: text-bottom;
+        }
+    }
+}
+
+.enable_monitoring {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    white-space: nowrap;
+    color: #E69198;
+    text-align: right;
+    margin-right: 10px;
+    &.enabled {
+        color: #00ce7d;
+        button {
+            span {
+                color: #00ce7d;
+            }
+        }
+    }
+    > div {
+        text-align: right;
+        width: 70%;
+        display: inline-block;
+        span {
+            display: block;
+            font-size: 1.1rem;
+            letter-spacing: -1px;
+            line-height: 1.1rem;
+        }
+    }
+    button {
+        width: 2.5rem;
+        height: 2.5rem;
+        top: 1px;
+        left: 5px;
+        padding: 0;
+        span {
+            color: #E69198;
+            line-height: 2.5rem!important;
+            font-size: 2.5rem!important;
+        }
+    }
+}

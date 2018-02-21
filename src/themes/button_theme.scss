@@ -6,6 +6,21 @@
     font-family: Calibri, "Helvetica","Arial",sans-serif;
 }
 
+.create_skill {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    z-index: 1;
+    span {
+        font-size: 10vw !important;
+        line-height: 10vw !important;
+        font-weight: bold;
+        color: #959595;
+        background-color: transparent;
+        margin-top: -10%;
+    }
+}
+
 :global {
     .circularProgressBar {
         width: 22px !important;

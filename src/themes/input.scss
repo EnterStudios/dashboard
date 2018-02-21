@@ -75,6 +75,36 @@ $label-filled-padding-left: 0;
     transition-property: top, font-size, color, padding;
 }
 
+.source_input {
+    &.input {
+        width: 60%;
+        display: inline-block;
+        margin-left: 10px;
+    }
+    .inputElement {
+        font-size: 1.6rem!important;
+        padding-top: 1rem!important;
+        border-bottom: none;
+        color: #626D84!important;
+    }
+    .inputElement {
+        &:focus:not([disabled]):not([readonly]), &.filled {
+            padding-bottom: 0;
+
+            ~ .label:not(.fixed) {
+                display: none;
+            }
+        }
+    }
+    .label {
+        font-size: 1.6rem;
+        color: #626D84;
+    }
+    span {
+        display: none;
+    }
+}
+
 .vendor_id_input input {
     width: 70%;
     border: 1px solid #D5D5D5;

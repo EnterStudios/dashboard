@@ -1,9 +1,7 @@
 import * as chai from "chai";
-import { mount } from "enzyme";
+import {shallow} from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
-
-let jsdom = require("mocha-jsdom");
 
 import { Source } from "../models/source";
 import auth from "../services/auth";
@@ -39,24 +37,21 @@ describe("Source List Page", function () {
             currentUserDetailsStub.restore();
         });
 
-        jsdom();
-
         it("should render correctly without the amazon flow", function () {
-            const wrapper = mount(<SourceListPage sources={sources} finishLoading={true} amazonFlow={false} user={undefined} setAmazonFlow={undefined} goTo={undefined} getSources={undefined} />);
+            const wrapper = shallow(<SourceListPage sources={sources} finishLoading={true} amazonFlow={false} user={undefined} setAmazonFlow={undefined} goTo={undefined} getSources={undefined} />);
 
             const twoPaneWrapper = wrapper.find("TwoPane");
             const leftSide = twoPaneWrapper.find(SourceSelector);
             const rightSide = twoPaneWrapper.find(".source_list_page_right");
             const amazonPaneWrapper = wrapper.find("AmazonVendorPane");
             expect(leftSide).to.have.length(1);
-            expect(leftSide.find("div")).to.have.length(6);
             expect(amazonPaneWrapper).to.have.length(0);
             expect(rightSide.find(WelcomePage)).to.have.length(1);
         });
 
         it("should render correctly with the amazon flow", function () {
 
-            const wrapper = mount(<SourceListPage sources={sources} finishLoading={true} amazonFlow={true} user={undefined} setAmazonFlow={undefined} goTo={undefined} getSources={undefined} />);
+            const wrapper = shallow(<SourceListPage sources={sources} finishLoading={true} amazonFlow={true} user={undefined} setAmazonFlow={undefined} goTo={undefined} getSources={undefined} />);
             const twoPaneWrapper = wrapper.find("TwoPane");
             const amazonPaneWrapper = wrapper.find("AmazonVendorPane");
             expect(twoPaneWrapper).to.have.length(0);
