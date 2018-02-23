@@ -14,6 +14,15 @@
 
     &.active {
         color: #93979A;
+        &:global {
+            &.settings {
+                color: #fff;
+                &+span {
+                    background-color: transparent;
+                    border: none;
+                }
+            }
+        }
     }
 
     &::before {
@@ -24,6 +33,10 @@
         top: 10px;
         left: 30px;
     }
+}
+
+.navigation {
+    box-shadow: none;
 }
 
 .navigationContainer {
@@ -68,9 +81,21 @@
         background-repeat: no-repeat;
         background-position: center;
     }
-    .settings::before {
-        background-image: url("https://bespoken.io/wp-content/uploads/2017/12/icon.png");
-        background-repeat: no-repeat;
-        background-position: center;
+    .settings {
+        background-color: #99d5dc;
+        text-indent: 0;
+        border-radius: 5px;
+        color: #fff;
+        height: 48px;
+        margin: 9px 0 0 10px;
+        line-height: 48px;
+        &::before {
+            content: "";
+            width: auto;
+            height: auto;
+            position: inherit;
+            top: auto;
+            left: auto;
+        }
     }
 }

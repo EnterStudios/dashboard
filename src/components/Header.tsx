@@ -131,10 +131,6 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                         caption="Email"/>
                 </ButtonMenu>
                 {this.props.children}
-                {
-                    this.props && this.props.pageButtons && this.props.pageButtons.length &&
-                    <IconButton className={TabMenuTheme.settings_button} onClick={this.handleSettingsPageClick} icon={"settings"} />
-                }
             </div>
             <div className={classNames("mdl-layout__header-row", TopBarTheme.container, TopBarTheme.bg_white)}>
                 {
@@ -343,7 +339,7 @@ export class PageSwap extends React.Component<PageSwapProps, PageSwapState> {
           const handleSelectTab = () => {
             this.handleSelected(button);
           };
-          return <Tab className={button.icon.toString()} key={++i} label={button.name} onActive={handleSelectTab} />;
+          return <Tab className={button.icon.toString()} key={++i} label={button.name} onClick={handleSelectTab} />;
         })
       });
     };
@@ -428,9 +424,6 @@ async function allowTab(tab: string, props: any) {
       } catch (err) {
         return false;
       }
-    }
-    case "settings": {
-      return false;
     }
     default:
       return true;

@@ -284,7 +284,7 @@ describe("Header", function () {
             it ("Tests the callback", async function() {
                 wrapper.setProps({ pageButtons: pages });
                 const buttons = await Promise.resolve(wrapper.find(Tab).at(0));
-                buttons.simulate("active", pages[0]);
+                buttons.simulate("click", pages[0]);
                 expect(onPageSelected).to.have.been.calledOnce;
                 expect(onPageSelected).to.have.been.calledWith(pages[0]);
             });

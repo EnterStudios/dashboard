@@ -1,10 +1,16 @@
 .item {
-    background-color: #fff;
+    background-color: transparent;
     width: 22vw;
     height: 16vw;
-    border: 2px solid #EBEEF3;
     margin-top: 7px;
-    cursor: pointer;
+    > div {
+        background-color: #fff;
+        border: 2px solid #EBEEF3;
+        cursor: pointer;
+    }
+    &.small_height {
+        height: auto;
+    }
     .source_type_text {
         position: absolute;
         top: 33px;
@@ -15,8 +21,16 @@
 }
 
 .show_skill_container {
-    &.active {
+    .active {
         border: 2px solid #509ADB;
+    }
+    .validate_button {
+        cursor: pointer;
+        padding: 15px 25px;
+        background-color: #99D5DD;
+        text-align: center;
+        color: #fff;
+        font-size: 1.3rem;
     }
     .child_container {
         position: relative;
@@ -34,28 +48,31 @@
         display: flex;
         justify-content: space-between;
         .succeeded, .failed {
-            width: 48%;
+            width: 100%;
             white-space: nowrap;
             > div {
                 display: inline-block;
                 line-height: 1rem;
                 margin-left: 5px;
                 &:first-child {
-                    font-size: 2.3rem;
+                    font-size: 1.3rem;
                     margin-left: 0;
                 }
             }
         }
         .succeeded {
             color: #00ce7d;
-            border-right: 2px solid #F0F1F4;
         }
         .failed {
             color: #E69198;
         }
     }
-    > div {
+    > div > div {
         padding: 25px;
+        &.delete_button_container {
+            padding: 0;
+            text-align: right;
+        }
         &.validation_items_container {
             padding: 15px;
         }
@@ -73,7 +90,6 @@
 }
 
 .delete_button {
-    float: right;
     margin-right: 10px;
     span {
         color: #C5C9D2;
