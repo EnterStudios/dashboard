@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 
 import { LOGOUT_USER } from "../constants";
 import { authForm, AuthFormState } from "./auth-form";
+import { loading, LoadingState } from "./loading";
 import { log, LogState } from "./log";
 import { notification, NotificationState } from "./notification";
 import { session, SessionState } from "./session";
@@ -18,6 +19,7 @@ export namespace State {
     session: SessionState,
     source: SourceState;
     toasts: ToastState;
+    loading?: LoadingState;
   };
 }
 
@@ -29,6 +31,7 @@ const appReducer = combineReducers<State.All>({
   session,
   source,
   toasts,
+  loading,
 });
 
 // Intercept global actions, such as logout to reset the state.

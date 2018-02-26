@@ -1,7 +1,10 @@
+import * as moment from "moment";
 import * as React from "react";
 import {IconButton} from "react-toolbox";
 import Dialog from "react-toolbox/lib/dialog";
+import LogQuery from "../../models/log-query";
 import Source from "../../models/source";
+import logService from "../../services/log";
 import MonitoringService from "../../services/monitoring";
 import SourceService from "../../services/source";
 
@@ -11,7 +14,6 @@ const DeleteDialogTheme = require("../../themes/dialog_theme.scss");
 
 interface SourceSelectorItemProps {
     source: Source;
-    sourceType: string;
     getSources: () => Promise<Source[]>;
     goTo: (path: string) => (dispatch: Redux.Dispatch<any>) => void;
     onClick: any;
@@ -25,6 +27,7 @@ interface SourceSelectorItemState {
     loading?: boolean;
     deleteDialogActive: boolean;
     isSourceUp?: boolean;
+    sourceType: string;
 }
 
 export default class SourceSelectorItem extends React.Component<SourceSelectorItemProps, SourceSelectorItemState> {
@@ -45,6 +48,7 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
             loading: false,
             deleteDialogActive: false,
             isSourceUp: undefined,
+            sourceType: "ALEXA SKILL"
         };
 
         this.handleItemClick = this.handleItemClick.bind(this);
@@ -58,13 +62,37 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
     }
 
     async componentDidMount () {
-        const sourceId = this.props.source && this.props.source.id;
-        const result = sourceId && await MonitoringService.getSourceStatus(sourceId);
-        const isSourceUp = result && result.status === "up" ? true : false;
-        this.setState((prevState) => ({
-            ...prevState,
-            isSourceUp,
-        }));
+        try {
+            const sourceId = this.props.source && this.props.source.id;
+            const result = sourceId && this.props.source.monitoring_enabled && await MonitoringService.getSourceStatus(sourceId);
+            const isSourceUp = result && result.status === "up" ? true : false;
+            const query: LogQuery = new LogQuery({
+                source: this.props.source,
+                startTime: moment().subtract(7, "days"), // TODO: change 7 for the right time span once implemented
+                endTime: moment(),
+                limit: 50
+            });
+            const logs = await logService.getLogs(query);
+            const alexaLogsCount = logs.filter(log => {
+                return log.payload && log.payload.request;
+            }).length;
+            const googleLogsCount = logs.filter(log => {
+                return log.payload && (log.payload.result || log.payload.inputs);
+            }).length;
+            const sourceType = alexaLogsCount && googleLogsCount ? "HYBRID SOURCE" : googleLogsCount ? "GOOGLE ACTION" : "ALEXA SKILL";
+            this.setState((prevState) => ({
+                ...prevState,
+                isSourceUp,
+                sourceType,
+            }));
+        } catch (err) {
+            console.log(err);
+            this.setState((prevState) => ({
+                ...prevState,
+                isSourceUp: false,
+                sourceType: "ALEXA SKILL",
+            }));
+        }
     }
 
     handleItemClick () {
@@ -132,45 +160,52 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
         const validationEnabledStyle = this.state.enableValidation ? SourceSelectorItemStyle.enabled : "";
         const sourceItemActive = this.props.active ? SourceSelectorItemStyle.active : "";
         const rows = this.props.source && this.props.source.validation_script && this.props.source.validation_script.split(/\r?\n/);
+        const showValidationResultRows = this.state.enableValidation && rows && rows.length ? SourceSelectorItemStyle.visible : "";
         const itemHeight = rows && rows.length ? "" : SourceSelectorItemStyle.small_height;
         return this.props.source ? (
-                <div className={`${SourceSelectorItemStyle.item} ${SourceSelectorItemStyle.show_skill_container} ${itemHeight}`}>
-                    <div className={`${sourceItemActive}`} onClick={this.handleItemClick} onDoubleClick={this.handleItemDoubleClick}>
+                <div className={`${SourceSelectorItemStyle.item} ${SourceSelectorItemStyle.show_skill_container} ${sourceItemActive} ${itemHeight}`} onClick={this.handleItemClick} onDoubleClick={this.handleItemDoubleClick}>
+                    <div>
                         <div className={SourceSelectorItemStyle.child_container}>
-                            <div className={SourceSelectorItemStyle.source_type_text}>{this.props.sourceType}</div>
-                            <img
-                                src={"https://bespoken.io/wp-content/uploads/2018/01/amazon-alexa-logo-D1BE24A213-seeklogo.com_.png"}
-                                alt={"alexa icon"}/>
+                            <div className={SourceSelectorItemStyle.source_type_text}>{this.state && this.state.sourceType}</div>
+                            {
+                                // TODO: Extract this to a component
+                                (
+                                    this.state.sourceType === "HYBRID SOURCE" ?
+                                        (
+                                            <div className={SourceSelectorItemStyle.hybrid_source}>
+                                                <img src={"/images/amazon-alexa.png"} alt={"alexa icon"}/>
+                                                <img src={"/images/google-actions.png"} alt={"google action icon"}/>
+                                            </div>
+                                        ) :
+                                        this.state.sourceType === "GOOGLE ACTION" ?
+                                            <img src={"/images/google-actions.png"} alt={"google action icon"}/> :
+                                            <img src={"/images/amazon-alexa.png"} alt={"alexa icon"}/>
+                                )
+                            }
                             <div className={SourceSelectorItemStyle.source_name}>{this.props.source.name}</div>
                             <div className={`${SourceSelectorItemStyle.enable_monitoring} ${validationEnabledStyle}`}>
                                 <div>
-                                    <span>ENABLE</span>
+                                    <span>{this.state.enableValidation ? "DISABLE" : "ENABLE"}</span>
                                     <span>MONITORING</span>
                                 </div>
                                 <IconButton icon={"power_settings_new"} onClick={this.handleEnableValidation}/>
                             </div>
                         </div>
-                        {
-                            this.state.enableValidation && rows && rows.length ?
-                                (
-                                    <div className={SourceSelectorItemStyle.validation_items_container}>
-                                        {
-                                            this.state && this.state.isSourceUp ?
-                                                (
-                                                    <div className={SourceSelectorItemStyle.succeeded}>
-                                                        <div>ALL YOUR ITEMS SUCCEEDED</div>
-                                                    </div>
-                                                ) :
-                                                (
-                                                    <div className={SourceSelectorItemStyle.failed}>
-                                                        <div>AT LEAST 1 OF YOUR ITEMS FAILED</div>
-                                                    </div>
-                                                )
-                                        }
-                                    </div>
-                                ) :
-                                ""
-                        }
+                        <div className={`${SourceSelectorItemStyle.validation_items_container} ${showValidationResultRows}`}>
+                            {
+                                this.state && this.state.isSourceUp ?
+                                    (
+                                        <div className={SourceSelectorItemStyle.succeeded}>
+                                            <div>ALL YOUR ITEMS SUCCEEDED</div>
+                                        </div>
+                                    ) :
+                                    (
+                                        <div className={SourceSelectorItemStyle.failed}>
+                                            <div>AT LEAST 1 OF YOUR ITEMS FAILED</div>
+                                        </div>
+                                    )
+                            }
+                        </div>
                         {
                             this.state.enableValidation && rows && rows.length &&
                             (

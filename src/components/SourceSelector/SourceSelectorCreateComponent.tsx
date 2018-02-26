@@ -10,8 +10,8 @@ const ButtonTheme = require("../../themes/button_theme.scss");
 const InputTheme = require("../../themes/input.scss");
 
 interface SourceSelectorCreateProps {
-    sourceType: string;
     getSources: () => Promise<Source[]>;
+    setSource: (source: Source) => (dispatch: Redux.Dispatch<any>) => void;
     goTo: (path: string) => (dispatch: Redux.Dispatch<any>) => void;
     handleLoadingChange: (value: boolean) => void;
     defaultSourceNumber: string;
@@ -25,8 +25,8 @@ interface SourceSelectorCreateState {
 
 export default class SourceSelectorCreate extends React.Component<SourceSelectorCreateProps, SourceSelectorCreateState> {
     static defaultProps: SourceSelectorCreateProps = {
-        sourceType: "ALEXA SKILL",
         getSources: undefined,
+        setSource: undefined,
         handleLoadingChange: undefined,
         goTo: undefined,
         defaultSourceNumber: "0",
@@ -42,10 +42,29 @@ export default class SourceSelectorCreate extends React.Component<SourceSelector
         };
 
         this.handleCreateClick = this.handleCreateClick.bind(this);
+        this.handleCancelClick = this.handleCancelClick.bind(this);
         this.handleSourceNameChange = this.handleSourceNameChange.bind(this);
         this.handleEnableValidation = this.handleEnableValidation.bind(this);
         this.handleSourceNameKeyPress = this.handleSourceNameKeyPress.bind(this);
         this.handleCreateAndValidationPageClick = this.handleCreateAndValidationPageClick.bind(this);
+    }
+
+    componentWillMount () {
+        document.addEventListener && document.addEventListener("keydown", this.handleKeyDown.bind(this));
+    }
+
+    componentWillUnmount () {
+        document.removeEventListener && document.removeEventListener("keydown", this.handleKeyDown.bind(this));
+    }
+
+    handleKeyDown (event: any) {
+        switch ( event.keyCode ) {
+            case 27:
+                this.handleCancelClick();
+                break;
+            default:
+                break;
+        }
     }
 
     handleCreateClick () {
@@ -66,8 +85,9 @@ export default class SourceSelectorCreate extends React.Component<SourceSelector
         if (event.key === "Enter") {
             this.props.handleLoadingChange(true);
             const source: Source = new Source({name: this.state.sourceName || `default${this.props.defaultSourceNumber}`, validation_enabled: this.state.enableValidation, created: moment().toISOString()});
-            await service.createSource(source);
+            const createdSource = await service.createSource(source);
             await this.props.getSources();
+            await this.props.setSource(createdSource);
             this.setState(prevState => ({
                 ...prevState,
                 sourceName: "",
@@ -98,22 +118,31 @@ export default class SourceSelectorCreate extends React.Component<SourceSelector
         }));
     }
 
+    handleCancelClick () {
+        this.setState(() => ({
+            enableValidation: false,
+            sourceName: "",
+            showCreateSource: false,
+        }));
+    }
+
     render() {
         const validationEnabledStyle = this.state.enableValidation ? SourceSelectorStyle.enabled : "";
         return this.state.showCreateSource ?
             (
                 <div className={`${SourceSelectorStyle.item} ${SourceSelectorStyle.create_skill_container}`}>
                     <div>
-                        <div className={SourceSelectorStyle.source_type_text}>{this.props.sourceType}</div>
+                        <div className={SourceSelectorStyle.source_type_text}>{""}</div>
                         <img src={"https://bespoken.io/wp-content/uploads/2018/01/amazon-alexa-logo-D1BE24A213-seeklogo.com_.png"} alt={"alexa icon"} />
                         <Input theme={InputTheme} className={InputTheme.source_input} value={this.state.sourceName} onChange={this.handleSourceNameChange} onKeyPress={this.handleSourceNameKeyPress} label={"Skill name here"} />
                         <div className={`${SourceSelectorStyle.enable_monitoring} ${validationEnabledStyle}`} >
                             <div>
-                                <span>ENABLE</span>
+                                <span>{this.state.enableValidation ? "DISABLE" : "ENABLE"}</span>
                                 <span>MONITORING</span>
                             </div>
                             <IconButton icon={"power_settings_new"} onClick={this.handleEnableValidation} />
                         </div>
+                        <IconButton className={SourceSelectorStyle.cancel_button} icon={"cancel"} onClick={this.handleCancelClick} />
                     </div>
                     <div onClick={this.handleCreateAndValidationPageClick} className={SourceSelectorStyle.validate_button}>{"Validate your new skill >>"}</div>
                 </div>

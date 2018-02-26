@@ -30,7 +30,7 @@ describe("Header", function () {
         });
 
         it("Renders the page swapper", function () {
-            expect(wrapper.find(PageSwap)).to.have.length(1);
+            expect(wrapper.find(PageSwap)).to.have.length(0);
         });
 
         it("renders the menu", function () {
@@ -252,7 +252,7 @@ describe("Header", function () {
         });
 
         it("Tests the header passes the appropriate props to the page swap", function () {
-            const wrapper = shallow(<Header pageButtons={pages} onPageSelected={onPageSelected} />);
+            const wrapper = shallow(<Header pageButtons={pages} onPageSelected={onPageSelected} currentSourceId={"12345"} />);
             const pageswap = wrapper.find(PageSwap);
             expect(pageswap.prop("pageButtons")).to.deep.equal(pages);
             expect(pageswap.prop("onPageSelected")).to.equal(onPageSelected);

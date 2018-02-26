@@ -22,6 +22,8 @@ const TabMenuTheme = require("../themes/tab_menu_theme.scss");
 const TopBarTheme = require("../themes/topbar_theme.scss");
 const theme = require("../themes/autosuggest.scss");
 
+const globalWindow: any = typeof (window) !== "undefined" ? window : {location: {pathname: ""}};
+
 export interface Dropdownable {
   value: string;
   label: string;
@@ -94,6 +96,8 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
   }
 
   render() {
+    const currentLocation = globalWindow.location;
+    const isSourceListPage = /^\/dashboard\/skills\/?$/.test(currentLocation.pathname);
     return (
         <header className={this.classes()}>
             <div className={classNames("mdl-layout__header-row", TopBarTheme.gray_top_bar)} />
@@ -138,7 +142,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                     <a onClick={this.props.onHomeClicked} className={classNames(TopBarTheme.back_to_site_link)}>{"<< Back to the site"}</a>
                 }
                 {
-                    !this.props.isValidationPage &&
+                    (isSourceListPage || !this.props.isValidationPage) &&
                     (
                         <Title
                             sources={this.props.sources}
@@ -146,11 +150,16 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                             selectedSourceId={this.state.selectedSourceId}/>
                     )
                 }
-                <PageSwap
-                    source={this.props.currentSourceId}
-                    sources={this.props.sources}
-                    pageButtons={this.props.pageButtons}
-                    onPageSelected={this.props.onPageSelected}/>
+                {
+                    this.props.currentSourceId &&
+                    (
+                        <PageSwap
+                            source={this.props.currentSourceId}
+                            sources={this.props.sources}
+                            pageButtons={this.props.pageButtons}
+                            onPageSelected={this.props.onPageSelected}/>
+                    )
+                }
                 <div className="mdl-layout-spacer"/>
             </div>
         </header>
@@ -250,38 +259,35 @@ export class Title extends React.Component<TitleProps, any> {
     });
   }
 
-  render() {
-    const { value, suggestions } = this.state;
-    const selectedSource = this.props.sources.filter(dropDownableSource => dropDownableSource.source.id === this.props.selectedSourceId);
-    const selectedSourceName = selectedSource[0] ? selectedSource[0].label : "";
-    const shouldRender = () => true;
-    const inputProps = {
-      placeholder: selectedSourceName,
-      value,
-      onChange: this.onChange
-    };
-    let title: JSX.Element = (<div />);
-    if (this.props.sources.length > 0) {
-      if (this.props.sources.length === 1) {
-        title = (<span className="mdl-layout-title">{this.props.sources[0].label}</span>);
-      } else {
-        title = (
-          <Autosuggest
-            suggestions={suggestions}
-            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-            getSuggestionValue={this.getSuggestionValue}
-            renderSuggestion={renderSuggestion}
-            shouldRenderSuggestions={shouldRender}
-            inputProps={inputProps}
-            theme={theme}
-          />
-        );
-      }
+    render() {
+        const {value, suggestions} = this.state;
+        const selectedSource = this.props.sources.filter(dropDownableSource => dropDownableSource.source.id === this.props.selectedSourceId);
+        const selectedSourceName = selectedSource[0] ? selectedSource[0].label : "";
+        const shouldRender = () => true;
+        const inputProps = {
+            placeholder: selectedSourceName,
+            value,
+            onChange: this.onChange
+        };
+        let title: JSX.Element = (<div/>);
+        if (this.props.sources.length === 1) {
+            title = (<span className="mdl-layout-title">{this.props.sources[0].label}</span>);
+        } else {
+            title = (
+                <Autosuggest
+                    suggestions={suggestions}
+                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                    getSuggestionValue={this.getSuggestionValue}
+                    renderSuggestion={renderSuggestion}
+                    shouldRenderSuggestions={shouldRender}
+                    inputProps={inputProps}
+                    theme={theme}
+                />
+            );
+        }
+        return title;
     }
-
-    return title;
-  }
 }
 
 interface PageSwapProps {

@@ -4,7 +4,7 @@
     width: 22vw;
     height: 16vw;
     border: 2px solid #EBEEF3;
-    margin-top: 7px;
+    margin-top: 25px;
     &.create_skill {
         background-color: #D5DADE;
         border: 2px dashed #959595;
@@ -39,6 +39,14 @@
         img {
             width: 3.5rem;
             vertical-align: text-bottom;
+        }
+    }
+    button {
+        &.cancel_button {
+            position: absolute;
+            top: -7px;
+            left: -7px;
+            color: #C5C9D2!important;
         }
     }
 }

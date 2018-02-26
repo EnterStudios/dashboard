@@ -147,7 +147,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                             {this.props && !this.props.vendorID && <TooltipButton className={buttonStyle.vendor_id_tooltip} onClick={redirectoToVendorIdpage} icon={"info"} tooltip={"Enter the vendor ID from your Amazon account at developer.amazon.com/mycid.html."} />}
                             <div className={`${buttonStyle.enable_monitoring} ${validationEnabledStyle}`} >
                                 <div>
-                                    <span>ENABLE</span>
+                                    <span>{this.state.enableValidation ? "DISABLE" : "ENABLE"}</span>
                                     <span>MONITORING</span>
                                 </div>
                                 <IconButton icon={"power_settings_new"} onClick={this.handleEnableValidation} />

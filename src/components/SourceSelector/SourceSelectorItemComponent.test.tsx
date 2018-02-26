@@ -21,8 +21,8 @@ describe("Source Selector", function () {
     describe("Item Component", function () {
 
         it("should render correctly with no validation data", function () {
-            const wrapper = shallow(<SourceSelectorItem active={false} source={sources[0]} removeSource={undefined} onClick={undefined} handleLoadingChange={undefined} sourceType={"ALEXA SKILL"} goTo={undefined} getSources={undefined} />);
-            expect(wrapper.find("div")).to.have.length(9);
+            const wrapper = shallow(<SourceSelectorItem active={false} source={sources[0]} removeSource={undefined} onClick={undefined} handleLoadingChange={undefined} goTo={undefined} getSources={undefined} />);
+            expect(wrapper.find("div")).to.have.length(12);
             expect(wrapper.find("img")).to.have.length(1);
             expect(wrapper.find(IconButton)).to.have.length(2);
             expect(wrapper.find(Dialog)).to.have.length(1);

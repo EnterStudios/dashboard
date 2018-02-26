@@ -37,7 +37,7 @@ describe("Source Selector Component", function () {
         });
 
         it("should render correctly", function () {
-            const wrapper = shallow(<SourceSelector source={undefined} sources={sources} goTo={undefined} getSources={undefined} setSource={undefined} removeSource={undefined} />);
+            const wrapper = shallow(<SourceSelector source={undefined} sources={sources} setLoading={undefined} goTo={undefined} getSources={undefined} setSource={undefined} removeSource={undefined} />);
 
             const createButton = wrapper.find(SourceSelectorCreate);
             const items = wrapper.find(SourceSelectorItem);

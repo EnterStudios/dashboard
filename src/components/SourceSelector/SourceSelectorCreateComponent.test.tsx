@@ -20,7 +20,7 @@ describe("Source Selector", function () {
     describe("Create Component", function () {
 
         it("should render correctly", function () {
-            const wrapper = shallow(<SourceSelectorCreate defaultSourceNumber={"0"} handleLoadingChange={undefined} sourceType={"ALEXA SKILL"} goTo={undefined} getSources={undefined} />);
+            const wrapper = shallow(<SourceSelectorCreate setSource={undefined} defaultSourceNumber={"0"} handleLoadingChange={undefined} goTo={undefined} getSources={undefined} />);
             expect(wrapper.find("div")).to.have.length(2);
             expect(wrapper.find(IconButton)).to.have.length(1);
         });

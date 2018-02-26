@@ -17,6 +17,9 @@ export const SET_USER: SET_USER = "bst/SET_USER";
 export type SET_AMAZON_FLOW = "bst/SET_AMAZON_FLOW";
 export const SET_AMAZON_FLOW: SET_AMAZON_FLOW = "bst/SET_AMAZON_FLOW";
 
+export type SET_LOADING = "bst/SET_LOADING";
+export const SET_LOADING: SET_LOADING = "bst/SET_LOADING";
+
 export const SENDING_REQUEST = "SENDING_REQUEST";
 
 export const LOGIN_USER_PENDING = "bst/LOGIN_USER_PENDING";

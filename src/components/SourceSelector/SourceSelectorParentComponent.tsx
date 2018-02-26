@@ -2,10 +2,10 @@ import * as React from "react";
 import * as ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import {connect} from "react-redux";
 import {replace} from "react-router-redux";
+import {setLoading} from "../../actions/loading";
 import {deleteSource, getSources, setCurrentSource} from "../../actions/source";
 import Source from "../../models/source";
 import {State} from "../../reducers";
-import { Loader } from "../Loader/Loader";
 import SourceSelectorCreate from "./SourceSelectorCreateComponent";
 import SourceSelectorItem from "./SourceSelectorItemComponent";
 
@@ -18,10 +18,10 @@ interface SourceSelectorProps {
     setSource: (source: Source) => (dispatch: Redux.Dispatch<any>) => void;
     goTo: (path: string) => (dispatch: Redux.Dispatch<any>) => void;
     removeSource: (source: Source) => Promise<Source>;
+    setLoading: (value: boolean) => (dispatch: Redux.Dispatch<any>) => void;
 }
 
 interface SourceSelectorState {
-    loading: boolean;
 }
 
 function mapStateToProps(state: State.All) {
@@ -44,7 +44,10 @@ function mapDispatchToProps(dispatch: any) {
         },
         removeSource: function (source: Source): Promise<Source> {
             return dispatch(deleteSource(source));
-        }
+        },
+        setLoading: function (value: boolean) {
+            return dispatch(setLoading(value));
+        },
     };
 }
 
@@ -62,14 +65,25 @@ export class SourceSelector extends React.Component<SourceSelectorProps, SourceS
         this.handleLoadingChange = this.handleLoadingChange.bind(this);
     }
 
+    componentDidUpdate (prevProps: SourceSelectorProps) {
+        if (!prevProps.source || !this.props.source) {
+            (this.props.setSource && this.props.sources && this.props.sources.length) && this.props.setSource(this.props.sources[0]);
+        }
+    }
+
+    componentDidMount () {
+        if (!this.props.source) {
+            (this.props.setSource && this.props.sources && this.props.sources.length) && this.props.setSource(this.props.sources[0]);
+        }
+    }
+
     handleSourceClick (source: Source) {
-        (this.props.source && this.props.source.id === source.id) ? this.props.setSource(undefined) : this.props.setSource(source);
+        const defaultSource = this.props.sources && this.props.sources.length && this.props.sources[0];
+        (this.props.source && this.props.source.id === source.id) ? this.props.setSource(defaultSource) : this.props.setSource(source);
     }
 
     handleLoadingChange (value: boolean) {
-        this.setState(prevState => ({
-            loading: value,
-        }));
+        this.props.setLoading(value);
     }
 
     handleDeleteSource (source: Source) {
@@ -89,7 +103,7 @@ export class SourceSelector extends React.Component<SourceSelectorProps, SourceS
                     <SourceSelectorCreate
                         defaultSourceNumber={this.props.sources.length.toString()}
                         handleLoadingChange={this.handleLoadingChange}
-                        sourceType={"ALEXA SKILL"}
+                        setSource={this.props.setSource}
                         getSources={this.props.getSources}
                         goTo={this.props.goTo} />
                     {
@@ -102,7 +116,6 @@ export class SourceSelector extends React.Component<SourceSelectorProps, SourceS
                             return (
                                 <SourceSelectorItem
                                     key={reverseIndex - index}
-                                    sourceType={"ALEXA SKILL"}
                                     source={source}
                                     active={this.props.source && this.props.source.id === source.id}
                                     getSources={this.props.getSources}
@@ -114,7 +127,6 @@ export class SourceSelector extends React.Component<SourceSelectorProps, SourceS
                         })
                     }
                 </ReactCSSTransitionGroup>
-                {this.state.loading && <Loader/>}
             </div>
         );
     }

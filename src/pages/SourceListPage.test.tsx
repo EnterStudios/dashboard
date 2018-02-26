@@ -38,20 +38,20 @@ describe("Source List Page", function () {
         });
 
         it("should render correctly without the amazon flow", function () {
-            const wrapper = shallow(<SourceListPage sources={sources} finishLoading={true} amazonFlow={false} user={undefined} setAmazonFlow={undefined} goTo={undefined} getSources={undefined} />);
+            const wrapper = shallow(<SourceListPage source={undefined} sources={sources} finishLoading={true} amazonFlow={false} user={undefined} setAmazonFlow={undefined} goTo={undefined} getSources={undefined} setLoading={undefined} />);
 
             const twoPaneWrapper = wrapper.find("TwoPane");
             const leftSide = twoPaneWrapper.find(SourceSelector);
-            const rightSide = twoPaneWrapper.find(".source_list_page_right");
+            const rightSide = twoPaneWrapper.find(WelcomePage);
             const amazonPaneWrapper = wrapper.find("AmazonVendorPane");
             expect(leftSide).to.have.length(1);
             expect(amazonPaneWrapper).to.have.length(0);
-            expect(rightSide.find(WelcomePage)).to.have.length(1);
+            expect(rightSide).to.have.length(1);
         });
 
         it("should render correctly with the amazon flow", function () {
 
-            const wrapper = shallow(<SourceListPage sources={sources} finishLoading={true} amazonFlow={true} user={undefined} setAmazonFlow={undefined} goTo={undefined} getSources={undefined} />);
+            const wrapper = shallow(<SourceListPage source={undefined} sources={sources} finishLoading={true} amazonFlow={true} user={undefined} setAmazonFlow={undefined} goTo={undefined} getSources={undefined} setLoading={undefined} />);
             const twoPaneWrapper = wrapper.find("TwoPane");
             const amazonPaneWrapper = wrapper.find("AmazonVendorPane");
             expect(twoPaneWrapper).to.have.length(0);

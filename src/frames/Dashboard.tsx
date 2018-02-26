@@ -3,11 +3,13 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { push, replace } from "react-router-redux";
 import Snackbar from "react-toolbox/lib/snackbar";
+import { setLoading } from "../actions/loading";
 import { logout, setUser } from "../actions/session";
 import { getSources, setCurrentSource } from "../actions/source";
 import Content from "../components/Content";
 import { Dropdownable, Header, PageButton } from "../components/Header";
 import Layout from "../components/Layout";
+import { Loader } from "../components/Loader/Loader";
 import Popup from "../components/Popup";
 import UserControl from "../components/UserControl";
 import { CLASSES } from "../constants";
@@ -50,6 +52,8 @@ interface DashboardProps {
   setSource: (source: Source) => (dispatch: Redux.Dispatch<any>) => void;
   goTo: (path: string) => (dispatch: Redux.Dispatch<any>) => void;
   setUser: (user: User) => (dispatch: Redux.Dispatch<any>) => void;
+  loading: boolean;
+  setLoading: (value: boolean) => (dispatch: Redux.Dispatch<any>) => void;
 }
 
 interface DashboardState {
@@ -63,7 +67,8 @@ function mapStateToProps(state: State.All) {
     user: state.session.user,
     currentSource: state.source.currentSource,
     sources: state.source.sources,
-    amazonFlow: state.session.amazonFlow
+    amazonFlow: state.session.amazonFlow,
+    loading: state.loading.loading,
   };
 }
 
@@ -86,7 +91,10 @@ function mapDispatchToProps(dispatch: any) {
     },
     setUser: function (user: User) {
       return dispatch(setUser(user));
-    }
+    },
+    setLoading: function (value: boolean) {
+        return dispatch(setLoading(value));
+    },
   };
 }
 
@@ -124,39 +132,41 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     return classNames(CLASSES.COLOR.CYAN_BESPOKEN, CLASSES.TEXT.GREY_600);
   }
 
-  async componentDidMount() {
-    document.title = "Bespoken Dashboard"; // additional set title here because for some reason production is not getting the title correctly
-    const { id, key } = this.props.location.query;
-    const goToCurrentSkill = () => this.props.goTo("/skills/" + id);
-    const goToSkills = () => this.props.goTo("/skills/");
-    let redirectTo: () => void = goToSkills;
-    if (id && key) {
-      const self = this;
-      redirectTo = goToCurrentSkill;
-      try {
-        await SourceService.linkSource({ id: id, secretKey: key }, this.props.user);
-        const source: Source = await SourceService.getSourceObj(id);
-        const pipe: any = await SpokeService.fetchPipe(self.props.user, source);
-        if (!pipe.diagnosticsKey) {
-          await SpokeService.savePipe(self.props.user, source, pipe.http, true);
+    async componentDidMount() {
+        this.props.setLoading(true);
+        document.title = "Bespoken Dashboard"; // additional set title here because for some reason production is not getting the title correctly
+        const {id, key} = this.props.location.query;
+        const goToCurrentSkill = () => this.props.goTo("/skills/" + id);
+        const goToSkills = () => this.props.goTo("/skills/");
+        let redirectTo: () => void = goToSkills;
+        if (id && key) {
+            const self = this;
+            redirectTo = goToCurrentSkill;
+            try {
+                await SourceService.linkSource({id: id, secretKey: key}, this.props.user);
+                const source: Source = await SourceService.getSourceObj(id);
+                const pipe: any = await SpokeService.fetchPipe(self.props.user, source);
+                if (!pipe.diagnosticsKey) {
+                    await SpokeService.savePipe(self.props.user, source, pipe.http, true);
+                }
+                redirectTo();
+            } catch (err) {
+                redirectTo();
+            }
         }
-        redirectTo();
-      } catch (err) {
-        redirectTo();
-      }
+        await this.props.getSources();
+        const userValidationInfo: UserDetails = await auth.currentUserDetails();
+        userValidationInfo && globalWindow && globalWindow.Intercom("boot", {
+            app_id: "ah6uagcl",
+            name: this.props.user.displayName,
+            email: this.props.user.email,
+            skillsAmmount: this.props.sources.length,
+            usingMonitoring: this.props.sources.some(source => source.monitoring_enabled),
+            usingValidation: !!userValidationInfo.smAPIAccessToken,
+            hide_default_launcher: false,
+        });
+        this.props.setLoading(false);
     }
-    await this.props.getSources();
-    const userValidationInfo: UserDetails = await auth.currentUserDetails();
-    userValidationInfo && globalWindow && globalWindow.Intercom("boot", {
-      app_id: "ah6uagcl",
-      name: this.props.user.displayName,
-      email: this.props.user.email,
-      skillsAmmount: this.props.sources.length,
-      usingMonitoring: this.props.sources.some(source => source.monitoring_enabled),
-      usingValidation: !!userValidationInfo.smAPIAccessToken,
-      hide_default_launcher: false,
-    });
-  }
 
   componentDidUpdate(previousProps: DashboardProps, previousState: DashboardState) {
     const pathsArray = ["stats", "logs", "integration", "audio", "settings"];
@@ -243,7 +253,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         },
         {
           icon: "settings",
-          name: "settings",
+          name: "Settings",
           tooltip: "settings"
         },
       ];
@@ -269,7 +279,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
       this.props.goTo("/skills/" + this.props.currentSource.id);
     } else if (button.name === "Audio Metrics") {
       this.props.goTo("/skills/" + this.props.currentSource.id + "/audio");
-    } else if (button.name === "settings") {
+    } else if (button.name === "Settings") {
       this.props.goTo("/skills/" + this.props.currentSource.id + "/settings");
     }
   }
@@ -363,6 +373,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
             onTimeout={this.handleSnackbarHiding} />
         </Content>
           {process.env.NODE_ENV === "development" && <a className="git-hash" href={`https://github.com/bespoken/dashboard/commit/${process.env.GIT_HASH}`} target="_blank">{process.env.GIT_HASH.slice(0, 7)}</a>}
+          {this.props.loading && <Loader/>}
       </Layout>
     );
   }

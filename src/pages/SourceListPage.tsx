@@ -3,6 +3,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 import { replace } from "react-router-redux";
+import {setLoading} from "../actions/loading";
 import {AmazonFlowFlag, setAmazonFlow} from "../actions/session";
 import {getSources} from "../actions/source";
 import AmazonVendorPane from "../components/AmazonVendorPane";
@@ -16,6 +17,8 @@ import { State } from "../reducers";
 
 import WelcomePage from "./WelcomePage";
 
+const SourcePagePaneStyle = require("../themes/amazon_pane.scss");
+
 export interface SourceListPageProps {
     sources: Source[];
     getSources: () => Promise<Source[]>;
@@ -24,6 +27,8 @@ export interface SourceListPageProps {
     amazonFlow: boolean;
     setAmazonFlow: (amazonFlow: boolean) => AmazonFlowFlag;
     goTo: (path: string) => (dispatch: Redux.Dispatch<any>) => void;
+    source: Source;
+    setLoading: any;
 }
 
 interface SourceListPageState {
@@ -35,7 +40,8 @@ function mapStateToProps(state: State.All) {
         sources: state.source.sources,
         finishLoading: state.source.finishLoading,
         amazonFlow: state.session.amazonFlow,
-        user: state.session.user
+        user: state.session.user,
+        source: state.source.currentSource,
     };
 }
 
@@ -50,6 +56,9 @@ function mapDispatchToProps(dispatch: Redux.Dispatch<any>) {
         getSources: function (): Promise<Source[]> {
             return dispatch(getSources());
         },
+        setLoading: function (value: boolean) {
+            return dispatch(setLoading(value));
+        },
     };
 }
 
@@ -62,14 +71,16 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
         user: undefined,
         setAmazonFlow: undefined,
         goTo: undefined,
+        source: undefined,
+        setLoading: undefined,
     };
 
     render() {
         const leftSide = <SourceSelector />;
 
         let rightSide = (
-            <div className="source_list_page_right">
-                <WelcomePage />
+            <div className={SourcePagePaneStyle.right_container}>
+                <WelcomePage source={this.props.source} goTo={this.props.goTo} handleLoadingChange={this.props.setLoading} getSources={this.props.getSources} />
             </div>
         );
 
@@ -78,8 +89,8 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
                 <TwoPane
                     gridClass={"source-list-grid"}
                     spacing={true}
-                    leftStyle={{ padding: "25px 15px 0px 25px", backgroundColor: "#EEF2F5" }}
-                    rightStyle={{ paddingRight: "10px", paddingLeft: "5px" }}>
+                    leftStyle={{ padding: "0px 15px 0px 25px", backgroundColor: "#EEF2F5" }}
+                    rightStyle={{ paddingRight: "10px", paddingLeft: 0 }}>
                     {leftSide}
                     {rightSide}
                 </TwoPane>

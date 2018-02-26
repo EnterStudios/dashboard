@@ -2,12 +2,10 @@
     background-color: transparent;
     width: 22vw;
     height: 16vw;
-    margin-top: 7px;
-    > div {
-        background-color: #fff;
-        border: 2px solid #EBEEF3;
-        cursor: pointer;
-    }
+    margin-top: 25px;
+    background-color: #fff;
+    border: 2px solid #EBEEF3;
+    cursor: pointer;
     &.small_height {
         height: auto;
     }
@@ -21,7 +19,7 @@
 }
 
 .show_skill_container {
-    .active {
+    &.active {
         border: 2px solid #509ADB;
     }
     .validate_button {
@@ -34,6 +32,21 @@
     }
     .child_container {
         position: relative;
+        .hybrid_source {
+            width: 3.5rem;
+            height: 3.5rem;
+            display: inline-block;
+            margin: 0;
+            vertical-align: text-bottom;
+            img {
+                width: 50%;
+                vertical-align: top;
+                margin-top: 15%;
+                + img {
+                    margin-top: 50%;
+                }
+            }
+        }
     }
     .source_name {
         display: inline-block;
@@ -42,7 +55,7 @@
         color: #626D84;
     }
     .validation_items_container {
-        margin: 10px 25px 20px;
+        margin: 10px 25px 9px;
         border: 2px solid #F0F1F4;
         border-radius: 5px;
         display: flex;
@@ -75,6 +88,10 @@
         }
         &.validation_items_container {
             padding: 15px;
+            visibility: hidden;
+            &.visible {
+                visibility: visible;
+            }
         }
         img {
             width: 3.5rem;

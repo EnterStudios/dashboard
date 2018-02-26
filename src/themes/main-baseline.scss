@@ -3,6 +3,7 @@
 :global {
     .mdl-layout__content {
         overflow: visible;
+        z-index: 0;
     }
     html, body {
         font-size: 14px;
