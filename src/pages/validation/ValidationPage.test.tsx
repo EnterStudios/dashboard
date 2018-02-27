@@ -38,7 +38,7 @@ describe("Validation Page", function () {
             currentUserDetailsStub.restore();
         });
         it("Tests that validation token is set.", function () {
-            const wrapper = mount(<ValidationPage user={user} source={source} location={location} sources={undefined} getSources={undefined} setSource={undefined} goTo={undefined} />);
+            const wrapper = mount(<ValidationPage user={user} source={source} location={location} sources={undefined} getSources={undefined} setSource={undefined} goTo={undefined} setLoading={undefined} />);
             const parentComponentWrapper = wrapper.find(ValidationParentComponent);
             return userDetailsPromise.then(() => {
                 expect(parentComponentWrapper.find(Input)
@@ -65,7 +65,7 @@ describe("Validation Page", function () {
         });
         // TODO: unskip once we migrate to new parent and child component (new test file)
         it.skip("Tests that validation results are shown.", function() {
-            const wrapper = shallow(<ValidationPage user={user} source={source} location={location} sources={undefined} getSources={undefined} setSource={undefined} goTo={undefined} />);
+            const wrapper = shallow(<ValidationPage user={user} source={source} location={location} sources={undefined} getSources={undefined} setSource={undefined} goTo={undefined} setLoading={undefined} />);
             wrapper.setState({
                 token: "token",
                 script: "script",

@@ -236,7 +236,12 @@ export namespace source {
                 "Content-Type": "application/json"
             },
             body: query.json()
-        }).then((result: any) => result.text());
+        }).then((result: any) => {
+            if (result.status === 401) {
+                return {status: result.status, text: result.text};
+            }
+            return result.text();
+        });
     }
 
     export async function createSkillsFromAmazon(userId: string, vendorId: string, SMAPIAccessToken: string): Promise<string[]> {

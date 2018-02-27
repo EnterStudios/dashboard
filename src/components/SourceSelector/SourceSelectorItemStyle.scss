@@ -1,7 +1,9 @@
 .item {
     background-color: transparent;
-    width: 22vw;
-    height: 16vw;
+    width: 48%;
+    min-width: 300px;
+    height: auto;
+    min-height: 260px;
     margin-top: 25px;
     background-color: #fff;
     border: 2px solid #EBEEF3;
@@ -55,7 +57,7 @@
         color: #626D84;
     }
     .validation_items_container {
-        margin: 10px 25px 9px;
+        margin: 10px 15px 9px;
         border: 2px solid #F0F1F4;
         border-radius: 5px;
         display: flex;
@@ -63,6 +65,7 @@
         .succeeded, .failed {
             width: 100%;
             white-space: nowrap;
+            text-align: center;
             > div {
                 display: inline-block;
                 line-height: 1rem;

@@ -11,6 +11,7 @@ import LogQuery from "../models/log-query";
 import Query, { EndTimeParameter, SourceParameter, StartTimeParameter } from "../models/query";
 import Source from "../models/source";
 import logService from "../services/log";
+import { Location } from "../utils/Location";
 
 import Noop from "../utils/Noop";
 
@@ -327,6 +328,18 @@ export class PageSwap extends React.Component<PageSwapProps, PageSwapState> {
 
   componentWillMount() {
     this.buildButtons(this.props);
+  }
+
+  componentDidUpdate (prevProps: PageSwapProps, prevState: PageSwapState) {
+      const pathsArray = this.state.tabs.map(tab => tab.props.className);
+      pathsArray.map((path, index) => {
+          if (location.pathname.indexOf(path) >= 0 && this.state.index !== index) {
+              this.setState((prevState) => ({
+                  ...prevState,
+                  index,
+              }));
+          }
+      });
   }
 
   handleSelected(button: PageButton) {

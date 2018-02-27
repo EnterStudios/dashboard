@@ -90,7 +90,7 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
                     gridClass={"source-list-grid"}
                     spacing={true}
                     leftStyle={{ padding: "0px 15px 0px 25px", backgroundColor: "#EEF2F5" }}
-                    rightStyle={{ paddingRight: "10px", paddingLeft: 0 }}>
+                    rightStyle={{ paddingRight: 0, paddingLeft: 0 }}>
                     {leftSide}
                     {rightSide}
                 </TwoPane>

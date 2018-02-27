@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import {replace} from "react-router-redux";
 import {Card, CardText, CardTitle} from "react-toolbox/lib/card";
 
+import {setLoading} from "../../actions/loading";
 import {getSources, setCurrentSource} from "../../actions/source";
 import {CodeSheet} from "../../components/CodeSheet";
 import { Dimensions } from "../../components/Measure";
@@ -46,6 +47,7 @@ interface ValidationPageProps {
     getSources: () => Promise<Source[]>;
     setSource: (source: Source) => (dispatch: Redux.Dispatch<any>) => void;
     goTo: (path: string) => (dispatch: Redux.Dispatch<any>) => void;
+    setLoading: (value: boolean) => (dispatch: Redux.Dispatch<any>) => void;
 }
 
 function mapStateToProps(state: State.All) {
@@ -66,6 +68,9 @@ function mapDispatchToProps(dispatch: any) {
         },
         goTo: function (path: string) {
             return dispatch(replace(path));
+        },
+        setLoading: function (value: boolean) {
+            return dispatch(setLoading(value));
         },
     };
 }
@@ -217,17 +222,27 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                     this.state.token, timestamp, this.state.vendorID,
                     this.state.smAPIAccessToken, this.url())
                     .then((validationResults: any) => {
-                        if (window && window.localStorage
-                            && self.lastScriptKey(this.props.source)) {
-                            window.localStorage.setItem(self.lastScriptKey(this.props.source),
-                                encodeURIComponent(this.state.script));
+                        if (validationResults.status && validationResults.status === 401) {
+                            self.setState({
+                                ...self.state,
+                                dialogActive: true,
+                                loadingValidationResults: false,
+                                showSnackbar: true,
+                                snackbarLabel: (
+                                    <div>
+                                        It appears that your SMAPI token has expired please <a
+                                        href={this.virtualDeviceLinkAccountURL()}>click here</a> to refresh it
+                                    </div>
+                                ),
+                            });
+                        } else {
+                            self.setState({
+                                ...self.state,
+                                dialogActive: true,
+                                loadingValidationResults: false,
+                                validationResults,
+                            });
                         }
-                        self.setState({
-                            ...self.state,
-                            dialogActive: true,
-                            loadingValidationResults: false,
-                            validationResults,
-                        });
                     })
                     .catch(() => {
                         self.setState({
@@ -341,6 +356,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                         scriptHint={ValidationPage.scriptHint}
                         showSnackbar={this.state.showSnackbar}
                         snackbarLabel={this.state.snackbarLabel}
+                        setLoading={this.props.setLoading}
                         showHelp={this.state.showHelp}
                         validationHelp={<ValidationHelp/>}
                         validationResults={this.state.validationResults}

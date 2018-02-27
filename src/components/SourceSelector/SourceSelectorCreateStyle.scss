@@ -1,8 +1,10 @@
 .item {
     position: relative;
     background-color: #fff;
-    width: 22vw;
-    height: 16vw;
+    width: 48%;
+    min-width: 300px;
+    height: auto;
+    min-height: 260px;
     border: 2px solid #EBEEF3;
     margin-top: 25px;
     &.create_skill {

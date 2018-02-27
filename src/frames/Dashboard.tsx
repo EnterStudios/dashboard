@@ -157,7 +157,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         await this.props.getSources();
         const userValidationInfo: UserDetails = await auth.currentUserDetails();
         userValidationInfo && globalWindow && globalWindow.Intercom("boot", {
-            app_id: "ah6uagcl",
+            app_id: process.env.NODE_ENV === "production" ? process.env.IntercomAppIdProd : process.env.IntercomAppIdDev,
             name: this.props.user.displayName,
             email: this.props.user.email,
             skillsAmmount: this.props.sources.length,
@@ -187,7 +187,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
   componentWillUnmount() {
     globalWindow && globalWindow.Intercom("boot", {
-      app_id: "ah6uagcl",
+      app_id: process.env.NODE_ENV === "production" ? process.env.IntercomAppId : process.env.IntercomAppIdDev,
       hide_default_launcher: true,
     });
   }
@@ -328,8 +328,9 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
   }
 
   render() {
+    const isSourceListPage = /^\/skills\/?$/.test(this.props.location && this.props.location.pathname);
     return (
-      <Layout header={true}>
+      <Layout header={true} style={isSourceListPage ? {overflowY: "hidden"} : {}}>
         <Popup
           header={"Win an Echo Show"}
           content={<span>Thanks for being a Bespoken user.<br />Take this 5-minute survey to enter to win 1 of 2 devices. Enter before Sept 30.</span>}

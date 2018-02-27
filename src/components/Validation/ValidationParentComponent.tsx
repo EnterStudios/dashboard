@@ -11,7 +11,6 @@ import {Title} from "../Title";
 import EventHandler = __React.EventHandler;
 import Source from "../../models/source";
 import SourceService from "../../services/source";
-import { Loader } from "../Loader/Loader";
 import {ValidationResultComponent} from "./ValidationResultComponent";
 import {ValidationTestComponent} from "./ValidationTestComponent";
 
@@ -47,12 +46,12 @@ export interface ValidationParentComponentProps {
     validationResults: any;
     monitorEnabled: boolean;
     handleMonitorEnabledCheckChange: (value: boolean) => any;
+    setLoading: (value: boolean) => (dispatch: Redux.Dispatch<any>) => void;
 }
 
 interface ValidationParentComponentState {
     enableValidation?: boolean;
     showMessage?: boolean;
-    loading?: boolean;
 }
 
 const TooltipButton = Tooltip(IconButton);
@@ -69,7 +68,6 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         this.state = {
             enableValidation: false,
             showMessage: false,
-            loading: false,
         };
     }
 
@@ -83,19 +81,16 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
     }
 
     async updateSourceObject (source: Source) {
-        this.setState((prevState) => ({
-            ...prevState,
-            loading: true,
-        }));
+        this.props.setLoading(true);
         await SourceService.updateSourceObj(source);
         const updatedSource = await SourceService.getSourceObj(this.props.source.id);
         await this.props.setSource(updatedSource);
         await this.props.getSources();
         this.setState((prevState) => ({
             showMessage: false,
-            loading: false,
             enableValidation: !prevState.enableValidation,
         }));
+        this.props.setLoading(false);
     }
 
     async handleSaveScript () {
@@ -211,7 +206,6 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                         checked={this.props.monitorEnabled}
                         onChange={this.props.handleMonitorEnabledCheckChange}/>
                 </Cell>
-                {this.state.loading && <Loader />}
             </form>
         );
     }
