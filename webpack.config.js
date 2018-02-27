@@ -15,6 +15,9 @@ var version = package.version;
 var buildNumber = process.env.TRAVIS_BUILD_NUMBER;
 var buildId = process.env.TRAVIS_BUILD_ID
 var git_hash = childProcess.execSync("git rev-parse HEAD").toString();
+var intercom_app_id_prod = process.env.INTERCOM_APP_ID_PROD;
+var intercom_app_id_dev = process.env.INTERCOM_APP_ID_DEV;
+var source_url = process.env.SOURCE_URL;
 
 var logless_base = "";
 var source_api_access_token = process.env.SOURCE_API_ACCESS_TOKEN;
@@ -57,6 +60,8 @@ var buildVariables = {
     FIREBASE_DATABASE_URL: JSON.stringify(firebase_database_url),
     FIREBASE_STORAGE_BUCKET: JSON.stringify(firebase_storage_bucket),
     FIREBASE_MESSAGING_SENDER_ID: JSON.stringify(firebase_messaging_sender_id),
+    INTERCOM_APP_ID_PROD: JSON.stringify(intercom_app_id_prod),
+    INTERCOM_APP_ID_DEV: JSON.stringify(intercom_app_id_dev),
   },
   'BASENAME': JSON.stringify("/dashboard"),
   'GOOGLE_ANALYTICS': JSON.stringify(""),

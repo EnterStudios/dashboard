@@ -157,7 +157,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         await this.props.getSources();
         const userValidationInfo: UserDetails = await auth.currentUserDetails();
         userValidationInfo && globalWindow && globalWindow.Intercom("boot", {
-            app_id: process.env.NODE_ENV === "production" ? process.env.IntercomAppIdProd : process.env.IntercomAppIdDev,
+            app_id: process.env.NODE_ENV === "production" ? process.env.INTERCOM_APP_ID_PROD : process.env.INTERCOM_APP_ID_DEV,
             name: this.props.user.displayName,
             email: this.props.user.email,
             skillsAmmount: this.props.sources.length,
@@ -187,7 +187,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
   componentWillUnmount() {
     globalWindow && globalWindow.Intercom("boot", {
-      app_id: process.env.NODE_ENV === "production" ? process.env.IntercomAppId : process.env.IntercomAppIdDev,
+      app_id: process.env.NODE_ENV === "production" ? process.env.INTERCOM_APP_ID_PROD : process.env.INTERCOM_APP_ID_DEV,
       hide_default_launcher: true,
     });
   }
