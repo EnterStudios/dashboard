@@ -1,6 +1,6 @@
 .item {
     position: relative;
-    background-color: #fff;
+    background-color: transparent;
     width: 48%;
     min-width: 300px;
     height: auto;
@@ -27,9 +27,10 @@
 }
 
 .create_skill_container {
-    height: 8vw;
+    height: auto;
     > div {
         padding: 25px;
+        background-color: #fff;
         &.validate_button {
             cursor: pointer;
             padding: 15px 25px;

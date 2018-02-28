@@ -222,6 +222,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                     this.state.token, timestamp, this.state.vendorID,
                     this.state.smAPIAccessToken, this.url())
                     .then((validationResults: any) => {
+                        // TODO: wait for expired smapi code to add a snackbar with refresh link
                         if (validationResults.status && validationResults.status === 401) {
                             self.setState({
                                 ...self.state,
@@ -230,8 +231,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                                 showSnackbar: true,
                                 snackbarLabel: (
                                     <div>
-                                        It appears that your SMAPI token has expired please <a
-                                        href={this.virtualDeviceLinkAccountURL()}>click here</a> to refresh it
+                                        It appears that you are not calling a source you own, please remember to start your script with "open &lt;source invocation name&gt;"
                                     </div>
                                 ),
                             });

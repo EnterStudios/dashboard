@@ -107,6 +107,7 @@ export default class SourceSelectorCreate extends React.Component<SourceSelector
             sourceName: "",
             showCreateSource: false,
         }));
+        await this.props.setSource(createdSource);
         this.props.handleLoadingChange(false);
         this.props.goTo(`/skills/${createdSource.id}/`);
     }

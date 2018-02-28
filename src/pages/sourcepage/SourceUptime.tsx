@@ -91,7 +91,6 @@ export class SourceUpTime extends LoadingComponent.Component<{ summary: UpTimeDa
         try {
             const [sourceStatus, sourcePings] = await Promise.all([MonitoringService.getSourceStatus(source.id), MonitoringService.getUpTimeSummary(query, source.id)]);
             this.props.handleShowUpTime && this.props.handleShowUpTime(sourceStatus && sourcePings.length > 0);
-            console.log(sourceStatus && sourcePings.length > 0);
             this.props.handleShowEmptyGraph && this.props.handleShowEmptyGraph(!(sourceStatus && sourcePings.length > 0));
             return sortUpTimeSummary(formatUpTimeSummary({
                 summary: sourcePings,

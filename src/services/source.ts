@@ -238,7 +238,7 @@ export namespace source {
             body: query.json()
         }).then((result: any) => {
             if (result.status === 401) {
-                return {status: result.status, text: result.text};
+                return result;
             }
             return result.text();
         });

@@ -418,33 +418,34 @@ export class HeaderButton extends React.Component<HeaderButtonProps, any> {
 }
 
 async function allowTab(tab: string, props: any) {
-  switch (tab) {
-    case "Check Stats":
-    case "Check Logs": {
-      const currentSource = props.sources.find((source: any) => {
+    const currentSource = props.sources && props.sources.find((source: any) => {
         return source.value === props.source;
-      });
-      const query: LogQuery = new LogQuery({
+    });
+    const query: LogQuery = new LogQuery({
         source: (currentSource && currentSource.source) || {} as Source,
         startTime: moment().subtract(7, "days"), // change 7 for the right time span once implemented
         endTime: moment(),
         limit: 50
-      });
-      let endpoint;
-      return !!(await logService.getLogs(query, endpoint)).length;
+    });
+    switch (tab) {
+        case "Check Stats":
+            const hasLogs = !!(await logService.getLogs(query)).length;
+            return hasLogs || currentSource.source.validation_enabled || currentSource.source.monitoring_enabled;
+        case "Check Logs": {
+            return !!(await logService.getLogs(query)).length;
+        }
+        case "Audio Metrics": {// should we have this conditional tab as well?
+            const query: Query = new Query();
+            query.add(new SourceParameter(props.source));
+            query.add(new StartTimeParameter(moment().subtract(7, "days"))); // change 7 for the right time span once implemented
+            query.add(new EndTimeParameter(moment()));
+            try {
+                return !!(await logService.getAudioSessions(query)).audioSessions.length;
+            } catch (err) {
+                return false;
+            }
+        }
+        default:
+            return true;
     }
-    case "Audio Metrics": {// should we have this conditional tab as well?
-      const query: Query = new Query();
-      query.add(new SourceParameter(props.source));
-      query.add(new StartTimeParameter(moment().subtract(7, "days"))); // change 7 for the right time span once implemented
-      query.add(new EndTimeParameter(moment()));
-      try {
-        return !!(await logService.getAudioSessions(query)).audioSessions.length;
-      } catch (err) {
-        return false;
-      }
-    }
-    default:
-      return true;
-  }
 }
