@@ -1,8 +1,23 @@
 import * as React from "react";
 import {IconButton} from "react-toolbox";
+import Tooltip from "react-toolbox/lib/tooltip";
 
 const iconButtonTheme = require("../../themes/icon-button-validation.scss");
 const validationStyle = require("./ValidationResultComponentStyle.scss");
+
+class ReactDiv extends React.Component<any, any> {
+    constructor(props: any) {
+        super(props);
+    }
+
+    render () {
+        return (
+            <div {...this.props} />
+        );
+    }
+}
+
+const TooltipDiv = Tooltip(ReactDiv);
 
 interface ResultRow {
     icon: string;
@@ -74,11 +89,14 @@ export class ValidationResultComponent extends React.Component<ValidationResultC
                                 {
                                     (row.status !== "") ?
                                         (
-                                            <div key={`child_div1${index}`}>
+                                            <TooltipDiv key={`child_div1${index}`} tooltip={row.text} >
                                                 <IconButton className={iconButtonTheme[`${row.status}`]} primary={true}
                                                             theme={iconButtonTheme}
-                                                            icon={row.icon}/><span className={`${validationStyle.result_text} ${validationStyle[`${row.status}`]}`}>{row.text}</span>
-                                            </div>
+                                                            icon={row.icon}/>
+                                                <span className={`${validationStyle.result_text} ${validationStyle[`${row.status}`]}`}>
+                                                    {row.text}
+                                                </span>
+                                            </TooltipDiv>
                                         ) :
                                         (
                                             <div className={validationStyle.align_center} key={`child_div1${index}`}>
