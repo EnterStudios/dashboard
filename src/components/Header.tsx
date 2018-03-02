@@ -23,8 +23,6 @@ const TabMenuTheme = require("../themes/tab_menu_theme.scss");
 const TopBarTheme = require("../themes/topbar_theme.scss");
 const theme = require("../themes/autosuggest.scss");
 
-const globalWindow: any = typeof (window) !== "undefined" ? window : {location: {pathname: ""}};
-
 export interface Dropdownable {
   value: string;
   label: string;
@@ -97,8 +95,6 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
   }
 
   render() {
-    const currentLocation = globalWindow.location;
-    const isSourceListPage = /^\/dashboard\/skills\/?$/.test(currentLocation.pathname);
     return (
         <header className={this.classes()}>
             <div className={classNames("mdl-layout__header-row", TopBarTheme.gray_top_bar)} />
@@ -106,7 +102,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                 <Home
                     handleHomeClick={this.props.onHomeClicked}
                     showHome={this.props.displayHomeButton}/>
-                <div className={classNames(TopBarTheme.title)}>
+                <div onClick={this.props.onHomeClicked} className={classNames(TopBarTheme.title)}>
                     <h4>Bespoken Dashboard</h4>
                     {/*<span>-> Skills</span>
                     <span>-> Actions</span>
@@ -142,15 +138,10 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                     this.state && this.state.amazonFlow &&
                     <a onClick={this.props.onHomeClicked} className={classNames(TopBarTheme.back_to_site_link)}>{"<< Back to the site"}</a>
                 }
-                {
-                    (isSourceListPage || !this.props.isValidationPage) &&
-                    (
-                        <Title
-                            sources={this.props.sources}
-                            handleItemSelect={this.handleItemSelect}
-                            selectedSourceId={this.state.selectedSourceId}/>
-                    )
-                }
+                <Title
+                    sources={this.props.sources}
+                    handleItemSelect={this.handleItemSelect}
+                    selectedSourceId={this.state.selectedSourceId}/>
                 {
                     this.props.currentSourceId &&
                     (

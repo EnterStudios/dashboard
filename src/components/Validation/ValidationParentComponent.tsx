@@ -138,7 +138,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                             }
                         </Cell>
                         <Cell style={{position: "relative"}} col={5} hideTablet={true} hidePhone={true}>
-                            <TooltipButton className={buttonStyle.info_button} icon={"info"} tooltip={"Enable Monitoring and get notified instantly when there is a problem with your voice app."} />
+                            <TooltipButton className={buttonStyle.info_button} icon={"info"} tooltip={"Enable Monitoring and get notified instantly when there is a change in your validation results overtime."} />
                             {this.props && !this.props.vendorID && <TooltipButton className={buttonStyle.vendor_id_tooltip} onClick={redirectoToVendorIdpage} icon={"info"} tooltip={"Enter the vendor ID from your Amazon account at developer.amazon.com/mycid.html."} />}
                             <div className={`${buttonStyle.enable_monitoring} ${validationEnabledStyle}`} >
                                 <div>

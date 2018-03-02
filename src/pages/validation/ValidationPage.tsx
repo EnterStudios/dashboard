@@ -1,9 +1,9 @@
+import * as moment from "moment";
 import * as pusher from "pusher-js";
 import * as React from "react";
 import { connect } from "react-redux";
 import {replace} from "react-router-redux";
 import {Card, CardText, CardTitle} from "react-toolbox/lib/card";
-
 import {setLoading} from "../../actions/loading";
 import {getSources, setCurrentSource} from "../../actions/source";
 import {CodeSheet} from "../../components/CodeSheet";
@@ -11,10 +11,12 @@ import { Dimensions } from "../../components/Measure";
 import RightPanel from "../../components/RightPanel";
 import SourcePageTwoPane from "../../components/SourcePageTwoPane";
 import ValidationParentComponent from "../../components/Validation/ValidationParentComponent";
+import LogQuery from "../../models/log-query";
 import Source from "../../models/source";
 import {User, UserDetails} from "../../models/user";
 import { State } from "../../reducers";
 import auth from "../../services/auth";
+import logService from "../../services/log";
 import SourceService from "../../services/source";
 import { Location } from "../../utils/Location";
 
@@ -37,6 +39,7 @@ interface ValidationPageState {
     vendorID: string;
     vendorIDChanged: boolean;
     myHeight: number;
+    hasIntegrated: boolean;
 }
 
 interface ValidationPageProps {
@@ -110,6 +113,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
             vendorID: "",
             vendorIDChanged: false,
             myHeight: 0,
+            hasIntegrated: false,
         };
         this.onMeasure = this.onMeasure.bind(this);
         this.handleGetStarted = this.handleGetStarted.bind(this);
@@ -152,15 +156,27 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
     componentDidMount() {
         const self = this;
         const currentScript = (this.props.source && this.props.source.validation_script) || "";
-        auth.currentUserDetails()
-            .then((userDetails: UserDetails) => {
-                self.setState({...this.state,
-                    token: userDetails.silentEchoToken,
-                    vendorID: userDetails.vendorID,
-                    smAPIAccessToken: userDetails.smAPIAccessToken,
-                    script: currentScript,
-                });
+        auth.currentUserDetails().then((userDetails: UserDetails) => {
+            self.setState({
+                ...this.state,
+                token: userDetails.silentEchoToken,
+                vendorID: userDetails.vendorID,
+                smAPIAccessToken: userDetails.smAPIAccessToken,
+                script: currentScript,
             });
+            const query: LogQuery = new LogQuery({
+                source: this.props.source || {} as Source,
+                startTime: moment().subtract(7, "days"), // TODO: change 7 for the right time span once implemented
+                endTime: moment(),
+                limit: 50
+            });
+            return logService.getLogs(query);
+        }).then(logs => {
+            self.setState({
+                ...this.state,
+                hasIntegrated: logs && !!logs.length,
+            });
+        });
     }
 
     setupChannel(token: string, timestamp: number) {
@@ -375,9 +391,13 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                         handleMonitorEnabledCheckChange={this.handleMonitorEnabledCheckChange}
                     />
                 )}
-                {(
-                    <RightPanel handleGetStarted={this.handleGetStarted} />
-                )}
+                {
+                    !this.state.hasIntegrated ?
+                        (
+                            <RightPanel handleGetStarted={this.handleGetStarted}/>
+                        ) :
+                        <div/>
+                }
             </SourcePageTwoPane>
         );
     }

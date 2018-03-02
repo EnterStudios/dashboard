@@ -141,7 +141,7 @@ export default class SourceSelectorCreate extends React.Component<SourceSelector
                                 <span>{this.state.enableValidation ? "DISABLE" : "ENABLE"}</span>
                                 <span>MONITORING</span>
                             </div>
-                            <IconButton icon={"power_settings_new"} onClick={this.handleEnableValidation} />
+                            <IconButton disabled={true} icon={"power_settings_new"} onClick={this.handleEnableValidation} />
                         </div>
                         <IconButton className={SourceSelectorStyle.cancel_button} icon={"cancel"} onClick={this.handleCancelClick} />
                     </div>

@@ -59,7 +59,7 @@ describe("IntegrationSpokes", function () {
 
         it("Tests the enable live debugging, enable monitoring and enable proying checkbox exists.", function () {
             expect(wrapper.find(Checkbox)).to.have.length(4);
-            expect(wrapper.find(Checkbox).at(0)).to.have.prop("label", "Enable Monitoring");
+            expect(wrapper.find(Checkbox).at(0)).to.have.prop("label", "Outage Notification");
             expect(wrapper.find(Checkbox).at(0)).to.have.prop("checked", false);
             expect(wrapper.find(Checkbox).at(1)).to.have.prop("label", "Enable Proxying");
             expect(wrapper.find(Checkbox).at(1)).to.have.prop("checked", false);

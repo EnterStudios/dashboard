@@ -100,6 +100,7 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
     }
 
     handleItemDoubleClick () {
+        this.props.onClick();
         this.props.goTo(`/skills/${this.props.source.id}/`);
     }
 
@@ -188,7 +189,7 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
                                     <span>{this.state.enableValidation ? "DISABLE" : "ENABLE"}</span>
                                     <span>MONITORING</span>
                                 </div>
-                                <IconButton icon={"power_settings_new"} onClick={this.handleEnableValidation}/>
+                                <IconButton disabled={true} icon={"power_settings_new"} onClick={this.handleEnableValidation}/>
                             </div>
                         </div>
                         <div className={`${SourceSelectorItemStyle.validation_items_container} ${showValidationResultRows}`}>

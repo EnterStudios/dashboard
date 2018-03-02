@@ -308,7 +308,7 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
                 <Cell col={3}>
                     <Checkbox
                         theme={CheckboxTheme}
-                        label={"Enable Monitoring"}
+                        label={"Outage Notification"}
                         checked={monitor}
                         onChange={this.handleMonitorCheckChange}/>
                 </Cell>
