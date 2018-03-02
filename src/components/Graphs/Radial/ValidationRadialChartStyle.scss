@@ -1,0 +1,22 @@
+.container {
+    margin: 0;
+    padding: 0;
+    li {
+        list-style: none;
+        text-align: center;
+        width: 40%;
+        margin: auto;
+        color: #535E79;
+        span {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+            &+ span {
+                font-size: .9rem;
+                line-height: .9rem;
+                font-weight: normal;
+                color: #AFAFAF;
+            }
+        }
+    }
+}

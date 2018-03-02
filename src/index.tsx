@@ -18,6 +18,7 @@ import Login from "./frames/Login";
 import Source from "./models/source";
 import { FirebaseUser } from "./models/user";
 import AudioPage from "./pages/audioplayerpage/AudioPlayerPage";
+import ComponentsPage from "./pages/ComponentsPage";
 import IntegrationPage from "./pages/integration/StateIntegrationPage";
 import LoginPage from "./pages/LoginPage";
 import LogsPage from "./pages/logspage/ConvoPage";
@@ -170,6 +171,7 @@ const render = function () {
                         <Route path="/skills/:sourceId/settings" component={SettingsPage} />
                     </Route>
                     <Route path="/sources/link" component={SourcesLinkPage} />
+                    <Route path="/components" component={ComponentsPage} />
                     <Route path="/notFound" component={NotFoundPage} />
                     <Route path="*" component={NotFoundPage} />
                 </Route>
