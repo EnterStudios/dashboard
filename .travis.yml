@@ -2,17 +2,17 @@ sudo: false
 dist: trusty
 language: node_js
 node_js:
-  - "6"
+- '6'
 script: npm run coveralls
 cache:
   directories:
   - node_modules
   - typings/globals
 after_success:
-  - npm run deploy
-  - npm install typings -g
-  - typings install
-  - npm run build
+- npm run deploy
+- npm install typings -g
+- typings install
+- npm run build
 deploy:
   provider: script
   script: scripts/prod-deploy.sh
@@ -22,4 +22,4 @@ deploy:
     condition: "$TRAVIS_TAG =~ ^(prod|dev)-.*$"
 env:
   global:
-    secure: VzOTf/fa/FMCvQI92L9dAksiHlJ/IZenwd2vEiG0JnmBxMRZCqkJn00xKMinA014dOk/gMoQaTymQ6ZdC2dDI9pBcdmEUMIRtXpBMSCecgPZq+kpS1Uk6YqXcCDcOAphtAgP53NHLqjoIFq9LgT4mDJmTJOd0I3khCIU3njViBs74enbc2yy0EGAGcQ/jfZvvSFIXaOS/eaS7LE/Xct1Y6aucp+JBabmmTDSv1e4CXbpiHp0oKU9yvTpEYI7tDe9TXJD70zGOGjeQfJt6fyhqsW5V+oXjubMeKkqiTUbwN7u4BgeLqSsNSUfP9guJO2zDGCv9vxXQn1XdIZWcEmO2W35mpvHURkQ43QpHIkJvBqx25fK/s6riFTdisfdQQ7KsG/+JL6xEd0Plisjy85EbIzqqMh7XyJ5bMRIHALxsG2rGXy4QlTmsyqKEZipXxiklWsE/duxrXmbazqhUwOwNjpe3uN4sUa0yFEgqvoC+CygYC7ZqZ5SNkRt/wiR8AVaNwIoqNS43he30C3xnA6hHCJvaQ0uhZ+lOOxhYltFfNImO4kmVDvWt+dGN+qsJ7+/KwSALeQCmzYo0fumkbBZHL2Q9jTlANLmwX86fqjahfhGRHshORoOFJ7I+Z6D2KE4iXfmebakzy693/85y/6vmJEcj7TvPRRPg6GhxyXbc/4=
+    secure: ja1pnmFdRN/CUxhvBCWretIfvN5dJos4PgahLI+KQj4ubjBU2NetwDDX+AcPNNTunUvDAET7LnMY3+NVj1WiftYyeio4oSW4u4rRa66sRqrzmPpexu99JTN2msxY0Qv+S97bYw0h1zJ/39/ulyekV1H6Qel6M/HUSZh8I7Ay+ViaQf0KsHvLyhqlEsDhNhH7VnD7dH3OtJ3WmH8pYV9fxsDzeojtlcnhrWiq25Z3HD+OqWNxfx9Y6ZXl6/o7GHkDmsLhkwf4F9oSUN38qIG98lzPDNCUagTwzPDZpvhIbif6canlHjVeKgE6IMoE7722G9FDScTk1Ws65fvjuYmI/RI9rZ6SKtcPo2Fx1esd2en/r2Dy0Zi8nJcDC/gxhxQxROEYox/xC+m4gXN+lG+M4BbodJIj3rYz5jsjvFSrIJpVXXspBQyRyqYFsfJrFOgGslyJ3YGZcay9ynlx14V00Ad2UotTWYSBZB7dZ/0kAqDrUgd3YSZpFiL1iKB6D95I0MLGsGoPLu2Alob02mkirSTxU3h/qyD6qqhs6N3GIBqZrCYYm6Bn4dL3AnQm74G6gXOpYMV8XOv5Pg9pX1TvgMDUqFY/3i5d1QE1j6I9xdSSFPf/x/8mWWLQE+f3dp1c2ZIr280k8k0pDPdozImJeHdeORnxQAQioQSFw85v+uU=
