@@ -171,7 +171,7 @@ const render = function () {
                         <Route path="/skills/:sourceId/settings" component={SettingsPage} />
                     </Route>
                     <Route path="/sources/link" component={SourcesLinkPage} />
-                    <Route path="/components" component={ComponentsPage} />
+                    {process.env.NODE_ENV !== "production" && <Route path="/components" component={ComponentsPage} />}
                     <Route path="/notFound" component={NotFoundPage} />
                     <Route path="*" component={NotFoundPage} />
                 </Route>

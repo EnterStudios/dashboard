@@ -7,7 +7,7 @@ import { remoteservice } from "./remote-service";
 
 export namespace source {
 
-    const SOURCE_URL: string = process.env.SOURCE_URL
+    const SOURCE_URL: string = process.env.NODE_ENV === "production"
         ? process.env.SOURCE_URL
         : "https://source-api-dev.bespoken.tools/v1/";
     const NAME_GENERATING_URL: string = SOURCE_URL + "sourceId";

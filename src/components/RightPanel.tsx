@@ -14,10 +14,10 @@ export default class RightPanel extends React.Component<any, any> {
         return this.props && this.props.type && this.props.type === "sourceListPage" ?
             (
                 <a>
-                    <img src={"/images/right-sourcelist.jpg"}/>
+                    <img src={"https://bespoken.io/wp-content/uploads/2018/03/right-sourcelist.jpg"}/>
                     <div className={VendorPaneStyle.right_backdrop}/>
                     <div className={`${VendorPaneStyle.right_content} ${VendorPaneStyle.source_list}`}>
-                        <h3><strong>Did you know?</strong><img className={VendorPaneStyle.white_llama} src={"/images/llama.png"} alt="bespoken logo white" /></h3>
+                        <h3><strong>Did you know?</strong><img className={VendorPaneStyle.white_llama} src={"https://bespoken.io/wp-content/uploads/2018/03/llama.png"} alt="bespoken logo white" /></h3>
                         <h4>You can access <span>20+ more metrics</span></h4>
                         <ul>
                             <li>- Find errors in your <span>logs</span></li>
@@ -39,7 +39,7 @@ export default class RightPanel extends React.Component<any, any> {
             ) :
             (
                 <a>
-                    <img src={"/images/right-validation.jpg"}/>
+                    <img src={"https://bespoken.io/wp-content/uploads/2018/03/right-validation.jpg"}/>
                     <div className={VendorPaneStyle.right_backdrop}/>
                     <div className={VendorPaneStyle.right_content}>
                         <h3><strong>UNLEASH THE <u>BEAST!</u></strong></h3>

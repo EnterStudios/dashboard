@@ -174,13 +174,13 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
                                     this.state.sourceType === "HYBRID SOURCE" ?
                                         (
                                             <div className={SourceSelectorItemStyle.hybrid_source}>
-                                                <img src={"/images/amazon-alexa.png"} alt={"alexa icon"}/>
-                                                <img src={"/images/google-actions.png"} alt={"google action icon"}/>
+                                                <img src={"https://bespoken.io/wp-content/uploads/2018/03/amazon-alexa.png"} alt={"alexa icon"}/>
+                                                <img src={"https://bespoken.io/wp-content/uploads/2018/03/google-actions.png"} alt={"google action icon"}/>
                                             </div>
                                         ) :
                                         this.state.sourceType === "GOOGLE ACTION" ?
-                                            <img src={"/images/google-actions.png"} alt={"google action icon"}/> :
-                                            <img src={"/images/amazon-alexa.png"} alt={"alexa icon"}/>
+                                            <img src={"https://bespoken.io/wp-content/uploads/2018/03/google-actions.png"} alt={"google action icon"}/> :
+                                            <img src={"https://bespoken.io/wp-content/uploads/2018/03/amazon-alexa.png"} alt={"alexa icon"}/>
                                 )
                             }
                             <div className={SourceSelectorItemStyle.source_name}>{this.props.source.name}</div>
