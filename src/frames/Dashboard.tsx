@@ -136,7 +136,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
         this.props.setLoading(true);
         document.title = "Bespoken Dashboard"; // additional set title here because for some reason production is not getting the title correctly
         const {id, key} = this.props.location.query;
-        const goToCurrentSkill = () => this.props.goTo("/skills/" + id);
+        const goToCurrentSkill = () => this.props.goTo(`/skills/${id}/logs`);
         const goToSkills = () => this.props.goTo("/skills/");
         let redirectTo: () => void = goToSkills;
         if (id && key) {

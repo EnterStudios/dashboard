@@ -1,0 +1,19 @@
+.container {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    .item {
+        list-style: none;
+        span {
+            display: block;
+            color: #969696;
+            + span {
+                color: #425863;
+                margin-top: 20px;
+                font-size: 4rem;
+                line-height: 4rem;
+            }
+        }
+    }
+}

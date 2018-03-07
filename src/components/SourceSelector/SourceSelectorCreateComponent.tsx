@@ -152,7 +152,7 @@ export default class SourceSelectorCreate extends React.Component<SourceSelector
                 <div className={`${SourceSelectorStyle.item} ${SourceSelectorStyle.create_skill}`}>
                     <IconButton className={ButtonTheme.create_skill} theme={ButtonTheme} primary={true} icon={"add"}
                                 onClick={this.handleCreateClick}/>
-                    <div className={SourceSelectorStyle.create_skill_text}>Create a new skill</div>
+                    <div className={SourceSelectorStyle.create_skill_text}>Create new skill or action</div>
                 </div>
             );
     }

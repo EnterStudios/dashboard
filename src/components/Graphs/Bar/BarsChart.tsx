@@ -2,6 +2,8 @@ import * as React from "react";
 
 const { Bar, BarChart, Legend, ResponsiveContainer } = require("recharts");
 
+const BarsChartStyle = require("./BarsChartStyle.scss");
+
 interface BarsChartProps {
     data: any[];
     bars?: any[];
@@ -30,12 +32,14 @@ class BarsChart extends React.Component<BarsChartProps, BarsChartState> {
     render() {
         const renderLegend = (props: any) => {
             const { payload } = props;
-
             return (
-                <ul>
+                <ul className={BarsChartStyle.container}>
                     {
                         payload.map((entry: any, index: any) => (
-                            <li key={`item-${index}`}>{entry.value}</li>
+                            <li className={BarsChartStyle.item} key={`item-${index}`}>
+                                <span>{entry.payload.title}</span>
+                                <span>{entry.payload.average}</span>
+                            </li>
                         ))
                     }
                 </ul>
@@ -47,7 +51,7 @@ class BarsChart extends React.Component<BarsChartProps, BarsChartState> {
                     {
                         BarsChart.createBars(this.props)
                     }
-                    <Legend content={renderLegend} />
+                    <Legend content={renderLegend} verticalAlign={"top"} align={"center"} />
                 </BarChart>
             </ResponsiveContainer>
         );

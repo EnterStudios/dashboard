@@ -422,7 +422,7 @@ async function allowTab(tab: string, props: any) {
     switch (tab) {
         case "Check Stats":
             const hasLogs = !!(await logService.getLogs(query)).length;
-            return hasLogs || currentSource.source.validation_enabled || currentSource.source.monitoring_enabled;
+            return hasLogs || currentSource.source.validation_enabled || currentSource.source.monitoring_enabled || currentSource.source.proxy_enabled;
         case "Check Logs": {
             return !!(await logService.getLogs(query)).length;
         }
