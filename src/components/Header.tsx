@@ -84,9 +84,6 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
   }
 
   handleItemSelect = (value: string) => {
-    this.state.selectedSourceId = value;
-
-    // Now find the source and pass it back out
     for (let item of this.props.sources) {
       if (item.value === value && this.props.onSourceSelected) {
         this.props.onSourceSelected(item);
@@ -95,6 +92,8 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
   }
 
   render() {
+    // autosuggest component remembers the focus so im hacking it by regenerating the key and making react think is a new component
+    const random = Math.floor((Math.random() * 10) + 1);
     return (
         <header className={this.classes()}>
             <div className={classNames("mdl-layout__header-row", TopBarTheme.gray_top_bar)} />
@@ -135,13 +134,15 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
             </div>
             <div className={classNames("mdl-layout__header-row", TopBarTheme.container, TopBarTheme.bg_white)}>
                 {
-                    this.state && this.state.amazonFlow &&
-                    <a onClick={this.props.onHomeClicked} className={classNames(TopBarTheme.back_to_site_link)}>{"<< Back to the site"}</a>
+                    this.props.sources && this.props.sources.length &&
+                    (
+                        <Title
+                            key={`title${random}`}
+                            sources={this.props.sources}
+                            handleItemSelect={this.handleItemSelect}
+                            selectedSourceId={this.state.selectedSourceId}/>
+                    )
                 }
-                <Title
-                    sources={this.props.sources}
-                    handleItemSelect={this.handleItemSelect}
-                    selectedSourceId={this.state.selectedSourceId}/>
                 {
                     this.props.currentSourceId &&
                     (

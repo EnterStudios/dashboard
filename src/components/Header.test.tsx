@@ -111,22 +111,6 @@ describe("Header", function () {
         });
     });
 
-    describe("AmazonFlow property", function () {
-
-        it("displays a Back to the site link when the property is set to true", function () {
-            const wrapper = shallow(<Header amazonFlow={true} />);
-            const linkWrapper = wrapper.find("a");
-            expect(linkWrapper).to.have.length(1);
-            expect(linkWrapper.text()).to.equal("<< Back to the site");
-        });
-
-        it("does not display a Back to the site link when the property is set to false", function () {
-            const wrapper = shallow(<Header amazonFlow={false} />);
-            const linkWrapper = wrapper.find("a");
-            expect(linkWrapper).to.have.length(0);
-        });
-    });
-
     describe("with one source", function () {
         const sources = [{ label: "name", value: "id", source: {id: "id"} }];
         const wrapper = shallow(<Header isValidationPage={false} sources={[{ label: "name", value: "id", source: {id: "id"} }]} />);

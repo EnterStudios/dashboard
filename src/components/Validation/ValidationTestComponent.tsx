@@ -29,6 +29,7 @@ export class ValidationTestComponent extends React.Component<ValidationTestCompo
             testRows: [],
         };
 
+        this.buildRows = this.buildRows.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleExpectedChange = this.handleExpectedChange.bind(this);
         this.handleAddRow = this.handleAddRow.bind(this);
@@ -60,19 +61,28 @@ export class ValidationTestComponent extends React.Component<ValidationTestCompo
         if (this.props.script &&
             this.props.script.length &&
             (prevProps.script !== this.props.script) &&
-            (this.state.testRows.length === 1 && this.state.testRows[0].input === "" && this.state.testRows[0].expected === "")
-        ) {
-            const rows = this.props.script.split(/\r?\n/);
-            if (rows && rows.length) {
-                const testRows = rows.map((row, index) => {
-                    const stripedRow = row.replace(/"/g, "");
-                    const [input, expected] = stripedRow.split(/: /);
-                    return {input, expected, id: index};
-                });
-                this.setState(() => ({
-                    testRows: testRows,
-                }));
-            }
+            (this.state.testRows.length === 1 && this.state.testRows[0].input === "" && this.state.testRows[0].expected === "")) {
+            this.buildRows(this.props.script);
+        }
+    }
+
+    componentWillReceiveProps (nextProps: ValidationTestComponentProps) {
+        if (this.props.script !== nextProps.script) {
+            this.buildRows(nextProps.script);
+        }
+    }
+
+    buildRows (script: string) {
+        const rows = script.split(/\r?\n/);
+        if (rows && rows.length) {
+            const testRows = rows.map((row, index) => {
+                const stripedRow = row.replace(/"/g, "");
+                const [input, expected] = stripedRow.split(/: /);
+                return {input: input || "", expected: expected || "", id: index};
+            });
+            this.setState(() => ({
+                testRows: testRows,
+            }));
         }
     }
 

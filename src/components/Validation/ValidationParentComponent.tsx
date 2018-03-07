@@ -128,7 +128,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                     <Grid>
                         <Cell col={7} tablet={8} phone={6}>
                             {
-                                this.props && this.props.source && this.props.source.id &&
+                                this.props.source && this.props.source.id &&
                                 (
                                     <Title
                                         sources={this.props.sources}
@@ -174,7 +174,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                     </Grid>
                 </Cell>
                 <Cell className={validationStyle.main_container} col={12}>
-                    <ValidationTestComponent script={this.props.script} handleScriptChange={this.props.handleScriptChange} />
+                    <ValidationTestComponent script={this.props.script || ""} handleScriptChange={this.props.handleScriptChange} />
                     <ValidationResultComponent unparsedHtml={this.props.validationResults} />
                 </Cell>
                 <Cell col={12}>

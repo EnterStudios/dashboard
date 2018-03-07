@@ -314,7 +314,7 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
                 </Cell>
                 <Cell col={9}/>
                 <Cell col={12}>
-                    <p>“Enable Monitoring” will:</p>
+                    <p>Enable “Outage Notification” will:</p>
                     <ol>
                         <li>Ping service at one-minute interval</li>
                         <li>Notify email address registered if the service does not respond</li>
