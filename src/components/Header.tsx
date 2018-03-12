@@ -11,6 +11,7 @@ import LogQuery from "../models/log-query";
 import Query, { EndTimeParameter, SourceParameter, StartTimeParameter } from "../models/query";
 import Source from "../models/source";
 import logService from "../services/log";
+import sourceService from "../services/source";
 import { Location } from "../utils/Location";
 
 import Noop from "../utils/Noop";
@@ -45,6 +46,7 @@ export interface HeaderProps {
   className?: string;
   isValidationPage?: boolean;
   amazonFlow?: boolean;
+  getSources?: () => Promise<Source[]>;
 }
 
 export interface HeaderState {
@@ -150,7 +152,8 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                             source={this.props.currentSourceId}
                             sources={this.props.sources}
                             pageButtons={this.props.pageButtons}
-                            onPageSelected={this.props.onPageSelected}/>
+                            onPageSelected={this.props.onPageSelected}
+                            getSources={this.props.getSources}/>
                     )
                 }
                 <div className="mdl-layout-spacer"/>
@@ -290,6 +293,7 @@ interface PageSwapProps {
   onPageSelected?: (button: PageButton) => void | undefined;
   style?: any;
   getLogs?: (query: LogQuery, location?: Location) => Promise<Log[]>;
+  getSources?: () => Promise<Source[]>;
 }
 
 interface PageSwapState {
@@ -410,21 +414,30 @@ export class HeaderButton extends React.Component<HeaderButtonProps, any> {
 }
 
 async function allowTab(tab: string, props: any) {
-    const currentSource = props.sources && props.sources.find((source: any) => {
+    const hasAnySourceIntegrated = props && props.sources && props.sources.some((source: any) => source.source.hasIntegrated);
+    const dropdownableSource = props && props.sources && props.sources.find((source: any) => {
         return source.value === props.source;
     });
-    const query: LogQuery = new LogQuery({
-        source: (currentSource && currentSource.source) || {} as Source,
-        startTime: moment().subtract(7, "days"), // change 7 for the right time span once implemented
-        endTime: moment(),
-        limit: 50
-    });
+    const {source} = dropdownableSource || {source: {}};
+    if (!hasAnySourceIntegrated) {
+        const query: LogQuery = new LogQuery({
+            source,
+            startTime: moment().subtract(7, "days"), // Using 7 days since now we check for all sources and use a flag
+            endTime: moment(),
+            limit: 1
+        });
+        const hasLogs = !!(await logService.getLogs(query)).length;
+        if (hasLogs) {
+            await sourceService.updateSourceObj({...source, hasIntegrated: true});
+            await props.getSources();
+        }
+    }
     switch (tab) {
-        case "Check Stats":
-            const hasLogs = !!(await logService.getLogs(query)).length;
-            return hasLogs || currentSource.source.validation_enabled || currentSource.source.monitoring_enabled || currentSource.source.proxy_enabled;
+        case "Check Stats": {
+            return hasAnySourceIntegrated || source.validation_enabled || source.monitoring_enabled || source.proxy_enabled;
+        }
         case "Check Logs": {
-            return !!(await logService.getLogs(query)).length;
+            return hasAnySourceIntegrated;
         }
         case "Audio Metrics": {// should we have this conditional tab as well?
             const query: Query = new Query();

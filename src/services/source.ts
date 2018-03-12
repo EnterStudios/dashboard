@@ -206,6 +206,7 @@ export namespace source {
             sourceToSend.aws_secret_access_key = source.aws_secret_access_key || "";
             sourceToSend.customJson = source.customJson || "";
             sourceToSend.validation_script = source.validation_script || "";
+            sourceToSend.hasIntegrated = source.hasIntegrated || "";
             db.ref().child("/sources/" + source.id)
                 .update(sourceToSend,
                 (err: Error): firebase.Promise<any> => {

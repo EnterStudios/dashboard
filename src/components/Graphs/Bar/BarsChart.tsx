@@ -38,7 +38,8 @@ class BarsChart extends React.Component<BarsChartProps, BarsChartState> {
                         payload.map((entry: any, index: any) => (
                             <li className={BarsChartStyle.item} key={`item-${index}`}>
                                 <span>{entry.payload.title}</span>
-                                <span>{entry.payload.average}</span>
+                                {entry.payload.subtitle && <span>{entry.payload.subtitle}</span>}
+                                <span className={`${BarsChartStyle.number} ${entry.payload.subtitle ? BarsChartStyle.subtitle_margin : ""}`}>{entry.payload.average}</span>
                             </li>
                         ))
                     }

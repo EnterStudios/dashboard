@@ -222,6 +222,12 @@ describe("Header", function () {
             { icon: "home", name: "heeyyooo", tooltip: "home tooltip" },
             { icon: "away", name: "fancy", tooltip: "away toolip" }
         ];
+        const sources = [
+            {label: "name", value: "id", source: {id: "id", hasIntegrated: true}},
+            {label: "name1", value: "id1", source: {id: "id1"}},
+            {label: "name2", value: "id2", source: {id: "id2"}},
+            {label: "name3", value: "id3", source: {id: "id3"}},
+        ];
 
         let onPageSelected: sinon.SinonStub;
 
@@ -236,7 +242,7 @@ describe("Header", function () {
         });
 
         it("Tests the header passes the appropriate props to the page swap", function () {
-            const wrapper = shallow(<Header pageButtons={pages} onPageSelected={onPageSelected} currentSourceId={"12345"} />);
+            const wrapper = shallow(<Header pageButtons={pages} onPageSelected={onPageSelected} currentSourceId={"12345"} sources={sources} />);
             const pageswap = wrapper.find(PageSwap);
             expect(pageswap.prop("pageButtons")).to.deep.equal(pages);
             expect(pageswap.prop("onPageSelected")).to.equal(onPageSelected);
@@ -253,7 +259,7 @@ describe("Header", function () {
             ];
 
             beforeEach(function(done) {
-                wrapper = shallow(<PageSwap pageButtons={pages} onPageSelected={onPageSelected} />);
+                wrapper = shallow(<PageSwap pageButtons={pages} onPageSelected={onPageSelected} sources={sources} />);
                 setTimeout(() => {
                     done();
                 }, 1000);

@@ -9,12 +9,12 @@ import {getSources} from "../actions/source";
 import AmazonVendorPane from "../components/AmazonVendorPane";
 import List from "../components/List/List";
 import ListItem from "../components/List/ListItem";
+import SourceListGlobalStats from "../components/SourceSelector/SourceSelectorGlobalStats";
 import SourceSelector from "../components/SourceSelector/SourceSelectorParentComponent";
 import TwoPane from "../components/TwoPane";
 import Source from "../models/source";
 import { User } from "../models/user";
 import { State } from "../reducers";
-
 import WelcomePage from "./WelcomePage";
 
 const SourcePagePaneStyle = require("../themes/amazon_pane.scss");
@@ -75,12 +75,53 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
         setLoading: undefined,
     };
 
+    constructor(props: SourceListPageProps) {
+        super(props);
+
+        this.handleGotoIntegration = this.handleGotoIntegration.bind(this);
+    }
+
+    handleGotoIntegration () {
+        this.props.goTo("/skills/" + this.props.source.id + "/integration");
+    }
+
     render() {
+        const hasAnySourceIntegrated = this.props.sources && this.props.sources.some((source: Source) => source.hasIntegrated);
         const leftSide = <SourceSelector />;
 
         let rightSide = (
             <div className={SourcePagePaneStyle.right_container}>
-                <WelcomePage source={this.props.source} goTo={this.props.goTo} handleLoadingChange={this.props.setLoading} getSources={this.props.getSources} />
+                {
+                    // TODO: provisional condition for production vs dev right panel remove once tested and approved
+                    process.env.NODE_ENV !== "production" ?
+                        (
+                            !hasAnySourceIntegrated ?
+                                (
+                                    <WelcomePage source={this.props.source} goTo={this.props.goTo}
+                                                 handleLoadingChange={this.props.setLoading}
+                                                 getSources={this.props.getSources}/>
+                                ) :
+                                (
+                                    <SourceListGlobalStats setLoading={this.props.setLoading} source={this.props.source}
+                                                           startDate={moment().subtract(7, "days")} endDate={moment()}/>
+                                )
+                        )
+                        :
+                        (
+                            !hasAnySourceIntegrated ?
+                                (
+                                    <WelcomePage source={this.props.source} goTo={this.props.goTo}
+                                                 handleLoadingChange={this.props.setLoading}
+                                                 getSources={this.props.getSources}/>
+                                ) :
+                                (
+                                    <div className={SourcePagePaneStyle.integrated_preview}>
+                                        <div>we are updgrading with new cool charts</div>
+                                        <a href={"#"} onClick={this.handleGotoIntegration}>go to integration page</a>
+                                    </div>
+                                )
+                        )
+                }
             </div>
         );
 

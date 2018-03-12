@@ -116,19 +116,20 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
             hasIntegrated: false,
         };
         this.onMeasure = this.onMeasure.bind(this);
-        this.handleGetStarted = this.handleGetStarted.bind(this);
-        this.handleScriptChange = this.handleScriptChange.bind(this);
-        this.handleTokenChange = this.handleTokenChange.bind(this);
-        this.handleMonitorEnabledCheckChange = this.handleMonitorEnabledCheckChange.bind(this);
         this.handleRun = this.handleRun.bind(this);
-        this.handleDialogToggle = this.handleDialogToggle.bind(this);
-        this.handleHelpChange = this.handleHelpChange.bind(this);
-        this.lastScriptKey = this.lastScriptKey.bind(this);
         this.setupChannel = this.setupChannel.bind(this);
-        this.handleVendorIDChange = this.handleVendorIDChange.bind(this);
+        this.lastScriptKey = this.lastScriptKey.bind(this);
+        this.handleGetStarted = this.handleGetStarted.bind(this);
+        this.handleHelpChange = this.handleHelpChange.bind(this);
+        this.handleTokenChange = this.handleTokenChange.bind(this);
+        this.handleDialogToggle = this.handleDialogToggle.bind(this);
+        this.handleScriptChange = this.handleScriptChange.bind(this);
         this.handleGetTokenClick = this.handleGetTokenClick.bind(this);
         this.handleSnackbarClick = this.handleSnackbarClick.bind(this);
         this.handleSelectedSource = this.handleSelectedSource.bind(this);
+        this.handleVendorIDChange = this.handleVendorIDChange.bind(this);
+        this.handleMonitorEnabledCheckChange = this.handleMonitorEnabledCheckChange.bind(this);
+        this.handleShowSnackbarEnableMonitoring = this.handleShowSnackbarEnableMonitoring.bind(this);
     }
 
     onMeasure(dimensions: Dimensions) {
@@ -335,6 +336,20 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
         redirect();
     }
 
+    handleShowSnackbarEnableMonitoring() {
+        this.setState(prevState => ({
+            ...prevState,
+            snackbarLabel: (
+                <div>
+                    You must first enter your vendor ID - <a href="https://developer.amazon.com/mycid.html"
+                                                             target="_blank">click here</a> to get it, and your
+                    validation token <a href={"#"} onClick={this.handleGetTokenClick}>click here</a> to get it
+                </div>
+            ),
+            showSnackbar: true
+        }));
+    }
+
     handleSnackbarClick() {
         this.setState({...this.state, showSnackbar: false});
     }
@@ -389,6 +404,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                         handleHelpChange={this.handleHelpChange}
                         handleDialogToggle={this.handleDialogToggle}
                         handleMonitorEnabledCheckChange={this.handleMonitorEnabledCheckChange}
+                        handleShowSnackbarEnableMonitoring={this.handleShowSnackbarEnableMonitoring}
                     />
                 )}
                 {

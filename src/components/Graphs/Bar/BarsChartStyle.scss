@@ -8,11 +8,15 @@
         span {
             display: block;
             color: #969696;
-            + span {
+            font-size: 1.3rem;
+            &.number {
                 color: #425863;
                 margin-top: 20px;
                 font-size: 4rem;
                 line-height: 4rem;
+                &.subtitle_margin {
+                    margin-top: 0;
+                }
             }
         }
     }
