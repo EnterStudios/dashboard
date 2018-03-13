@@ -115,10 +115,11 @@ export class SourceEvents extends LoadingComponent.Component<LogService.SourceSt
     }
 
     startLoading(props: SourceEventsProps): Thenable<LogService.SourceStats> {
+        const { source, startDate, endDate } = props;
         const query: Query = new Query();
-        query.add(new SourceParameter(props.source));
-        query.add(new StartTimeParameter(props.startDate));
-        query.add(new EndTimeParameter(props.endDate));
+        query.add(new SourceParameter(source));
+        query.add(new StartTimeParameter(startDate));
+        query.add(new EndTimeParameter(endDate));
         return LogService.getSourceSummary(query);
     }
 
