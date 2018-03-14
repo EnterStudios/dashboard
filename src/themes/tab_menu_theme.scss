@@ -4,7 +4,7 @@
     text-indent: 25px;
     background-color: #EFF3F6;
     margin-right: 2px;
-    padding: 0 55px;
+    padding: 0 40px;
     color: #93979A;
     text-transform: none;
     position: relative;
@@ -31,7 +31,7 @@
         height: 45px;
         position: absolute;
         top: 10px;
-        left: 30px;
+        left: 25px;
     }
 }
 
@@ -44,7 +44,7 @@
 }
 
 .pointer {
-    background-color: $color-primary;
+    background-color: #EAB53F;
     top: 0.2rem!important;
     height: 4px;
 }

@@ -109,17 +109,9 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         // adding this to allow user to disable monitoring even if he doesn't have vendor or token
         // this.state.enableValidation means is already active so handleEnableValidation will disable it
         if ((this.props.token && this.props.vendorID) || this.state.enableValidation) {
-            const scriptIsSaved = this.props && this.props.source && (this.props.script === this.props.source.validation_script);
-            if (scriptIsSaved) {
-                const validation_enabled = !this.state.enableValidation;
-                const sourceToUpdate = {...this.props.source, validation_enabled};
-                await this.updateSourceObject(sourceToUpdate);
-            } else {
-                this.setState( (prevState) => ({
-                    ...prevState,
-                    showMessage: true,
-                }));
-            }
+            const validation_enabled = !this.state.enableValidation;
+            const sourceToUpdate = {...this.props.source, validation_enabled, validation_script: this.props.script};
+            await this.updateSourceObject(sourceToUpdate);
         } else {
             this.props.handleShowSnackbarEnableMonitoring();
         }

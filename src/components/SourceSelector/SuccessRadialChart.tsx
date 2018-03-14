@@ -4,16 +4,13 @@ import ProgressBar from "react-toolbox/lib/progress_bar";
 import {Grid} from "../../components/Grid";
 import * as LoadingComponent from "../../components/LoadingComponent";
 import Query, {
-    EndTimeParameter,
-    FillGapsParameter,
-    GranularityParameter,
-    SourceParameter,
-    StartTimeParameter,
+    EndTimeValueParameter,
+    StartTimeValueParameter,
 } from "../../models/query";
 import Source from "../../models/source";
-import LogService from "../../services/log";
+import MonitoringService from "../../services/monitoring";
 import SourceUtils from "../../utils/Source";
-import BarsChart from "../Graphs/Bar/BarsChart";
+import RadialChart from "../Graphs/Radial/ValidationRadialChart";
 
 interface DailyEventsBarChartProps extends LoadingComponent.LoadingComponentProps {
     source: Source;
@@ -22,6 +19,7 @@ interface DailyEventsBarChartProps extends LoadingComponent.LoadingComponentProp
 }
 
 interface DailyEventsBarChartState extends LoadingComponent.LoadingComponentState<any> {
+    successRatio: any;
 }
 
 export class DailyEventsBarChart extends LoadingComponent.Component<any, DailyEventsBarChartProps, DailyEventsBarChartState> {
@@ -40,21 +38,16 @@ export class DailyEventsBarChart extends LoadingComponent.Component<any, DailyEv
         const { source, startDate, endDate } = this.props;
         if (!source) return;
         const query: Query = new Query();
-        query.add(new SourceParameter(source));
-        query.add(new StartTimeParameter(startDate));
-        query.add(new EndTimeParameter(endDate));
-        query.add(new GranularityParameter("hour"));
-        query.add(new FillGapsParameter(true));
-        let formatedData: any;
-        let dailyEventsAverage;
+        query.add(new EndTimeValueParameter(startDate.valueOf()));
+        query.add(new StartTimeValueParameter(endDate.valueOf()));
+        let successRatio: any;
         try {
-            const timeSummary = await LogService.getTimeSummary(query);
-            dailyEventsAverage = timeSummary.buckets.reduce((acum: any, bucket: any) => acum + (bucket.count / timeSummary.buckets.length), 0);
-            formatedData = timeSummary.buckets;
+            const monitorSummary = await MonitoringService.getUpTimeSummary(query, source.id);
+            successRatio = (monitorSummary.filter(item => item.status === "up").length / monitorSummary.length) * 100;
         } catch (err) {
-            formatedData = [];
+            successRatio = 0;
         }
-        this.mapState({summary: formatedData, dailyEventsAverage});
+        this.mapState({successRatio});
     }
 
     shouldUpdate(oldProps: DailyEventsBarChartProps, newProps: DailyEventsBarChartProps) {
@@ -75,24 +68,19 @@ export class DailyEventsBarChart extends LoadingComponent.Component<any, DailyEv
         const { source, startDate, endDate } = this.props;
         if (!source) return;
         const query: Query = new Query();
-        query.add(new SourceParameter(source));
-        query.add(new StartTimeParameter(startDate));
-        query.add(new EndTimeParameter(endDate));
-        query.add(new GranularityParameter("hour"));
-        query.add(new FillGapsParameter(true));
-        let formatedData: any;
-        let dailyEventsAverage;
+        query.add(new StartTimeValueParameter(startDate.valueOf()));
+        query.add(new EndTimeValueParameter(endDate.valueOf()));
+        let successRatio: any;
         try {
-            const timeSummary = await LogService.getTimeSummary(query);
-            dailyEventsAverage = timeSummary.buckets.reduce((acum: any, bucket: any) => acum + (bucket.count / timeSummary.buckets.length), 0);
-            formatedData = timeSummary.buckets;
+            const monitorSummary = await MonitoringService.getUpTimeSummary(query, source.id);
+            successRatio = (monitorSummary.filter(item => item.status === "up").length / monitorSummary.length) * 100;
         } catch (err) {
-            formatedData = [];
+            successRatio = 0;
         }
-        return {summary: formatedData, dailyEventsAverage};
+        return {successRatio};
     }
 
-    map(data: any[]): any[] {
+    map(data: MonitoringService.UpTimeSummary[]): MonitoringService.UpTimeSummary[] {
         return data;
     }
 
@@ -102,21 +90,15 @@ export class DailyEventsBarChart extends LoadingComponent.Component<any, DailyEv
 
     render() {
         const {data} = this.state;
-        if (!data || !data.summary) {
+        if (!data || !data.successRatio) {
             return (
-               <Grid className="graph-loader">
+               <Grid style={{margin: 0, marginLeft: 200}} className="graph-loader">
                     <ProgressBar className="graph-loader" type="circular" mode="indeterminate" />
                 </Grid>
             );
         }
         return (
-            <BarsChart
-                data={data.summary}
-                bars={[{
-                    dataKey: "count",
-                    title: "Daily Events",
-                    average: data.dailyEventsAverage.toFixed(2)
-                }]}/>
+            <RadialChart successRatio={data.successRatio} />
         );
     }
 }
