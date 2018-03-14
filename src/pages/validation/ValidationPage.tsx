@@ -123,6 +123,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
         this.handleHelpChange = this.handleHelpChange.bind(this);
         this.handleTokenChange = this.handleTokenChange.bind(this);
         this.handleDialogToggle = this.handleDialogToggle.bind(this);
+        this.updateSourceObject = this.updateSourceObject.bind(this);
         this.handleScriptChange = this.handleScriptChange.bind(this);
         this.handleGetTokenClick = this.handleGetTokenClick.bind(this);
         this.handleSnackbarClick = this.handleSnackbarClick.bind(this);
@@ -226,12 +227,21 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
         this.setState({...this.state, monitorEnabled: value});
     }
 
+    async updateSourceObject (source: Source) {
+        this.props.setLoading(true);
+        await SourceService.updateSourceObj(source);
+        const updatedSource = await SourceService.getSourceObj(this.props.source.id);
+        await this.props.getSources();
+        await this.props.setSource(updatedSource);
+        this.props.setLoading(false);
+    }
+
     handleRun(e: any) {
         e.preventDefault();
         const self = this;
         this.setState((prevState: any) => {
             return {...self.state, loadingValidationResults: true};
-        }, () => {
+        }, async () => {
             const validateSource = () => {
                 const timestamp = Date.now();
                 self.setupChannel(this.state.token, timestamp);
@@ -268,6 +278,8 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                         });
                     });
             };
+            const sourceToUpdate = {...this.props.source, validation_script: this.state.script};
+            await this.updateSourceObject(sourceToUpdate);
             if (this.state.tokenChanged || this.state.vendorIDChanged) {
                 const props: any = {};
                 if (this.state.tokenChanged) {

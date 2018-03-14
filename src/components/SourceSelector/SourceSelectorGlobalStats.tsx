@@ -1,10 +1,10 @@
 import * as moment from "moment";
 import * as React from "react";
-import RadialBarChart from "../../components/Graphs/Radial/ValidationRadialChart";
 import DailyEvents from "../../components/SourceSelector/DailyEventsBarChart";
 import ResponseTime from "../../components/SourceSelector/ResponseTimeBarChart";
 import Source from "../../models/source";
 import SourceStats from "./SourceSelectorEventStats";
+import SuccessRadialChart from "./SuccessRadialChart";
 
 const GlobalStatsStyle = require("./SourceSelectorGlobalStatsStyle.scss");
 
@@ -32,7 +32,7 @@ export default class SourceSelectorGlobalStats extends React.Component<SourceSel
             <div className={GlobalStatsStyle.container}>
                 <div className={GlobalStatsStyle.row}>
                     <div className={GlobalStatsStyle.radial}>
-                        <RadialBarChart successRatio={100} />
+                        <SuccessRadialChart source={this.props.source} startDate={this.props.startDate} endDate={this.props.endDate} />
                     </div>
                     <div className={GlobalStatsStyle.stats}>
                         <SourceStats selectedEntries={["stats"]} source={this.props.source} startDate={this.props.startDate} endDate={this.props.endDate} />

@@ -185,7 +185,7 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
                             }
                             <div className={SourceSelectorItemStyle.source_name}>{this.props.source.name}</div>
                             <div className={`${SourceSelectorItemStyle.enable_monitoring} ${validationEnabledStyle}`}>
-                                <div>
+                                <div style={{display: "none"}}>
                                     <span>{this.state.enableValidation ? "DISABLE" : "ENABLE"}</span>
                                     <span>MONITORING</span>
                                 </div>
