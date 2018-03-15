@@ -116,8 +116,8 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
                                 ) :
                                 (
                                     <div className={SourcePagePaneStyle.integrated_preview}>
-                                        <div>we are updgrading with new cool charts</div>
-                                        <a href={"#"} onClick={this.handleGotoIntegration}>go to integration page</a>
+                                        <div><strong>Coming Soon to Your Logs</strong><br />New charts and graphs</div>
+                                        <a href={"#"} onClick={this.handleGotoIntegration}>Go to integration page</a>
                                     </div>
                                 )
                         )
