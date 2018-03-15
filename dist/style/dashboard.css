@@ -1029,7 +1029,7 @@
   text-indent: 25px;
   background-color: #EFF3F6;
   margin-right: 2px;
-  padding: 0 55px;
+  padding: 0 40px;
   color: #93979A;
   text-transform: none;
   position: relative;
@@ -1049,7 +1049,7 @@
     height: 45px;
     position: absolute;
     top: 10px;
-    left: 30px; }
+    left: 25px; }
 
 .tab_menu_theme__navigation___1_jQi {
   box-shadow: none; }
@@ -1058,7 +1058,7 @@
   min-height: 64px; }
 
 .tab_menu_theme__pointer___2umCF {
-  background-color: #75bfca;
+  background-color: #EAB53F;
   top: 0.2rem !important;
   height: 4px; }
 
@@ -2445,6 +2445,24 @@ no_padding_top {
 @media (max-width: 479px) {
   .datepicker-bespoken-end__label___49FDk::after {
     left: 156%; } }
+.BarsChartStyle__container___3tRIB {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  text-align: center; }
+  .BarsChartStyle__container___3tRIB .BarsChartStyle__item___1YyGo {
+    list-style: none; }
+    .BarsChartStyle__container___3tRIB .BarsChartStyle__item___1YyGo span {
+      display: block;
+      color: #969696;
+      font-size: 1.3rem; }
+      .BarsChartStyle__container___3tRIB .BarsChartStyle__item___1YyGo span.BarsChartStyle__number___1Sqi6 {
+        color: #425863;
+        margin-top: 20px;
+        font-size: 4rem;
+        line-height: 4rem; }
+        .BarsChartStyle__container___3tRIB .BarsChartStyle__item___1YyGo span.BarsChartStyle__number___1Sqi6.BarsChartStyle__subtitle_margin___Pz8zg {
+          margin-top: 0; }
 .ValidationRadialChartStyle__container___2xcZe {
   margin: 0;
   padding: 0; }
@@ -7399,6 +7417,16 @@ no_padding_top {
     position: absolute;
     top: -50px;
     max-width: 90px; }
+  .amazon_pane__right_container___1YmWn .amazon_pane__integrated_preview___2-2E8 {
+    text-align: center; }
+    .amazon_pane__right_container___1YmWn .amazon_pane__integrated_preview___2-2E8 > div {
+      font-size: 2rem;
+      padding-top: 160px;
+      color: #969696; }
+    .amazon_pane__right_container___1YmWn .amazon_pane__integrated_preview___2-2E8 a {
+      margin-top: 80px;
+      display: block;
+      font-size: 1.5rem; }
 
 @media (max-width: 839px) {
   .amazon_pane__left_cell___24XLQ {
@@ -7414,6 +7442,63 @@ no_padding_top {
 
 .landing-page-tooltips__tooltipActive___2xKft span {
   width: 300px; }
+.SourceSelectorEventStatsStyle__container___3_u0V {
+  width: 100%;
+  display: inline-block;
+  margin: 0 20px 0 25%; }
+  .SourceSelectorEventStatsStyle__container___3_u0V div {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    color: #9DA1AC; }
+    .SourceSelectorEventStatsStyle__container___3_u0V div span {
+      float: none; }
+      .SourceSelectorEventStatsStyle__container___3_u0V div span + span {
+        float: right; }
+.SourceSelectorGlobalStatsStyle__container___24v-r {
+  padding: 25px; }
+  .SourceSelectorGlobalStatsStyle__container___24v-r .SourceSelectorGlobalStatsStyle__row___38Xjt {
+    display: flex;
+    width: 100%; }
+    .SourceSelectorGlobalStatsStyle__container___24v-r .SourceSelectorGlobalStatsStyle__row___38Xjt .SourceSelectorGlobalStatsStyle__radial___3ZTwy {
+      height: 150px;
+      flex-shrink: 0; }
+    .SourceSelectorGlobalStatsStyle__container___24v-r .SourceSelectorGlobalStatsStyle__row___38Xjt .SourceSelectorGlobalStatsStyle__stats___2fWoM {
+      flex-grow: 1;
+      display: flex;
+      align-items: flex-end; }
+    .SourceSelectorGlobalStatsStyle__container___24v-r .SourceSelectorGlobalStatsStyle__row___38Xjt .SourceSelectorGlobalStatsStyle__bars_container___NvY0M {
+      display: flex;
+      width: 100%;
+      flex-flow: row wrap;
+      margin-top: 20px;
+      border: 1px solid #F2EFEA; }
+      .SourceSelectorGlobalStatsStyle__container___24v-r .SourceSelectorGlobalStatsStyle__row___38Xjt .SourceSelectorGlobalStatsStyle__bars_container___NvY0M .SourceSelectorGlobalStatsStyle__date___Ja29P {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 40px;
+        height: 60px;
+        width: 100%;
+        border-bottom: 1px solid #F2EFEA; }
+        .SourceSelectorGlobalStatsStyle__container___24v-r .SourceSelectorGlobalStatsStyle__row___38Xjt .SourceSelectorGlobalStatsStyle__bars_container___NvY0M .SourceSelectorGlobalStatsStyle__date___Ja29P > div {
+          color: #425863;
+          font-weight: bold; }
+          .SourceSelectorGlobalStatsStyle__container___24v-r .SourceSelectorGlobalStatsStyle__row___38Xjt .SourceSelectorGlobalStatsStyle__bars_container___NvY0M .SourceSelectorGlobalStatsStyle__date___Ja29P > div span {
+            font-weight: normal;
+            color: #969696; }
+      .SourceSelectorGlobalStatsStyle__container___24v-r .SourceSelectorGlobalStatsStyle__row___38Xjt .SourceSelectorGlobalStatsStyle__bars_container___NvY0M .SourceSelectorGlobalStatsStyle__bars___3yzkm {
+        flex: 1;
+        width: 50%;
+        min-width: 300px;
+        height: 250px;
+        padding: 0 20px;
+        border-right: 1px solid #F2EFEA; }
+        .SourceSelectorGlobalStatsStyle__container___24v-r .SourceSelectorGlobalStatsStyle__row___38Xjt .SourceSelectorGlobalStatsStyle__bars_container___NvY0M .SourceSelectorGlobalStatsStyle__bars___3yzkm > div {
+          top: 5px; }
+        .SourceSelectorGlobalStatsStyle__container___24v-r .SourceSelectorGlobalStatsStyle__row___38Xjt .SourceSelectorGlobalStatsStyle__bars_container___NvY0M .SourceSelectorGlobalStatsStyle__bars___3yzkm + .SourceSelectorGlobalStatsStyle__bars___3yzkm {
+          border-right: none; }
 .SourceSelectorCreateStyle__item___30n4X {
   position: relative;
   background-color: transparent;
@@ -7550,7 +7635,9 @@ no_padding_top {
   .SourceSelectorItemStyle__show_skill_container___U4vkv .SourceSelectorItemStyle__validation_items_container___12Sd4 .SourceSelectorItemStyle__succeeded___1KaJs, .SourceSelectorItemStyle__show_skill_container___U4vkv .SourceSelectorItemStyle__validation_items_container___12Sd4 .SourceSelectorItemStyle__failed___vyfWq {
     width: 100%;
     white-space: nowrap;
-    text-align: center; }
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis; }
     .SourceSelectorItemStyle__show_skill_container___U4vkv .SourceSelectorItemStyle__validation_items_container___12Sd4 .SourceSelectorItemStyle__succeeded___1KaJs > div, .SourceSelectorItemStyle__show_skill_container___U4vkv .SourceSelectorItemStyle__validation_items_container___12Sd4 .SourceSelectorItemStyle__failed___vyfWq > div {
       display: inline-block;
       line-height: 1rem;
