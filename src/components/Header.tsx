@@ -420,7 +420,8 @@ async function allowTab(tab: string, props: any) {
         return source.value === props.source;
     });
     const {source} = dropdownableSource || {source: {}};
-    if (!hasAnySourceIntegrated) {
+    // Only try to get the logs on the first tab
+    if (!hasAnySourceIntegrated && tab === "Validation") {
         const query: LogQuery = new LogQuery({
             source,
             startTime: moment().subtract(7, "days"), // Using 7 days since now we check for all sources and use a flag
