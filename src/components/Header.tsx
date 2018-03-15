@@ -267,7 +267,8 @@ export class Title extends React.Component<TitleProps, any> {
         };
         let title: JSX.Element = (<div/>);
         if (this.props.sources.length === 1) {
-            title = (<span className="mdl-layout-title">{this.props.sources[0].label}</span>);
+            // TODO: hidding since now it doesnt make sense to have a lonely span (<span className="mdl-layout-title">{this.props.sources[0].label}</span>);
+            title = <span />;
         } else {
             title = (
                 <Autosuggest
