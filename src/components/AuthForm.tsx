@@ -122,7 +122,7 @@ export class LoginGithub extends React.Component<LoginGithubProps, any> {
 }
 
 interface LoginAmazonProps {
-    onLoginWithAmazon?: () => void;
+    onLoginWithAmazon?: (isFromWebsite: boolean) => void;
     location?: any;
 }
 
@@ -132,7 +132,7 @@ export class LoginAmazon extends React.Component<LoginAmazonProps, any> {
         if (this.props.location && this.props.location.query && this.props.location.query.amazon_login === "1") {
             // waiting for amazon script to load
             setTimeout(() => {
-                this.props.onLoginWithAmazon && this.props.onLoginWithAmazon();
+                this.props.onLoginWithAmazon && this.props.onLoginWithAmazon(true);
             }, 1000);
         }
     }
