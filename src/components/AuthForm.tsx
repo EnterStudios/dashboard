@@ -14,6 +14,7 @@ export interface AuthFormProps {
     onLoginWithAmazon?: () => void;
     onSignUpWithEmail?: (email: string, pass: string, confirmPass: string) => void;
     onResetPassword?: (email: string) => void;
+    location?: any;
 }
 
 export interface AuthFormState {
@@ -62,10 +63,10 @@ export class AuthForm extends React.Component<AuthFormProps, AuthFormState> {
                     onResetPassword={this.onResetPassword}
                 />
                 <div className="mdl-card__actions clearfix">
-                    <LoginAmazon onLoginWithAmazon={this.props.onLoginWithAmazon} />
+                    <LoginAmazon onLoginWithAmazon={this.props.onLoginWithAmazon} location={this.props.location} />
                 </div>
                 <div className="mdl-card__actions clearfix">
-                    <LoginGithub onLoginWithGithub={this.props.onLoginWithGithub} />
+                    <LoginGithub onLoginWithGithub={this.props.onLoginWithGithub} location={this.props.location} />
                 </div>
             </div>
         );
@@ -93,9 +94,16 @@ export class PasswordReset extends React.Component<PasswordResetProps, any> {
 
 interface LoginGithubProps {
     onLoginWithGithub?: () => void;
+    location?: any;
 }
 
 export class LoginGithub extends React.Component<LoginGithubProps, any> {
+
+    componentDidMount () {
+        if (this.props.location && this.props.location.query && this.props.location.query.github_login === "1") {
+            this.props.onLoginWithGithub && this.props.onLoginWithGithub();
+        }
+    }
 
     render() {
         return (
@@ -115,9 +123,19 @@ export class LoginGithub extends React.Component<LoginGithubProps, any> {
 
 interface LoginAmazonProps {
     onLoginWithAmazon?: () => void;
+    location?: any;
 }
 
 export class LoginAmazon extends React.Component<LoginAmazonProps, any> {
+
+    componentDidMount () {
+        if (this.props.location && this.props.location.query && this.props.location.query.amazon_login === "1") {
+            // waiting for amazon script to load
+            setTimeout(() => {
+                this.props.onLoginWithAmazon && this.props.onLoginWithAmazon();
+            }, 1000);
+        }
+    }
 
     render() {
         return (

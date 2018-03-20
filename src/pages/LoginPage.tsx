@@ -123,6 +123,8 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
     }
 
     render() {
+        const allProps = this.props as any;
+        const location = allProps.location;
         return (
             <Grid style={{ marginTop: "10%" }}>
                 <Cell col={4} tablet={2} hidePhone={true} />
@@ -135,6 +137,7 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
                             onLoginWithAmazon={this.handleFormLoginWithAmazon}
                             onSignUpWithEmail={this.handleFormSignUpWithEmail}
                             onResetPassword={this.handleResetPassword}
+                            location={location}
                         />
                     </Card>
                 </Cell>

@@ -7,6 +7,7 @@ const RadialChartStyle = require("./ValidationRadialChartStyle.scss");
 interface ValidationRadialChartProps {
     successRatio: number;
     color?: string;
+    small?: boolean;
 }
 
 interface ValidationRadialChartState {
@@ -22,12 +23,12 @@ class ValidationRadialChart extends React.Component<ValidationRadialChartProps, 
             const { payload } = props;
 
             return (
-                <ul className={RadialChartStyle.container}>
+                <ul className={`${RadialChartStyle.container} ${this.props.small ? RadialChartStyle.small : ""}`}>
                     {
                         payload.map((entry: any, index: any) => (
                             <li key={`item-${index}`}>
                                 <span>{entry.value}%</span>
-                                <span>of items has passed validation</span>
+                                <span>{this.props.small ? "success" : "of items has passed validation"}</span>
                             </li>
                         ))
                     }
@@ -35,9 +36,9 @@ class ValidationRadialChart extends React.Component<ValidationRadialChartProps, 
             );
         };
         return (
-            <RadialBarChart width={300} height={300} innerRadius="10%" outerRadius="80%" data={data} startAngle={180} endAngle={0}>
+            <RadialBarChart width={this.props.small ? 200 : 300} height={300} innerRadius="10%" outerRadius="80%" data={data} startAngle={180} endAngle={0}>
                 <RadialBar minAngle={0} maxAngle={(this.props.successRatio * 180 / 100)} label={false} background={true} clockWise={true} dataKey="value"/>
-                <Legend iconSize={10} width={300} height={100} layout="horizontal" verticalAlign="middle" align="center" content={renderLegend} />
+                <Legend iconSize={10} width={this.props.small ? 200 : 300} height={100} layout="horizontal" verticalAlign="middle" align="center" content={renderLegend} />
             </RadialBarChart>
         );
     }

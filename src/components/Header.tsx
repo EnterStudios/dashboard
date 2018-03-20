@@ -8,7 +8,6 @@ import ButtonMenu from "../components/ButtonMenu";
 import { MenuItem } from "../components/Menu";
 import Log from "../models/log";
 import LogQuery from "../models/log-query";
-import Query, { EndTimeParameter, SourceParameter, StartTimeParameter } from "../models/query";
 import Source from "../models/source";
 import logService from "../services/log";
 import sourceService from "../services/source";
@@ -438,19 +437,9 @@ async function allowTab(tab: string, props: any) {
         case "Check Stats": {
             return hasAnySourceIntegrated || source.validation_enabled || source.monitoring_enabled || source.proxy_enabled;
         }
-        case "Check Logs": {
-            return hasAnySourceIntegrated;
-        }
+        case "Check Logs":
         case "Audio Metrics": {// should we have this conditional tab as well?
-            const query: Query = new Query();
-            query.add(new SourceParameter(props.source));
-            query.add(new StartTimeParameter(moment().subtract(7, "days"))); // change 7 for the right time span once implemented
-            query.add(new EndTimeParameter(moment()));
-            try {
-                return !!(await logService.getAudioSessions(query)).audioSessions.length;
-            } catch (err) {
-                return false;
-            }
+            return hasAnySourceIntegrated;
         }
         default:
             return true;

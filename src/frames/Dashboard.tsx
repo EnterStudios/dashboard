@@ -163,6 +163,7 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
             skillsAmmount: this.props.sources.length,
             usingMonitoring: this.props.sources.some(source => source.monitoring_enabled),
             usingValidation: !!userValidationInfo.smAPIAccessToken,
+            usingValidationMonitoring: this.props.sources.some(source => source.validation_enabled),
             hide_default_launcher: false,
         });
         this.props.setLoading(false);

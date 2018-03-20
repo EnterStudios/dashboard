@@ -19,4 +19,17 @@
             }
         }
     }
+    &.small {
+        margin-top: 15px;
+        li {
+            width: 40%;
+            span {
+                font-size: 1.6rem;
+                &+ span {
+                    font-size: .9rem;
+                    line-height: .9rem;
+                }
+            }
+        }
+    }
 }

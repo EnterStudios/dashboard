@@ -10,13 +10,12 @@ import {CodeSheet} from "../../components/CodeSheet";
 import { Dimensions } from "../../components/Measure";
 import RightPanel from "../../components/RightPanel";
 import SourcePageTwoPane from "../../components/SourcePageTwoPane";
+import ValidationPageGlobalStats from "../../components/Validation/ValidationComponentGlobalStats";
 import ValidationParentComponent from "../../components/Validation/ValidationParentComponent";
-import LogQuery from "../../models/log-query";
 import Source from "../../models/source";
 import {User, UserDetails} from "../../models/user";
 import { State } from "../../reducers";
 import auth from "../../services/auth";
-import logService from "../../services/log";
 import SourceService from "../../services/source";
 import { Location } from "../../utils/Location";
 
@@ -39,7 +38,6 @@ interface ValidationPageState {
     vendorID: string;
     vendorIDChanged: boolean;
     myHeight: number;
-    hasIntegrated: boolean;
 }
 
 interface ValidationPageProps {
@@ -113,7 +111,6 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
             vendorID: "",
             vendorIDChanged: false,
             myHeight: 0,
-            hasIntegrated: false,
         };
         this.onMeasure = this.onMeasure.bind(this);
         this.handleRun = this.handleRun.bind(this);
@@ -165,18 +162,6 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                 vendorID: userDetails.vendorID,
                 smAPIAccessToken: userDetails.smAPIAccessToken,
                 script: currentScript,
-            });
-            const query: LogQuery = new LogQuery({
-                source: this.props.source || {} as Source,
-                startTime: moment().subtract(7, "days"), // TODO: change 7 for the right time span once implemented
-                endTime: moment(),
-                limit: 50
-            });
-            return logService.getLogs(query);
-        }).then(logs => {
-            self.setState({
-                ...this.state,
-                hasIntegrated: logs && !!logs.length,
             });
         });
     }
@@ -420,11 +405,13 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                     />
                 )}
                 {
-                    !this.state.hasIntegrated ?
+                    !(this.props.source && this.props.source.hasIntegrated) ?
                         (
                             <RightPanel handleGetStarted={this.handleGetStarted}/>
                         ) :
-                        <div/>
+                        (
+                            <ValidationPageGlobalStats source={this.props.source} startDate={moment().subtract(7, "days")} endDate={moment()} setLoading={this.props.setLoading} goTo={this.props.goTo} />
+                        )
                 }
             </SourcePageTwoPane>
         );
