@@ -75,6 +75,18 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
         this.state = {};
     }
 
+    async componentDidMount () {
+        if (window && window.location && window.location.hash) {
+            this.setState(() => ({ ...this.state, loading: true }));
+            const matches = location.hash.match(new RegExp("access_token" + "=([^&]*)"));
+            const accessToken = matches ? matches[1] : undefined;
+            setTimeout(async () => {
+                await this.props.loginWithAmazon(accessToken);
+                this.props.setAmazonFlow(true);
+            }, 500);
+        }
+    }
+
     handleResetPassword(email: string) {
         this.props.resetPassword(email);
         // Show some feedback in the link
@@ -100,9 +112,9 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
         }
     }
 
-    async handleFormLoginWithAmazon() {
+    async handleFormLoginWithAmazon(isFromWebsite = false) {
         try {
-            const accessToken = await auth.amazonAuthorize();
+            const accessToken = await auth.amazonAuthorize(undefined, typeof isFromWebsite === "boolean" ? isFromWebsite : undefined);
             this.setState(() => ({ ...this.state, loading: true }));
             await this.props.loginWithAmazon(accessToken);
             this.props.setAmazonFlow(true);

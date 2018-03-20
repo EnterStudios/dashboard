@@ -27,23 +27,27 @@ namespace auth {
         return loginWithCustomToken(authResponse.authToken, auth, storage);
     }
 
-    export function amazonAuthorize(window?: any): Promise<string> {
-        const options = { scope: "profile", interactive: "always" };
+    export function amazonAuthorize(window: any, isFromWebsite?: boolean): Promise<string> {
+        const options = { scope: "profile", interactive: "always", popup: !isFromWebsite };
         window = window ? window : globalWindow;
+        const redirectUrl = window.location && window.location.origin && window.location.origin + "/dashboard/login";
         return new Promise(function (resolve, reject) {
-            window.amazon.Login.authorize(options, function (result: any) {
-                if (result.error) {
-                    reject(result.error);
-                    return;
-                };
-                resolve(result.access_token);
-            });
+            isFromWebsite ?
+                window.amazon.Login.authorize(options, redirectUrl) :
+                window.amazon.Login.authorize(options, function (result: any) {
+                    if (result.error) {
+                        reject(result.error);
+                        return;
+                    }
+                    ;
+                    resolve(result.access_token);
+                });
         });
     }
 
     function amazonRetrieveProfile(accessToken: string, window: any) {
         return new Promise(function (resolve, reject) {
-            window.amazon.Login.retrieveProfile(accessToken, function (result: any) {
+            window.amazon.Login.retrieveProfile(decodeURIComponent(accessToken), function (result: any) {
                 if (result.error) {
                     reject(result.error);
                     return;
