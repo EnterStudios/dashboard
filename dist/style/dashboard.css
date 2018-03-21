@@ -2481,6 +2481,15 @@ no_padding_top {
         line-height: .9rem;
         font-weight: normal;
         color: #AFAFAF; }
+  .ValidationRadialChartStyle__container___2xcZe.ValidationRadialChartStyle__small___2o9ke {
+    margin-top: 15px; }
+    .ValidationRadialChartStyle__container___2xcZe.ValidationRadialChartStyle__small___2o9ke li {
+      width: 40%; }
+      .ValidationRadialChartStyle__container___2xcZe.ValidationRadialChartStyle__small___2o9ke li span {
+        font-size: 1.6rem; }
+        .ValidationRadialChartStyle__container___2xcZe.ValidationRadialChartStyle__small___2o9ke li span + span {
+          font-size: .9rem;
+          line-height: .9rem; }
 .theme__avatar___3GCeP {
   position: relative;
   display: inline-block;
@@ -8336,6 +8345,72 @@ no_padding_top {
     left: 0.3rem;
     width: 0.3rem;
     height: 0.9rem; } }
+.ValidationPageEventStatsStyle__container___DlxbT {
+  width: 100%;
+  display: inline-block;
+  margin: 0 50px 0 10%; }
+  .ValidationPageEventStatsStyle__container___DlxbT div {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    color: #919193;
+    font-size: 1.4rem; }
+    .ValidationPageEventStatsStyle__container___DlxbT div span {
+      float: none; }
+.ValidationComponentGlobalStatsStyle__container___c9UQ3 {
+  padding: 20px; }
+  .ValidationComponentGlobalStatsStyle__container___c9UQ3 .ValidationComponentGlobalStatsStyle__row___GdgMz {
+    display: flex;
+    width: 100%; }
+    .ValidationComponentGlobalStatsStyle__container___c9UQ3 .ValidationComponentGlobalStatsStyle__row___GdgMz.ValidationComponentGlobalStatsStyle__processed_items___bS1iC {
+      margin-top: 20px; }
+      .ValidationComponentGlobalStatsStyle__container___c9UQ3 .ValidationComponentGlobalStatsStyle__row___GdgMz.ValidationComponentGlobalStatsStyle__processed_items___bS1iC span {
+        font-size: 1.7rem;
+        color: #787E84; }
+    .ValidationComponentGlobalStatsStyle__container___c9UQ3 .ValidationComponentGlobalStatsStyle__row___GdgMz .ValidationComponentGlobalStatsStyle__radial___29IqV {
+      height: 150px;
+      flex-shrink: 0; }
+    .ValidationComponentGlobalStatsStyle__container___c9UQ3 .ValidationComponentGlobalStatsStyle__row___GdgMz .ValidationComponentGlobalStatsStyle__stats___ORnl1 {
+      flex-grow: 1;
+      display: flex;
+      align-items: flex-end; }
+    .ValidationComponentGlobalStatsStyle__container___c9UQ3 .ValidationComponentGlobalStatsStyle__row___GdgMz .ValidationComponentGlobalStatsStyle__bars_container___bm57x {
+      display: flex;
+      width: 100%;
+      flex-flow: row wrap;
+      margin-top: 20px; }
+      .ValidationComponentGlobalStatsStyle__container___c9UQ3 .ValidationComponentGlobalStatsStyle__row___GdgMz .ValidationComponentGlobalStatsStyle__bars_container___bm57x .ValidationComponentGlobalStatsStyle__date___2kSZ9 {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 40px;
+        height: 60px;
+        width: 100%;
+        border-bottom: 1px solid #F2EFEA; }
+        .ValidationComponentGlobalStatsStyle__container___c9UQ3 .ValidationComponentGlobalStatsStyle__row___GdgMz .ValidationComponentGlobalStatsStyle__bars_container___bm57x .ValidationComponentGlobalStatsStyle__date___2kSZ9 > div {
+          color: #425863;
+          font-weight: bold; }
+          .ValidationComponentGlobalStatsStyle__container___c9UQ3 .ValidationComponentGlobalStatsStyle__row___GdgMz .ValidationComponentGlobalStatsStyle__bars_container___bm57x .ValidationComponentGlobalStatsStyle__date___2kSZ9 > div span {
+            font-weight: normal;
+            color: #969696; }
+      .ValidationComponentGlobalStatsStyle__container___c9UQ3 .ValidationComponentGlobalStatsStyle__row___GdgMz .ValidationComponentGlobalStatsStyle__bars_container___bm57x .ValidationComponentGlobalStatsStyle__bars___3AvnD {
+        flex: 1;
+        width: 50%;
+        min-width: 300px;
+        height: 250px;
+        padding: 0 20px;
+        border: 1px solid #F2EFEA; }
+        .ValidationComponentGlobalStatsStyle__container___c9UQ3 .ValidationComponentGlobalStatsStyle__row___GdgMz .ValidationComponentGlobalStatsStyle__bars_container___bm57x .ValidationComponentGlobalStatsStyle__bars___3AvnD > div {
+          top: 5px; }
+        .ValidationComponentGlobalStatsStyle__container___c9UQ3 .ValidationComponentGlobalStatsStyle__row___GdgMz .ValidationComponentGlobalStatsStyle__bars_container___bm57x .ValidationComponentGlobalStatsStyle__bars___3AvnD + .ValidationComponentGlobalStatsStyle__bars___3AvnD {
+          margin-top: 10px; }
+    .ValidationComponentGlobalStatsStyle__container___c9UQ3 .ValidationComponentGlobalStatsStyle__row___GdgMz .ValidationComponentGlobalStatsStyle__check_errors___1v9wg {
+      width: 100%;
+      margin: 25px 0px 10px;
+      font-size: 2rem !important;
+      background: #FEBD61 !important;
+      border-radius: 0 !important; }
 .icon-button-validation__dialog___1IOR8 {
   overflow: auto; }
 
