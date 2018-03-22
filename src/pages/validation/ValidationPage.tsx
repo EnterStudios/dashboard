@@ -405,12 +405,25 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                     />
                 )}
                 {
-                    !(this.props.source && this.props.source.hasIntegrated) ?
+                    process.env.NODE_ENV !== "production" ?
                         (
-                            <RightPanel handleGetStarted={this.handleGetStarted}/>
+                            !(this.props.source && this.props.source.hasIntegrated) ?
+                                (
+                                    <RightPanel handleGetStarted={this.handleGetStarted}/>
+                                ) :
+                                (
+                                    <ValidationPageGlobalStats source={this.props.source}
+                                                               startDate={moment().subtract(7, "days")}
+                                                               endDate={moment()} setLoading={this.props.setLoading}
+                                                               goTo={this.props.goTo}/>
+                                )
                         ) :
                         (
-                            <ValidationPageGlobalStats source={this.props.source} startDate={moment().subtract(7, "days")} endDate={moment()} setLoading={this.props.setLoading} goTo={this.props.goTo} />
+                            !(this.props.source && this.props.source.hasIntegrated) ?
+                                (
+                                    <RightPanel handleGetStarted={this.handleGetStarted}/>
+                                ) :
+                                ""
                         )
                 }
             </SourcePageTwoPane>
