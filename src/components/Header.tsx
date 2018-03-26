@@ -437,9 +437,11 @@ async function allowTab(tab: string, props: any) {
         case "Check Stats": {
             return hasAnySourceIntegrated || source.validation_enabled || source.monitoring_enabled || source.proxy_enabled;
         }
-        case "Check Logs":
-        case "Audio Metrics": {// should we have this conditional tab as well?
+        case "Check Logs": {
             return hasAnySourceIntegrated;
+        }
+        case "Audio Metrics": {
+            return false;
         }
         default:
             return true;
