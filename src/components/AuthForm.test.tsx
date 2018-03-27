@@ -156,7 +156,7 @@ describe("AuthForm", function () {
 
         it("Renders properly.", function () {
             expect(wrapper.find("LoginForms")).to.have.length(1);
-            expect(wrapper.find("Themed")).to.have.length(2);
+            expect(wrapper.find("Themed")).to.have.length(1);
             expect(wrapper.find("PasswordReset")).to.have.length(1);
 
             let loginForm = wrapper.find("LoginForms").first();
@@ -167,8 +167,9 @@ describe("AuthForm", function () {
 
             expect(loginBtn.prop("label")).to.equal("Login");
 
-            let signUpBtn = wrapper.find("Themed").at(1);
-            expect(signUpBtn.prop("label")).to.equal("Register");
+            // hiding register button for now according to specs
+            // let signUpBtn = wrapper.find("Themed").at(1);
+            // expect(signUpBtn.prop("label")).to.equal("Register");
         });
 
         describe("With filled state.", function () {
@@ -187,7 +188,7 @@ describe("AuthForm", function () {
 
             it("Renders properly with filled state.", function () {
                 expect(wrapper.find("LoginForms")).to.have.length(1);
-                expect(wrapper.find("Themed")).to.have.length(2);
+                expect(wrapper.find("Themed")).to.have.length(1);
                 expect(wrapper.find("PasswordReset")).to.have.length(1);
 
                 let loginForm = wrapper.find("LoginForms").first();
@@ -202,8 +203,9 @@ describe("AuthForm", function () {
 
                 expect(loginBtn.prop("label")).to.equal("Cancel");
 
-                let signUpBtn = wrapper.find("Themed").at(1);
-                expect(signUpBtn.prop("label")).to.equal("Submit");
+                // hidding register button for now according to specs
+                // let signUpBtn = wrapper.find("Themed").at(1);
+                // expect(signUpBtn.prop("label")).to.equal("Submit");
             });
 
             it("Throws callback and state for onEmailChange.", function () {

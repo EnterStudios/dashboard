@@ -6,7 +6,6 @@ import { replace } from "react-router-redux";
 import {setLoading} from "../actions/loading";
 import {AmazonFlowFlag, setAmazonFlow} from "../actions/session";
 import {getSources} from "../actions/source";
-import AmazonVendorPane from "../components/AmazonVendorPane";
 import List from "../components/List/List";
 import ListItem from "../components/List/ListItem";
 import SourceListGlobalStats from "../components/SourceSelector/SourceSelectorGlobalStats";
@@ -125,17 +124,16 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
             </div>
         );
 
-        return this.props.amazonFlow ? (<AmazonVendorPane spacing={true} isParentLoading={this.props.finishLoading} sources={this.props.sources} getSources={this.props.getSources} user={this.props.user} amazonFlow={this.props.amazonFlow} setAmazonFlow={this.props.setAmazonFlow} goTo={this.props.goTo} />) :
-            (
-                <TwoPane
-                    gridClass={"source-list-grid"}
-                    spacing={true}
-                    leftStyle={{ padding: "0px 15px 0px 25px", backgroundColor: "#EEF2F5" }}
-                    rightStyle={{ paddingRight: 0, paddingLeft: 0 }}>
-                    {leftSide}
-                    {rightSide}
-                </TwoPane>
-            );
+        return (
+            <TwoPane
+                gridClass={"source-list-grid"}
+                spacing={true}
+                leftStyle={{padding: "0px 15px 0px 25px", backgroundColor: "#EEF2F5"}}
+                rightStyle={{paddingRight: 0, paddingLeft: 0}}>
+                {leftSide}
+                {rightSide}
+            </TwoPane>
+        );
     }
 }
 

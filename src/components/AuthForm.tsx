@@ -265,20 +265,21 @@ export class NormalLoginForm extends React.Component<NormalLoginFormProps, Norma
     }
 
     render() {
-        let signupBtn = this.state.isConfirmPassword ?
-            (
-                <Button
-                    theme={theme}
-                    label="Submit"
-                    onClick={this.onSubmitClicked}
-                />
-            ) :
-            (
-                <Button
-                    theme={theme}
-                    label="Register"
-                    onClick={this.onSignUpClick} />
-            );
+        // Just commenting the register button for now
+        // let signupBtn = this.state.isConfirmPassword ?
+        //     (
+        //         <Button
+        //             theme={theme}
+        //             label="Submit"
+        //             onClick={this.onSubmitClicked}
+        //         />
+        //     ) :
+        //     (
+        //         <Button
+        //             theme={theme}
+        //             label="Register"
+        //             onClick={this.onSignUpClick} />
+        //     );
 
         let loginBtn = this.state.isConfirmPassword ?
             (
@@ -289,6 +290,7 @@ export class NormalLoginForm extends React.Component<NormalLoginFormProps, Norma
             ) :
             (
                 <Button
+                    style={{width: "92%"}}
                     theme={theme}
                     label="Login"
                     onClick={this.onLogin} />
@@ -309,7 +311,6 @@ export class NormalLoginForm extends React.Component<NormalLoginFormProps, Norma
                     onConfirmPasswordSubmit={this.onFormSubmit} />
                 <div className={`${theme.actions} mdl-card__actions clearfix`}>
                     {loginBtn}
-                    {signupBtn}
                     <PasswordReset
                         onPasswordReset={this.onPasswordReset} />
                 </div>
