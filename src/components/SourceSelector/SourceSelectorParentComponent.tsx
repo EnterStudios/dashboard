@@ -3,9 +3,13 @@ import * as ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import {connect} from "react-redux";
 import {replace} from "react-router-redux";
 import {setLoading} from "../../actions/loading";
+import {AmazonFlowFlag, setAmazonFlow} from "../../actions/session";
 import {deleteSource, getSources, setCurrentSource} from "../../actions/source";
 import Source from "../../models/source";
+import {User, UserDetails} from "../../models/user";
 import {State} from "../../reducers";
+import auth from "../../services/auth";
+import AmazonVendorPane from "../AmazonVendorPane";
 import SourceSelectorCreate from "./SourceSelectorCreateComponent";
 import SourceSelectorItem from "./SourceSelectorItemComponent";
 
@@ -19,15 +23,23 @@ interface SourceSelectorProps {
     goTo: (path: string) => (dispatch: Redux.Dispatch<any>) => void;
     removeSource: (source: Source) => Promise<Source>;
     setLoading: (value: boolean) => (dispatch: Redux.Dispatch<any>) => void;
+    finishLoading: boolean;
+    user: User;
+    amazonFlow: boolean;
+    setAmazonFlow: (amazonFlow: boolean) => AmazonFlowFlag;
 }
 
 interface SourceSelectorState {
+    userDetails: UserDetails;
 }
 
 function mapStateToProps(state: State.All) {
     return {
         source: state.source.currentSource,
         sources: state.source.sources,
+        finishLoading: state.source.finishLoading,
+        amazonFlow: state.session.amazonFlow,
+        user: state.session.user,
     };
 }
 
@@ -48,6 +60,9 @@ function mapDispatchToProps(dispatch: any) {
         setLoading: function (value: boolean) {
             return dispatch(setLoading(value));
         },
+        setAmazonFlow: function (amazonFlow: boolean): AmazonFlowFlag {
+            return dispatch(setAmazonFlow(amazonFlow));
+        },
     };
 }
 
@@ -57,7 +72,7 @@ export class SourceSelector extends React.Component<SourceSelectorProps, SourceS
         super(props);
 
         this.state = {
-            loading: false,
+            userDetails: undefined,
         };
 
         this.handleSourceClick = this.handleSourceClick.bind(this);
@@ -65,16 +80,22 @@ export class SourceSelector extends React.Component<SourceSelectorProps, SourceS
         this.handleLoadingChange = this.handleLoadingChange.bind(this);
     }
 
-    componentDidUpdate (prevProps: SourceSelectorProps) {
+    async componentDidUpdate (prevProps: SourceSelectorProps, prevState: SourceSelectorState) {
         if (!prevProps.source || !this.props.source) {
             (this.props.setSource && this.props.sources && this.props.sources.length) && this.props.setSource(this.props.sources[0]);
         }
     }
 
-    componentDidMount () {
+    async componentDidMount () {
+        this.handleLoadingChange(true);
         if (!this.props.source) {
             (this.props.setSource && this.props.sources && this.props.sources.length) && this.props.setSource(this.props.sources[0]);
         }
+        const userDetails: UserDetails = await auth.currentUserDetails();
+        this.setState(() => ({
+            userDetails,
+        }));
+        this.handleLoadingChange(false);
     }
 
     handleSourceClick (source: Source) {
@@ -99,6 +120,19 @@ export class SourceSelector extends React.Component<SourceSelectorProps, SourceS
         });
         return (
             <div className={SourceSelectorStyle.container}>
+                {
+                    this.props.amazonFlow && this.state && (!this.state.userDetails || !this.state.userDetails.silentEchoToken || !this.state.userDetails.smAPIAccessToken) &&
+                        <AmazonVendorPane
+                            spacing={true}
+                            isParentLoading={this.props.finishLoading}
+                            sources={this.props.sources}
+                            getSources={this.props.getSources}
+                            user={this.props.user}
+                            amazonFlow={this.props.amazonFlow}
+                            setAmazonFlow={this.props.setAmazonFlow}
+                            goTo={this.props.goTo}
+                            setLoading={this.props.setLoading}/>
+                }
                 <ReactCSSTransitionGroup className={SourceSelectorStyle.container} transitionName={"pageSlider"} transitionEnterTimeout={500} transitionLeaveTimeout={500}>
                     <SourceSelectorCreate
                         defaultSourceNumber={this.props.sources.length.toString()}

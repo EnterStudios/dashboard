@@ -54,8 +54,8 @@ describe("Source List Page", function () {
             const wrapper = shallow(<SourceListPage source={undefined} sources={sources} finishLoading={true} amazonFlow={true} user={undefined} setAmazonFlow={undefined} goTo={undefined} getSources={undefined} setLoading={undefined} />);
             const twoPaneWrapper = wrapper.find("TwoPane");
             const amazonPaneWrapper = wrapper.find("AmazonVendorPane");
-            expect(twoPaneWrapper).to.have.length(0);
-            expect(amazonPaneWrapper).to.have.length(1);
+            expect(twoPaneWrapper).to.have.length(1);
+            expect(amazonPaneWrapper).to.have.length(0);
         });
     });
 });
