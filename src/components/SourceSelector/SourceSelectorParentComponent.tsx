@@ -122,6 +122,7 @@ export class SourceSelector extends React.Component<SourceSelectorProps, SourceS
             <div className={SourceSelectorStyle.container}>
                 {
                     this.props.amazonFlow && this.state && (!this.state.userDetails || !this.state.userDetails.silentEchoToken || !this.state.userDetails.smAPIAccessToken) &&
+                    (
                         <AmazonVendorPane
                             spacing={true}
                             isParentLoading={this.props.finishLoading}
@@ -132,6 +133,7 @@ export class SourceSelector extends React.Component<SourceSelectorProps, SourceS
                             setAmazonFlow={this.props.setAmazonFlow}
                             goTo={this.props.goTo}
                             setLoading={this.props.setLoading}/>
+                    )
                 }
                 <ReactCSSTransitionGroup className={SourceSelectorStyle.container} transitionName={"pageSlider"} transitionEnterTimeout={500} transitionLeaveTimeout={500}>
                     <SourceSelectorCreate
