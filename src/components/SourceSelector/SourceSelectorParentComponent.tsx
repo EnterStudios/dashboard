@@ -80,7 +80,7 @@ export class SourceSelector extends React.Component<SourceSelectorProps, SourceS
         this.handleLoadingChange = this.handleLoadingChange.bind(this);
     }
 
-    async componentDidUpdate (prevProps: SourceSelectorProps, prevState: SourceSelectorState) {
+    componentDidUpdate (prevProps: SourceSelectorProps, prevState: SourceSelectorState) {
         if (!prevProps.source || !this.props.source) {
             (this.props.setSource && this.props.sources && this.props.sources.length) && this.props.setSource(this.props.sources[0]);
         }
