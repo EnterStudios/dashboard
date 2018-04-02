@@ -54,19 +54,24 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
             const vendorsId = await SourceService.getVendorIds(userDetails.smAPIAccessToken);
             // for now we default to the first vendorID, later we'll add a way for the user to pick vendor id
             const vendorID = vendorsId && vendorsId.length && vendorsId[0].id;
-            await auth.updateCurrentUser({ vendorID });
-            userDetails = await auth.currentUserDetails();
-            if (userDetails && userDetails.smAPIAccessToken && userDetails.vendorID) {
-                try {
-                    this.props.setLoading(true);
-                    await SourceService.createSkillsFromAmazon(this.props.user.userId, userDetails.vendorID, userDetails.smAPIAccessToken);
-                    await this.props.getSources();
-                    this.props.setLoading(false);
+            if (vendorID) {
+                await auth.updateCurrentUser({ vendorID });
+                userDetails = await auth.currentUserDetails();
+                if (userDetails && userDetails.smAPIAccessToken && userDetails.vendorID) {
+                    try {
+                        this.props.setLoading(true);
+                        await SourceService.createSkillsFromAmazon(this.props.user.userId, userDetails.vendorID, userDetails.smAPIAccessToken);
+                        await this.props.getSources();
+                        this.props.setLoading(false);
+                        this.props.setAmazonFlow(false);
+                    } catch (err) {
+                        await this.props.getSources();
+                        this.props.setLoading(false);
+                        this.props.setAmazonFlow(false);
+                    }
+                } else {
                     this.props.setAmazonFlow(false);
-                } catch (err) {
-                    await this.props.getSources();
                     this.props.setLoading(false);
-                    this.props.setAmazonFlow(false);
                 }
             } else {
                 this.props.setAmazonFlow(false);
