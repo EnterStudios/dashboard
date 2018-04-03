@@ -310,6 +310,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
         return this.props.user
             ? `${virtualDeviceURL}` +
             `link_account?dashboard_user_id=${this.props.user.userId}` +
+            `&force_new_device=true` +
             `&callback_url=${encodeURIComponent(SourceService.LINK_AVS_URL)}` +
             (this.state.token ? `&user_id=${this.state.token}` : "")
             : "";
