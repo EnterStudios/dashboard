@@ -10,6 +10,7 @@ import {Cell, Grid} from "../Grid/index";
 import {Title} from "../Title";
 import EventHandler = __React.EventHandler;
 import Source from "../../models/source";
+import {remoteservice} from "../../services/remote-service";
 import SourceService from "../../services/source";
 import {ValidationResultComponent} from "./ValidationResultComponent";
 import {ValidationTestComponent} from "./ValidationTestComponent";
@@ -48,6 +49,7 @@ export interface ValidationParentComponentProps {
     handleMonitorEnabledCheckChange: (value: boolean) => any;
     setLoading: (value: boolean) => (dispatch: Redux.Dispatch<any>) => void;
     handleShowSnackbarEnableMonitoring: () => any;
+    handleShowSnackbarVerifyEmail: () => any;
 }
 
 interface ValidationParentComponentState {
@@ -108,6 +110,11 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
     async handleEnableValidation () {
         // adding this to allow user to disable monitoring even if he doesn't have vendor or token
         // this.state.enableValidation means is already active so handleEnableValidation will disable it
+        const user = remoteservice.defaultService().auth().currentUser;
+        if (!user || !user.emailVerified) {
+            this.props.handleShowSnackbarVerifyEmail();
+            return;
+        }
         if ((this.props.token && this.props.vendorID) || this.state.enableValidation) {
             const validation_enabled = !this.state.enableValidation;
             const sourceToUpdate = {...this.props.source, validation_enabled, validation_script: this.props.script};
@@ -151,10 +158,13 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                                 {
                                     (this.props && this.props.token &&
                                         (
-                                            <Input theme={inputTheme}
-                                                   className={`sm-input ${inputTheme.validation_input}`}
-                                                   label="Validation Token" value={this.props.token}
-                                                   onChange={this.props.handleTokenChange} required={true}/>
+                                            <div>
+                                                <a className={validationStyle.refresh_token} href="#" onClick={this.props.handleGetTokenClick}>Refresh</a>
+                                                <Input theme={inputTheme}
+                                                       className={`sm-input ${inputTheme.validation_input} ${validationStyle.token_input}`}
+                                                       label="Validation Token" value={this.props.token}
+                                                       onChange={this.props.handleTokenChange} required={true}/>
+                                            </div>
                                         )
                                     ) ||
                                     <a className={`${validationStyle.get_token}`} href="#" onClick={this.props.handleGetTokenClick}>Get validation token</a>

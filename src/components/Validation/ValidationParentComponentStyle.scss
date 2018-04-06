@@ -36,6 +36,16 @@
     }
 }
 
+.refresh_token {
+    display: inline-block!important;
+    text-decoration: none;
+    padding-right: 5px;
+}
+
+.token_input {
+    display: inline-block;
+}
+
 .validation_text {
     display: inline-block;
     margin: 0 28px 20px 28px;
