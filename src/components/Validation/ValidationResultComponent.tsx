@@ -11,8 +11,9 @@ class ReactDiv extends React.Component<any, any> {
     }
 
     render () {
+        const {theme, ...rest} = this.props;
         return (
-            <div {...this.props} />
+            <div {...rest} />
         );
     }
 }

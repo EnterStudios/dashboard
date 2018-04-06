@@ -16,6 +16,7 @@ import Source from "../../models/source";
 import {User, UserDetails} from "../../models/user";
 import { State } from "../../reducers";
 import auth from "../../services/auth";
+import {remoteservice} from "../../services/remote-service";
 import SourceService from "../../services/source";
 import { Location } from "../../utils/Location";
 
@@ -126,6 +127,8 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
         this.handleSnackbarClick = this.handleSnackbarClick.bind(this);
         this.handleSelectedSource = this.handleSelectedSource.bind(this);
         this.handleVendorIDChange = this.handleVendorIDChange.bind(this);
+        this.handleVerifyEmailClick = this.handleVerifyEmailClick.bind(this);
+        this.handleShowSnackbarVerifyEmail = this.handleShowSnackbarVerifyEmail.bind(this);
         this.handleMonitorEnabledCheckChange = this.handleMonitorEnabledCheckChange.bind(this);
         this.handleShowSnackbarEnableMonitoring = this.handleShowSnackbarEnableMonitoring.bind(this);
     }
@@ -304,7 +307,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
     }
 
     virtualDeviceLinkAccountURL(): string {
-        const virtualDeviceURL = process.env.VIRTUAL_DEVICE_URL
+        const virtualDeviceURL = process.env.NODE_ENV === "production"
             ? process.env.VIRTUAL_DEVICE_URL
             : "https://virtual-device-dev.bespoken.io/";
         return this.props.user
@@ -346,6 +349,25 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
             ),
             showSnackbar: true
         }));
+    }
+
+    handleShowSnackbarVerifyEmail() {
+        this.setState(prevState => ({
+            ...prevState,
+            snackbarLabel: (
+                <div>
+                    To enable monitoring, you must have a verified email address.<a
+                    onClick={this.handleVerifyEmailClick} className="cursor-pointer"> Click here </a>to receive a verification
+                    email.
+                </div>
+            ),
+            showSnackbar: true
+        }));
+    }
+
+    async handleVerifyEmailClick() {
+        await remoteservice.defaultService().auth().currentUser.sendEmailVerification();
+        this.setState({ ...this.state, emailVerificationStatus: "sent" });
     }
 
     handleSnackbarClick() {
@@ -403,6 +425,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                         handleDialogToggle={this.handleDialogToggle}
                         handleMonitorEnabledCheckChange={this.handleMonitorEnabledCheckChange}
                         handleShowSnackbarEnableMonitoring={this.handleShowSnackbarEnableMonitoring}
+                        handleShowSnackbarVerifyEmail={this.handleShowSnackbarVerifyEmail}
                     />
                 )}
                 {

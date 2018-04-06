@@ -96,7 +96,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
     }
 
     virtualDeviceLinkAccountURL(): string {
-        const virtualDeviceURL = process.env.VIRTUAL_DEVICE_URL
+        const virtualDeviceURL = process.env.NODE_ENV === "production"
             ? process.env.VIRTUAL_DEVICE_URL
             : "https://virtual-device-dev.bespoken.io/";
         return this.props.user
