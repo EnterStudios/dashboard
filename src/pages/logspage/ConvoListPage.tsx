@@ -20,7 +20,7 @@ import { CompositeFilter } from "./filters/Filters";
 import ConvoList from "./list/ConvoList";
 
 const LIMIT: number = 50;
-const UPDATE_TIME_MS = 5000;
+const UPDATE_TIME_MS = 60000;
 
 interface DateRange {
     startTime?: moment.Moment;

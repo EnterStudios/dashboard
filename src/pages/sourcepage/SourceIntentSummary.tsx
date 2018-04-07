@@ -55,13 +55,13 @@ export class SourceIntentSummary extends LoadingComponent.Component<CountData[],
         super(props, { data: [] } as SourceIntentSummaryState);
     }
 
-    componentDidMount () {
-        this.props.refreshInterval && this.setState({...this.state, refreshId: setInterval(() => this.refresh(), this.props.refreshInterval)});
-    }
+    // componentDidMount () {
+    //     this.props.refreshInterval && this.setState({...this.state, refreshId: setInterval(() => this.refresh(), this.props.refreshInterval)});
+    // }
 
-    componentWillUnmount () {
-        clearInterval(this.state.refreshId);
-    }
+    // componentWillUnmount () {
+    //     clearInterval(this.state.refreshId);
+    // }
 
     async refresh () {
         const { source, startDate, endDate } = this.props;
