@@ -8726,6 +8726,14 @@ button.icon-button-validation__toggle___AmPKR {
     .ValidationParentComponentStyle__token_container___2I9um > div > label {
       right: 3px; }
 
+.ValidationParentComponentStyle__refresh_token___2c6-I {
+  display: inline-block !important;
+  text-decoration: none;
+  padding-right: 5px; }
+
+.ValidationParentComponentStyle__token_input___2iix4 {
+  display: inline-block; }
+
 .ValidationParentComponentStyle__validation_text___djG5H {
   display: inline-block;
   margin: 0 28px 20px 28px;
