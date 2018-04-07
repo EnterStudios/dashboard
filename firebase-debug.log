@@ -1,47 +1,47 @@
-[debug] [2018-03-26T13:40:11.806Z] ----------------------------------------------------------------------
-[debug] [2018-03-26T13:40:11.812Z] Command:       /home/travis/.nvm/versions/node/v6.13.1/bin/node /home/travis/build/bespoken/dashboard/node_modules/.bin/firebase deploy --token 1/JPz73PYlhKPPcPu3SkdnN9IAx9ihSr2cLbQgon3M1Qf_VHYbR-_JvvMZQAsVYcAX --debug
-[debug] [2018-03-26T13:40:11.813Z] CLI Version:   3.17.6
-[debug] [2018-03-26T13:40:11.813Z] Platform:      linux
-[debug] [2018-03-26T13:40:11.813Z] Node Version:  v6.13.1
-[debug] [2018-03-26T13:40:11.813Z] Time:          Mon Mar 26 2018 13:40:11 GMT+0000 (UTC)
-[debug] [2018-03-26T13:40:11.813Z] ----------------------------------------------------------------------
+[debug] [2018-04-07T05:21:49.863Z] ----------------------------------------------------------------------
+[debug] [2018-04-07T05:21:49.868Z] Command:       /home/travis/.nvm/versions/node/v6.14.1/bin/node /home/travis/build/bespoken/dashboard/node_modules/.bin/firebase deploy --token 1/JPz73PYlhKPPcPu3SkdnN9IAx9ihSr2cLbQgon3M1Qf_VHYbR-_JvvMZQAsVYcAX --debug
+[debug] [2018-04-07T05:21:49.869Z] CLI Version:   3.17.6
+[debug] [2018-04-07T05:21:49.870Z] Platform:      linux
+[debug] [2018-04-07T05:21:49.870Z] Node Version:  v6.14.1
+[debug] [2018-04-07T05:21:49.870Z] Time:          Sat Apr 07 2018 05:21:49 GMT+0000 (UTC)
+[debug] [2018-04-07T05:21:49.870Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2018-03-26T13:40:11.830Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2018-03-26T13:40:11.831Z] > authorizing via --token option
-[debug] [2018-03-26T13:40:11.838Z] > refreshing access token with scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2018-03-26T13:40:11.839Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+[debug] [2018-04-07T05:21:49.886Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-04-07T05:21:49.891Z] > authorizing via --token option
+[debug] [2018-04-07T05:21:49.893Z] > refreshing access token with scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-04-07T05:21:49.894Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
  { refresh_token: '1/JPz73PYlhKPPcPu3SkdnN9IAx9ihSr2cLbQgon3M1Qf_VHYbR-_JvvMZQAsVYcAX',
   client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
   client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
   grant_type: 'refresh_token',
   scope: 'email openid https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase https://www.googleapis.com/auth/cloud-platform' } 
- Mon Mar 26 2018 13:40:11 GMT+0000 (UTC)
-[debug] [2018-03-26T13:40:11.949Z] <<< HTTP RESPONSE 200
-[debug] [2018-03-26T13:40:11.951Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/build-dashboard-57502  
+ Sat Apr 07 2018 05:21:49 GMT+0000 (UTC)
+[debug] [2018-04-07T05:21:50.001Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-07T05:21:50.003Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/build-dashboard-57502  
   
- Mon Mar 26 2018 13:40:11 GMT+0000 (UTC)
-[debug] [2018-03-26T13:40:12.149Z] <<< HTTP RESPONSE 200
-[debug] [2018-03-26T13:40:12.151Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/build-dashboard-57502/tokens  
+ Sat Apr 07 2018 05:21:50 GMT+0000 (UTC)
+[debug] [2018-04-07T05:21:50.250Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-07T05:21:50.252Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/build-dashboard-57502/tokens  
   
- Mon Mar 26 2018 13:40:12 GMT+0000 (UTC)
-[debug] [2018-03-26T13:40:12.470Z] <<< HTTP RESPONSE 200
+ Sat Apr 07 2018 05:21:50 GMT+0000 (UTC)
+[debug] [2018-04-07T05:21:50.509Z] <<< HTTP RESPONSE 200
 [info] 
 [info] === Deploying to 'build-dashboard-57502'...
 [info] 
 [info] i  deploying hosting
 [info] i  hosting: preparing harness directory for upload...
-[debug] [2018-03-26T13:40:13.752Z] >>> HTTP REQUEST PUT https://deploy.firebase.com/v1/hosting/build-dashboard-57502/uploads/-L8XXPor0mwFo_mMUaCU?fileCount=24&message=  
+[debug] [2018-04-07T05:21:51.817Z] >>> HTTP REQUEST PUT https://deploy.firebase.com/v1/hosting/build-dashboard-57502/uploads/-L9TYQWG8l1YkHesHNAK?fileCount=24&message=  
   
- Mon Mar 26 2018 13:40:13 GMT+0000 (UTC)
-[debug] [2018-03-26T13:40:18.563Z] <<< HTTP RESPONSE 200
-[debug] [2018-03-26T13:40:18.564Z] [hosting] .tgz uploaded successfully, waiting for extraction
+ Sat Apr 07 2018 05:21:51 GMT+0000 (UTC)
+[debug] [2018-04-07T05:21:56.889Z] <<< HTTP RESPONSE 200
+[debug] [2018-04-07T05:21:56.890Z] [hosting] .tgz uploaded successfully, waiting for extraction
 [info] ✔  hosting: 24 files uploaded successfully
-[debug] [2018-03-26T13:40:19.456Z] >>> HTTP REQUEST POST https://deploy.firebase.com/v1/projects/build-dashboard-57502/releases  
+[debug] [2018-04-07T05:21:57.912Z] >>> HTTP REQUEST POST https://deploy.firebase.com/v1/projects/build-dashboard-57502/releases  
  { hosting: 
    { public: 'harness',
      rewrites: [ [Object] ],
-     version: '-L8XXPor0mwFo_mMUaCU',
-     prefix: '-L8XXPor0mwFo_mMUaCU/',
+     version: '-L9TYQWG8l1YkHesHNAK',
+     prefix: '-L9TYQWG8l1YkHesHNAK/',
      manifest: [] } } 
- Mon Mar 26 2018 13:40:19 GMT+0000 (UTC)
-[debug] [2018-03-26T13:40:20.310Z] <<< HTTP RESPONSE 200
+ Sat Apr 07 2018 05:21:57 GMT+0000 (UTC)
+[debug] [2018-04-07T05:21:58.816Z] <<< HTTP RESPONSE 200
