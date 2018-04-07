@@ -116,7 +116,7 @@ var config = {
   entry: "./src/index.tsx",
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "scripts/" + projectName + ".js",
+    filename: "scripts/" + projectName + ".js?v1",
   },
   // Enable sourcemaps for debugging webpack's output.
   // devtool: "source-map",
