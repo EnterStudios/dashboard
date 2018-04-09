@@ -36,13 +36,13 @@ export class SourceUpTime extends LoadingComponent.Component<{ summary: UpTimeDa
         super(props, {data: {summary: [], status: 1}} as SourceUpTimeState);
     }
 
-    componentDidMount () {
-        this.props.refreshInterval && this.setState({...this.state, refreshId: setInterval(() => this.refresh(), this.props.refreshInterval)});
-    }
+    // componentDidMount () {
+    //     this.props.refreshInterval && this.setState({...this.state, refreshId: setInterval(() => this.refresh(), this.props.refreshInterval)});
+    // }
 
-    componentWillUnmount () {
-        clearInterval(this.state.refreshId);
-    }
+    // componentWillUnmount () {
+    //     clearInterval(this.state.refreshId);
+    // }
 
     async refresh () {
         const { source } = this.props;

@@ -94,8 +94,8 @@ describe("SourceTimeSummary", function () {
         after(function () {
             responseService.restore();
         });
-
-        it("Tests the data query contains the appropriate parameters.", function () {
+// temporarily turn off response time graph
+        it.skip("Tests the data query contains the appropriate parameters.", function () {
             wrapper.setProps({ source: sources[1] }); // Forces a call to componentWillReceiveProps
             const loadingPromise = (wrapper.instance() as SourceResponseTimeAverage).loadingPromise;
             return loadingPromise.then(function () {
@@ -112,8 +112,8 @@ describe("SourceTimeSummary", function () {
                 expect(intervalParameter.value).to.equal(10);
             });
         });
-
-        it("Tests that the data query does *not* load if the parameters are the same.", function () {
+// temporarily turn off response time graph
+        it.skip("Tests that the data query does *not* load if the parameters are the same.", function () {
             wrapper.setProps({});
             let loadingPromise = (wrapper.instance() as SourceResponseTimeAverage).loadingPromise;
             return loadingPromise.then(function () {
