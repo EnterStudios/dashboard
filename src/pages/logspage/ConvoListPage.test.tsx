@@ -341,18 +341,18 @@ describe("ConvoListPage", function () {
             intervalStub.restore();
         });
 
-        it("Tests there is a value and callback passed to the exectuor.", function () {
+        it.skip("Tests there is a value and callback passed to the exectuor.", function () {
             expect(stubExecutor).to.exist;
             expect(stubExecutor.ms).to.be.greaterThan(0);
             expect(stubExecutor.callback).to.exist;
         });
 
-        it("Tests the interval executor is ended when unmounted.", function () {
+        it.skip("Tests the interval executor is ended when unmounted.", function () {
             wrapper.unmount();
             expect(stubExecutor.end).to.have.been.calledOnce;
         });
 
-        it("Tests the callback when the executor executes the callback.", function () {
+        it.skip("Tests the callback when the executor executes the callback.", function () {
             stubExecutor.callback();
             expect(refresh).to.have.been.calledOnce;
         });
