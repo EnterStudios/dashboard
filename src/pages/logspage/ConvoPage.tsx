@@ -119,9 +119,11 @@ export class ConvoPage extends React.Component<ConvoPageProps, ConvoPageState> {
     }
 
     handleLiveUpdate(enabled: boolean) {
-        this.state.refreshOn = enabled;
-        this.state.savedRefreshState = enabled;
-        this.setState(this.state);
+        this.setState((prevState) => ({
+            ...prevState,
+            refreshOn: enabled,
+            savedRefreshState: enabled,
+        }));
     }
 
     handleVisiblityChange(state: VISIBLITY_STATE) {
@@ -141,6 +143,7 @@ export class ConvoPage extends React.Component<ConvoPageProps, ConvoPageState> {
                     onFilterOrigin={this.handleFilter}
                     onFilterDate={this.handleDateFilter}
                     onLiveUpdate={this.handleLiveUpdate}
+                    shouldRefresh={this.state && this.state.refreshOn}
                     dateRange={this.state.dateRange}
                     liveUpdateEnabled={this.state.refreshOn && !this.state.refreshDisabled}
                     disableLiveUpdateCheckbox={this.state.refreshDisabled} />

@@ -20,7 +20,7 @@ import { CompositeFilter } from "./filters/Filters";
 import ConvoList from "./list/ConvoList";
 
 const LIMIT: number = 50;
-const UPDATE_TIME_MS = 60000;
+// const UPDATE_TIME_MS = 5000;
 
 interface DateRange {
     startTime?: moment.Moment;
@@ -141,7 +141,7 @@ export class ConvoListPage extends React.Component<ConvoListPageProps, ConvoList
         this.filterConvo = this.filterConvo.bind(this);
         this.setState = this.setState.bind(this);
 
-        this.refresher = Interval.newExecutor(UPDATE_TIME_MS, this.getRefresh.bind(this));
+        // this.refresher = Interval.newExecutor(UPDATE_TIME_MS, this.getRefresh.bind(this));
 
         this.state = {
             conversations: [],
@@ -158,9 +158,9 @@ export class ConvoListPage extends React.Component<ConvoListPageProps, ConvoList
 
     componentWillReceiveProps(nextProps: ConvoListPageProps, context: any) {
         if (nextProps.refreshOn) {
-            this.refresher.start();
+            // this.refresher.start();
         } else {
-            this.refresher.end();
+            // this.refresher.end();
         }
 
         if (nextProps.source) {
@@ -193,7 +193,7 @@ export class ConvoListPage extends React.Component<ConvoListPageProps, ConvoList
     }
 
     componentWillUnmount() {
-        this.refresher.end();
+        // this.refresher.end();
     }
 
     checkIfMoreNeeded() {

@@ -19,6 +19,7 @@ export interface SourceProperties {
     validation_script?: string;
     validation_enabled?: boolean;
     hasIntegrated?: boolean;
+    sourceType?: string;
 }
 
 export class Source implements SourceProperties {
@@ -39,6 +40,7 @@ export class Source implements SourceProperties {
     public validation_script?: string | undefined;
     public validation_enabled?: boolean | undefined;
     public hasIntegrated?: boolean | undefined;
+    public sourceType?: string;
 
     constructor(props: SourceProperties) {
 
@@ -57,6 +59,7 @@ export class Source implements SourceProperties {
         if (props.validation_script) this.validation_script = props.validation_script;
         if (props.validation_enabled) this.validation_enabled = props.validation_enabled;
         if (props.hasIntegrated) this.hasIntegrated = props.hasIntegrated;
+        if (props.sourceType) this.sourceType = props.sourceType;
         if (props.created) {
             if (props.created instanceof Date) {
                 this.created = props.created.toISOString();

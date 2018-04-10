@@ -208,6 +208,7 @@ export namespace source {
             sourceToSend.customJson = source.customJson || "";
             sourceToSend.validation_script = source.validation_script || "";
             sourceToSend.hasIntegrated = source.hasIntegrated || "";
+            sourceToSend.sourceType = source.sourceType || "";
             db.ref().child("/sources/" + source.id)
                 .update(sourceToSend,
                 (err: Error): firebase.Promise<any> => {

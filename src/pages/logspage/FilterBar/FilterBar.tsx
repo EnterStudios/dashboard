@@ -36,6 +36,7 @@ export interface FilterProps {
     onLiveUpdate: (enabled: boolean) => void;
     disableLiveUpdateCheckbox?: boolean;
     className?: string;
+    shouldRefresh?: boolean;
 }
 
 export interface FilterState {
@@ -96,8 +97,8 @@ class FilterBar extends React.Component<FilterProps, FilterState> {
             origins: origins,
             filterbarHidden: false,
             startDate: convertDate(props.dateRange.startTime),
-            endDate: convertDate(props.dateRange.endTime)
-        };
+            endDate: convertDate(props.dateRange.endTime),
+    };
 
         this.handleStartDateChange = this.handleDateChange.bind(this, "startDate");
         this.handleEndDateChange = this.handleDateChange.bind(this, "endDate");
@@ -188,8 +189,7 @@ class FilterBar extends React.Component<FilterProps, FilterState> {
     }
 
     async handleRefresh() {
-        await this.props.onLiveUpdate(false);
-        this.props.onLiveUpdate(true);
+        await this.props.onLiveUpdate(!this.props.shouldRefresh);
     }
 
     render(): JSX.Element {
@@ -271,7 +271,8 @@ class FilterBar extends React.Component<FilterProps, FilterState> {
                 <Cell col={3} tablet={5} phone={4}>
                     <Checkbox
                         theme={CheckboxTheme}
-                        label="Live Update"
+                        style={{opacity: 0, marginLeft: "-25px"}}
+                        label="Refresh"
                         checked={this.props.liveUpdateEnabled}
                         disabled={this.props.disableLiveUpdateCheckbox}
                         onChange={this.props.onLiveUpdate} />
