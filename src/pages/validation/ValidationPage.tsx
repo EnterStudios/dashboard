@@ -324,16 +324,6 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
         const redirect = () => {
             window.location.href = this.virtualDeviceLinkAccountURL();
         };
-        if (!this.state.vendorID || this.state.vendorID === "") {
-            this.setState({...this.state,
-                showSnackbar: true,
-                snackbarLabel: ValidationPage.snackbarLabel});
-            return;
-        }
-        if (this.state.vendorIDChanged) {
-            const props: any = {vendorID: this.state.vendorID};
-            auth.updateCurrentUser(props).then(() => redirect());
-        }
         redirect();
     }
 

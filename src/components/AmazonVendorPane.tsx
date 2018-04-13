@@ -124,7 +124,7 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
                         </div>
                         <div className={VendorPaneStyle.second_item}>
                             <span>2.</span>
-                            <span>Amazon Permissions<br /><span>Yes, give bespoken access permissions</span></span>
+                            <span>Amazon Permissions<br /><span>Give Bespoken access to your skills for testing and monitoring</span></span>
                             <div onClick={this.handleGoClick}><a href="#">GO</a></div>
                         </div>
                     </div>
