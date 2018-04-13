@@ -47,7 +47,7 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
             enableValidation: props.source.validation_enabled,
             loading: false,
             deleteDialogActive: false,
-            isSourceUp: undefined,
+            isSourceUp: true,
             sourceType: "ALEXA SKILL"
         };
 
@@ -65,7 +65,7 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
     async componentDidMount () {
         try {
             const sourceId = this.props.source && this.props.source.id;
-            const result = sourceId && this.props.source.monitoring_enabled && await MonitoringService.getSourceStatus(sourceId);
+            const result = sourceId && this.props.source.validation_enabled && await MonitoringService.getSourceStatus(sourceId);
             const isSourceUp = result && result.status === "up" ? true : false;
             let sourceType = this.props.source.sourceType || "ALEXA SKILL";
             if (!this.props.source.sourceType) {

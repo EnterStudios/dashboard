@@ -4,6 +4,7 @@ import { Button } from "react-toolbox/lib/button";
 import DailyEvents from "../../components/SourceSelector/DailyEventsBarChart";
 import ResponseTime from "../../components/SourceSelector/ResponseTimeBarChart";
 import Source from "../../models/source";
+import SourceUtils from "../../utils/Source";
 import SourceStats from "./ValidationPageEventStats";
 import SuccessRadialChart from "./ValidationPageSuccessRadialChart";
 
@@ -34,6 +35,12 @@ export default class ValidationPageGlobalStats extends React.Component<Validatio
 
     handleCheckErrors () {
         this.props.goTo("/skills/" + this.props.source.id + "/logs");
+    }
+
+    shouldComponentUpdate (nextProps: ValidationPageGlobalStatsProps) {
+        return !(SourceUtils.equals(nextProps.source, this.props.source) &&
+            nextProps.startDate.diff(this.props.startDate, "minutes", true) <= 1
+            && nextProps.endDate.diff(this.props.endDate, "minutes", true) <= 1);
     }
 
     render() {
