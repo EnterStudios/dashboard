@@ -5,7 +5,7 @@ import ProgressBar from "react-toolbox/lib/progress_bar";
 import IntervalChart from "../../components/Graphs/Line/IntervalChart";
 import {Grid} from "../../components/Grid";
 import * as LoadingComponent from "../../components/LoadingComponent";
-// import Query, { EndTimeParameter, IntervalParameter, SourceParameter, StartTimeParameter } from "../../models/query";
+import Query, { EndTimeParameter, IntervalParameter, SourceParameter, StartTimeParameter } from "../../models/query";
 import Source from "../../models/source";
 import LogService from "../../services/log";
 import SourceUtils from "../../utils/Source";
@@ -45,16 +45,16 @@ export class SourceResponseTimeAverage extends LoadingComponent.Component<{data:
     // }
 
     async refresh () {
-        // const { source, startDate, endDate } = this.props;
-        //
-        // if (!source) return;
-        // this.mapState({ data: [] });
-        // const query: Query = new Query();
-        // query.add(new SourceParameter(source));
-        // query.add(new StartTimeParameter(startDate));
-        // query.add(new EndTimeParameter(endDate));
-        // const serviceData: any = await LogService.getResponseTimeSummary(query);
-        // this.mapState({data: serviceData});
+        const { source, startDate, endDate } = this.props;
+
+        if (!source) return;
+        this.mapState({ data: [] });
+        const query: Query = new Query();
+        query.add(new SourceParameter(source));
+        query.add(new StartTimeParameter(startDate));
+        query.add(new EndTimeParameter(endDate));
+        const serviceData: any = await LogService.getResponseTimeSummary(query);
+        this.mapState({data: serviceData});
     }
 
     shouldUpdate(oldProps: SourceResponseTimeAverageProps, newProps: SourceResponseTimeAverageProps) {
@@ -72,19 +72,18 @@ export class SourceResponseTimeAverage extends LoadingComponent.Component<{data:
     }
 
     startLoading(props: SourceResponseTimeAverageProps): Thenable<LogService.ResponseTimeSummary> {
-        // const { source, startDate, endDate, interval } = props;
-        //
-        // if (!source) {
-        //     return Promise.resolve({});
-        // }
-        //
-        // const query: Query = new Query();
-        // query.add(new SourceParameter(source));
-        // query.add(new StartTimeParameter(startDate));
-        // query.add(new EndTimeParameter(endDate));
-        // query.add(new IntervalParameter(interval));
-        // return LogService.getResponseTimeSummary(query);
-        return Promise.resolve();
+        const { source, startDate, endDate, interval } = props;
+
+        if (!source) {
+            return Promise.resolve({});
+        }
+
+        const query: Query = new Query();
+        query.add(new SourceParameter(source));
+        query.add(new StartTimeParameter(startDate));
+        query.add(new EndTimeParameter(endDate));
+        query.add(new IntervalParameter(interval));
+        return LogService.getResponseTimeSummary(query);
     }
 
     map(data: LogService.ResponseTimeSummary[]): any {
