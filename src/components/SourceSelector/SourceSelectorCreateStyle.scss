@@ -20,9 +20,29 @@
     }
     .source_type_text {
         position: absolute;
-        top: 33px;
+        top: 10px;
         left: calc(3.5rem + 35px);
         color: #C5C9D2;
+
+        ul {
+            top: 20px!important;
+        }
+    }
+}
+
+.hybrid_source {
+    width: 3.5rem;
+    height: 3.5rem;
+    display: inline-block;
+    margin: 0;
+    vertical-align: text-bottom;
+    img {
+        width: 50%!important;
+        vertical-align: top!important;
+        margin-top: 5%;
+        + img {
+            margin-top: 40%;
+        }
     }
 }
 

@@ -104,6 +104,22 @@
         }
     }
 
+    .hybrid_source {
+        width: 6.5rem;
+        height: 6.5rem;
+        display: inline-block;
+        margin: 0;
+        vertical-align: text-bottom;
+        img {
+            width: 50%;
+            vertical-align: top;
+            margin-top: 5%;
+            + img {
+                margin-top: 40%;
+            }
+        }
+    }
+
     span {
         position: absolute;
         top: 46px;

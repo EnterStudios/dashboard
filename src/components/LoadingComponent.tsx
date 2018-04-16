@@ -86,7 +86,6 @@ export class Component<DATA, P extends LoadingComponentProps, S extends LoadingC
      */
     forceLoading(props: P) {
         this.cancel();
-        console.time(Component.TAG);
         this.loadingPromise = Bluebird
             .resolve(this.preLoad(props))
             .then((preloadState: any) => {
@@ -98,7 +97,6 @@ export class Component<DATA, P extends LoadingComponentProps, S extends LoadingC
                 return this.startLoading(props);
             })
             .then(function (result: any) {
-                console.timeEnd(Component.TAG);
                 return result;
             })
             .then(this.map)

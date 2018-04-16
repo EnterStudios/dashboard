@@ -1,0 +1,22 @@
+.dropdown {
+    width: 150px;
+    position: absolute;
+    top: 45px;
+    left: 130px;
+}
+
+.value {
+    padding: 0;
+    input {
+        color: #C7C9CA;
+        font-size: 1.2rem;
+        border-bottom: none;
+    }
+    &::after {
+        top: 42%;
+    };
+}
+
+.values {
+    top: 35px!important;
+}

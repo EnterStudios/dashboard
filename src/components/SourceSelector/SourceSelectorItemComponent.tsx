@@ -156,10 +156,10 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
     }
 
     async handleEnableValidation (e: any) {
-        e.stopPropagation();
-        const validation_enabled = !this.state.enableValidation;
-        const sourceToUpdate = {...this.props.source, validation_enabled};
-        await this.updateSourceObject(sourceToUpdate);
+        // e.stopPropagation();
+        // const validation_enabled = !this.state.enableValidation;
+        // const sourceToUpdate = {...this.props.source, validation_enabled};
+        // await this.updateSourceObject(sourceToUpdate);
     }
 
     async handleValidationPageClick () {
@@ -167,7 +167,7 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
     }
 
     render() {
-        const validationEnabledStyle = this.state.enableValidation ? SourceSelectorItemStyle.enabled : "";
+        const validationEnabledStyle = this.props.source.validation_enabled ? SourceSelectorItemStyle.enabled : "";
         const sourceItemActive = this.props.active ? SourceSelectorItemStyle.active : "";
         const rows = this.props.source && this.props.source.validation_script && this.props.source.validation_script.split(/\r?\n/);
         const showValidationResultRows = this.state.enableValidation && rows && rows.length ? SourceSelectorItemStyle.visible : "";
@@ -180,23 +180,23 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
                             {
                                 // TODO: Extract this to a component
                                 (
-                                    this.state.sourceType === "HYBRID SOURCE" ?
+                                    this.props.source.sourceType === "hybrid" ?
                                         (
                                             <div className={SourceSelectorItemStyle.hybrid_source}>
                                                 <img src={"https://bespoken.io/wp-content/uploads/2018/03/amazon-alexa.png"} alt={"alexa icon"}/>
                                                 <img src={"https://bespoken.io/wp-content/uploads/2018/03/google-actions.png"} alt={"google action icon"}/>
                                             </div>
                                         ) :
-                                        this.state.sourceType === "GOOGLE ACTION" ?
+                                        this.state.sourceType === "google" ?
                                             <img src={"https://bespoken.io/wp-content/uploads/2018/03/google-actions.png"} alt={"google action icon"}/> :
                                             <img src={"https://bespoken.io/wp-content/uploads/2018/03/amazon-alexa.png"} alt={"alexa icon"}/>
                                 )
                             }
                             <div className={SourceSelectorItemStyle.source_name}>{this.props.source.name}</div>
                             <div className={`${SourceSelectorItemStyle.enable_monitoring} ${validationEnabledStyle}`}>
-                                <div style={{display: "none"}}>
-                                    <span>{this.state.enableValidation ? "DISABLE" : "ENABLE"}</span>
+                                <div>
                                     <span>MONITORING</span>
+                                    <span>{this.props.source.validation_enabled ? "ENABLED" : "DISABLED"}</span>
                                 </div>
                                 <IconButton disabled={true} icon={"power_settings_new"} onClick={this.handleEnableValidation}/>
                             </div>

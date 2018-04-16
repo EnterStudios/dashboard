@@ -3,6 +3,7 @@ import * as React from "react";
 import {IconButton, Input} from "react-toolbox";
 import Source from "../../models/source";
 import service from "../../services/source";
+import SourceDropdown from "../SourceDropdown/SourceDropdown";
 
 const SourceSelectorStyle = require("./SourceSelectorCreateStyle.scss");
 
@@ -21,6 +22,7 @@ interface SourceSelectorCreateState {
     showCreateSource: boolean;
     sourceName: string;
     enableValidation: boolean;
+    sourceType: string;
 }
 
 export default class SourceSelectorCreate extends React.Component<SourceSelectorCreateProps, SourceSelectorCreateState> {
@@ -39,6 +41,7 @@ export default class SourceSelectorCreate extends React.Component<SourceSelector
             showCreateSource: false,
             sourceName: "",
             enableValidation: false,
+            sourceType: "alexa"
         };
 
         this.handleCreateClick = this.handleCreateClick.bind(this);
@@ -84,7 +87,12 @@ export default class SourceSelectorCreate extends React.Component<SourceSelector
     async handleSourceNameKeyPress (event: any) {
         if (event.key === "Enter") {
             this.props.handleLoadingChange(true);
-            const source: Source = new Source({name: this.state.sourceName || `default${this.props.defaultSourceNumber}`, validation_enabled: this.state.enableValidation, created: moment().toISOString()});
+            const source: Source = new Source({
+                name: this.state.sourceName || `default${this.props.defaultSourceNumber}`,
+                validation_enabled: this.state.enableValidation,
+                created: moment().toISOString(),
+                sourceType: this.state.sourceType,
+            });
             const createdSource = await service.createSource(source);
             await this.props.getSources();
             await this.props.setSource(createdSource);
@@ -99,7 +107,12 @@ export default class SourceSelectorCreate extends React.Component<SourceSelector
 
     async handleCreateAndValidationPageClick () {
         this.props.handleLoadingChange(true);
-        const source: Source = new Source({name: this.state.sourceName || `default${this.props.defaultSourceNumber}`, validation_enabled: this.state.enableValidation, created: moment().toISOString()});
+        const source: Source = new Source({
+            name: this.state.sourceName || `default${this.props.defaultSourceNumber}`,
+            validation_enabled: this.state.enableValidation,
+            created: moment().toISOString(),
+            sourceType: this.state.sourceType,
+        });
         const createdSource = await service.createSource(source);
         await this.props.getSources();
         this.setState(prevState => ({
@@ -124,25 +137,46 @@ export default class SourceSelectorCreate extends React.Component<SourceSelector
             enableValidation: false,
             sourceName: "",
             showCreateSource: false,
+            sourceType: "alexa",
+        }));
+    }
+
+    handleSourceTypeChange = (sourceType: string) => {
+        this.setState((prevState) => ({
+            ...prevState,
+            sourceType,
         }));
     }
 
     render() {
-        const validationEnabledStyle = this.state.enableValidation ? SourceSelectorStyle.enabled : "";
+        // const validationEnabledStyle = this.state.enableValidation ? SourceSelectorStyle.enabled : "";
         return this.state.showCreateSource ?
             (
                 <div className={`${SourceSelectorStyle.item} ${SourceSelectorStyle.create_skill_container}`}>
                     <div>
-                        <div className={SourceSelectorStyle.source_type_text}>{""}</div>
-                        <img src={"https://bespoken.io/wp-content/uploads/2018/01/amazon-alexa-logo-D1BE24A213-seeklogo.com_.png"} alt={"alexa icon"} />
+                        <SourceDropdown className={SourceSelectorStyle.source_type_text} sourceType={this.state && this.state.sourceType} handleTypeChange={this.handleSourceTypeChange} />
+                        {
+                            (
+                                this.state && this.state.sourceType === "hybrid" ?
+                                    (
+                                        <div className={SourceSelectorStyle.hybrid_source}>
+                                            <img src={"https://bespoken.io/wp-content/uploads/2018/03/amazon-alexa.png"} alt={"alexa icon"}/>
+                                            <img src={"https://bespoken.io/wp-content/uploads/2018/03/google-actions.png"} alt={"google action icon"}/>
+                                        </div>
+                                    ) :
+                                    this.state && this.state.sourceType === "google" ?
+                                        <img src={"https://bespoken.io/wp-content/uploads/2018/03/google-actions.png"} alt={"google action icon"}/> :
+                                        <img src={"https://bespoken.io/wp-content/uploads/2018/03/amazon-alexa.png"} alt={"alexa icon"}/>
+                            )
+                        }
                         <Input theme={InputTheme} className={InputTheme.source_input} value={this.state.sourceName} onChange={this.handleSourceNameChange} onKeyPress={this.handleSourceNameKeyPress} label={"Skill name here"} />
-                        <div className={`${SourceSelectorStyle.enable_monitoring} ${validationEnabledStyle}`} >
-                            <div>
-                                <span>{this.state.enableValidation ? "DISABLE" : "ENABLE"}</span>
-                                <span>MONITORING</span>
-                            </div>
-                            <IconButton disabled={true} icon={"power_settings_new"} onClick={this.handleEnableValidation} />
-                        </div>
+                        {/*<div className={`${SourceSelectorStyle.enable_monitoring} ${validationEnabledStyle}`} >*/}
+                            {/*<div>*/}
+                                {/*<span>{this.state.enableValidation ? "DISABLE" : "ENABLE"}</span>*/}
+                                {/*<span>MONITORING</span>*/}
+                            {/*</div>*/}
+                            {/*<IconButton disabled={true} icon={"power_settings_new"} onClick={this.handleEnableValidation} />*/}
+                        {/*</div>*/}
                         <IconButton className={SourceSelectorStyle.cancel_button} icon={"cancel"} onClick={this.handleCancelClick} />
                     </div>
                     <div onClick={this.handleCreateAndValidationPageClick} className={SourceSelectorStyle.validate_button}>{"Validate your new skill >>"}</div>

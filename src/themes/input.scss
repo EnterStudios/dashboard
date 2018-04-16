@@ -76,14 +76,16 @@ $label-filled-padding-left: 0;
 }
 
 .source_input {
+    padding: 0;
     &.input {
         width: 60%;
         display: inline-block;
         margin-left: 10px;
+        padding: 0!important;
     }
     .inputElement {
         font-size: 1.6rem!important;
-        padding-top: 1rem!important;
+        padding-top: 0!important;
         border-bottom: none;
         color: #626D84!important;
     }
@@ -99,6 +101,7 @@ $label-filled-padding-left: 0;
     .label {
         font-size: 1.6rem;
         color: #626D84;
+        top: 0;
     }
     span {
         display: none;
