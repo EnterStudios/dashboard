@@ -342,23 +342,24 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
           handleCloseModal={this.handleCloseModal}
           handleEnterContest={this.handleEnterContest}
         />
-        <Header
-          isValidationPage={this.state.isValidationPage}
-          className={this.headerClasses()}
-          currentSourceId={this.props.currentSource ? this.props.currentSource.id : undefined}
-          sources={this.props.currentSource ? this.dropdownableSources() : undefined}
-          pageButtons={this.pageButtons()}
-          onPageSelected={this.handlePageSwap}
-          onSourceSelected={this.handleSelectedSource}
-          onHomeClicked={this.handleHomeClick}
-          displayHomeButton={this.props.location.pathname !== "/"}
-          amazonFlow={this.props.amazonFlow}
-          getSources={this.props.getSources}>
-          <UserControl
-            login={this.props.login}
-            logout={this.props.logout}
-            user={this.props.user} />
-        </Header>
+          <Header
+              isSourceListPage={isSourceListPage}
+              goTo={this.props.goTo}
+              className={this.headerClasses()}
+              currentSourceId={this.props.currentSource ? this.props.currentSource.id : undefined}
+              sources={this.props.currentSource ? this.dropdownableSources() : undefined}
+              pageButtons={this.pageButtons()}
+              onPageSelected={this.handlePageSwap}
+              onSourceSelected={this.handleSelectedSource}
+              onHomeClicked={this.handleHomeClick}
+              displayHomeButton={this.props.location.pathname !== "/"}
+              amazonFlow={this.props.amazonFlow}
+              getSources={this.props.getSources}>
+              <UserControl
+                  login={this.props.login}
+                  logout={this.props.logout}
+                  user={this.props.user}/>
+          </Header>
         <Content>
           {this.props.children}
           <Snackbar className="sm-snackbar" action="Dismiss" type="cancel"

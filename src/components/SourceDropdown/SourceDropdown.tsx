@@ -2,6 +2,7 @@ import * as React from "react";
 import Dropdown from "react-toolbox/lib/dropdown";
 
 const typeTheme = require("../../themes/type-dropdown.scss");
+const sourceDropdownStyle = require("./SourceDropdownStyle.scss");
 
 const sourceTypes = [
     {value: "alexa", label: "ALEXA SKILL"},
@@ -29,6 +30,14 @@ export default class SourceDropdown extends React.Component<SourceDropdownProps,
         this.props.handleTypeChange(value);
     }
 
+    customDropdownItem = (data: any) => {
+        return (
+            <div className={sourceDropdownStyle.item}>
+                <p>{data.label}</p>
+            </div>
+        );
+    }
+
     render() {
         return (
             <Dropdown
@@ -36,6 +45,7 @@ export default class SourceDropdown extends React.Component<SourceDropdownProps,
                 theme={typeTheme}
                 onChange={this.handleTypeChange}
                 source={sourceTypes}
+                template={this.customDropdownItem}
                 value={this.props.sourceType} />
         );
     }

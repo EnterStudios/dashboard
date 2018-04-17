@@ -138,7 +138,6 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                                 (
                                     <Title
                                         sources={this.props.sources}
-                                        handleItemSelect={this.props.handleSelectedSource}
                                         selectedSourceId={this.props.source.id}
                                         handleUpdateSource={this.updateSourceObject}/>
                                 )

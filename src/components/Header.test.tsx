@@ -7,11 +7,12 @@ import {Tab} from "react-toolbox/lib/tabs";
 import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
 import ButtonMenu from "../components/ButtonMenu";
+import LocaleDropdown from "./LocaleDropdown/LocaleDropdown";
+import SourceDropdown from "./SourceDropdown/SourceDropdown";
 
 import { Header, HeaderButton, HeaderProps, HeaderState, Home, PageButton, PageSwap } from "./Header";
 import { Title } from "./Title";
 
-const Autosuggest: any = require("react-autosuggest");
 // Setup chai with sinon-chai
 chai.use(sinonChai);
 let expect = chai.expect;
@@ -113,14 +114,6 @@ describe("Header", function () {
 
     describe("with one source", function () {
         const sources = [{ label: "name", value: "id", source: {id: "id"} }];
-        const wrapper = shallow(<Header isValidationPage={false} sources={[{ label: "name", value: "id", source: {id: "id"} }]} />);
-        // TODO: unskip once we migrate to new title component (new test file)
-        it.skip("renders the title", function () {
-            const titleWrapper = wrapper.find(Title);
-            expect(titleWrapper).to.have.length(1);
-            expect(titleWrapper.prop("sources")).to.deep.equal(sources);
-        });
-
         describe("Title", function () {
 
             let handleItemSelect: sinon.SinonStub;
@@ -134,7 +127,7 @@ describe("Header", function () {
             });
 
             it("Renders the span with only one source.", function () {
-                const wrapper = shallow(<Title handleItemSelect={handleItemSelect} selectedSourceId={""} sources={sources} />);
+                const wrapper = shallow(<Title selectedSourceId={"id"} sources={sources} />);
                 expect(wrapper.find("div")).to.have.length(2);
                 expect(wrapper.find("div").at(1).text()).to.have.equal("name");
             });
@@ -198,7 +191,6 @@ describe("Header", function () {
                 wrapper = shallow((
                     <Title
                         sources={sources}
-                        handleItemSelect={handleItemSelect}
                         selectedSourceId={"id"} />
                 ));
             });
@@ -209,10 +201,10 @@ describe("Header", function () {
 
             it("Tests the title renders the Dropdown.", function () {
                 wrapper.setProps({ sources: sources });
-                const dropdownWrapper = wrapper.find(Autosuggest);
-                expect(dropdownWrapper).to.have.length(1);
-                expect(dropdownWrapper.prop("suggestions")).to.deep.equal(sources);
-                expect(dropdownWrapper.prop("inputProps").placeholder).to.equal("name");
+                const typeDropdownWrapper = wrapper.find(SourceDropdown);
+                const localeDropdownWrapper = wrapper.find(LocaleDropdown);
+                expect(typeDropdownWrapper).to.have.length(1);
+                expect(localeDropdownWrapper).to.have.length(1);
             });
         });
     });

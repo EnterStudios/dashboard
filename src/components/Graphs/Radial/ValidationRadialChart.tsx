@@ -27,7 +27,7 @@ class ValidationRadialChart extends React.Component<ValidationRadialChartProps, 
                     {
                         payload.map((entry: any, index: any) => (
                             <li key={`item-${index}`}>
-                                <span>{entry.value}%</span>
+                                <span>{entry.value ? entry.value.toFixed(0) : 0}%</span>
                                 <span>{this.props.small ? "success" : "of items has passed validation"}</span>
                             </li>
                         ))

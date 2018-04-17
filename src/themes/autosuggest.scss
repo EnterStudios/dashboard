@@ -1,6 +1,22 @@
 .container {
-    position: absolute;
-    left: 2%;
+    position: relative;
+}
+
+.link_container {
+    margin-left: 2%;
+    display: flex;
+    flex-flow: column nowrap;
+    a {
+        font-weight: 400;
+        letter-spacing: -2px;
+        text-decoration: none;
+        color: #939598;
+        font-size: 1.6rem;
+        padding-bottom: 5px;
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }
 
 .input {
@@ -90,18 +106,6 @@
         left: 130px;
         font-size: 1.8rem;
         color: #596170;
-        &::after {
-            content: '';
-            position: absolute;
-            left: calc(100% + 5px);
-            top: 6px;
-            width: 0;
-            height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-top: 10px solid #9A9A9A;
-            clear: both;
-        }
     }
 
     .hybrid_source {

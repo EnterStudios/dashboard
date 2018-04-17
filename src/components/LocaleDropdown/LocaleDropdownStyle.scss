@@ -1,0 +1,12 @@
+.item {
+    border-bottom: none;
+    img {
+        width: 100%;
+        max-width: 30px;
+        display: inline-block;
+    }
+    .content {
+        margin-left: 10px;
+        display: inline-block;
+    }
+}

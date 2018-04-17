@@ -1,7 +1,7 @@
 .dropdown {
-    width: 150px;
+    width: 190px;
     position: absolute;
-    top: 45px;
+    top: 70px;
     left: 130px;
 }
 
@@ -13,23 +13,19 @@
     min-height: auto;
     border-bottom: none;
     div {
-        p {
-            font-size: 1.2rem;
-            color: #C7C9CA;
-            display: inline-block;
-            margin: 0;
-            padding: 0;
+        opacity: .6;
+        > strong {
             position: relative;
             &::after {
                 content: '';
                 position: absolute;
                 right: -20px;
-                top: 7px;
+                top: 6px;
                 width: 0;
                 height: 0;
                 border-left: 0.54857rem solid transparent;
                 border-right: 0.54857rem solid transparent;
-                border-top: 0.54857rem solid #C7C9CA;
+                border-top: 0.54857rem solid #9A9A9A;
                 clear: both;
             }
         }
@@ -45,11 +41,13 @@
         padding: 0;
     }
     &::after {
-        top: 42%;
+        content: "";
         border: none;
     };
 }
 
 .values {
     top: 10px!important;
+    padding-left: 0;
+    white-space: nowrap;
 }

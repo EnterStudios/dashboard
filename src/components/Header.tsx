@@ -35,17 +35,18 @@ export interface PageButton {
 }
 
 export interface HeaderProps {
-  currentSourceId?: string;
-  sources?: any[];
-  onHomeClicked?: () => void;
-  onSourceSelected?: (source: any) => void;
-  pageButtons?: PageButton[];
-  onPageSelected?: (button: PageButton) => void;
-  displayHomeButton?: boolean;
-  className?: string;
-  isValidationPage?: boolean;
-  amazonFlow?: boolean;
-  getSources?: () => Promise<Source[]>;
+    currentSourceId?: string;
+    sources?: any[];
+    onHomeClicked?: () => void;
+    onSourceSelected?: (source: any) => void;
+    pageButtons?: PageButton[];
+    onPageSelected?: (button: PageButton) => void;
+    displayHomeButton?: boolean;
+    className?: string;
+    isSourceListPage?: boolean;
+    goTo?: (path: string) => (dispatch: Redux.Dispatch<any>) => void;
+    amazonFlow?: boolean;
+    getSources?: () => Promise<Source[]>;
 }
 
 export interface HeaderState {
@@ -139,9 +140,11 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                     (
                         <Title
                             key={`title${random}`}
+                            goTo={this.props.goTo}
                             sources={this.props.sources}
                             handleItemSelect={this.handleItemSelect}
-                            selectedSourceId={this.state.selectedSourceId}/>
+                            selectedSourceId={this.state.selectedSourceId}
+                            isSourceListPage={this.props.isSourceListPage}/>
                     )
                 }
                 {
@@ -186,9 +189,11 @@ export class Home extends React.Component<HomeProps, any> {
 }
 
 interface TitleProps {
-  handleItemSelect: (value: string) => void;
-  sources: any[];
-  selectedSourceId: string;
+    handleItemSelect: (value: string) => void;
+    sources: any[];
+    selectedSourceId: string;
+    isSourceListPage?: boolean;
+    goTo?: (path: string) => (dispatch: Redux.Dispatch<any>) => void;
 }
 
 const getSuggestions = (value: string, sources: any[]) => {
@@ -212,7 +217,8 @@ export class Title extends React.Component<TitleProps, any> {
   static defaultProps: TitleProps = {
     handleItemSelect: Noop,
     sources: [],
-    selectedSourceId: ""
+    selectedSourceId: "",
+    isSourceListPage: true,
   };
 
   constructor(props: TitleProps) {
@@ -254,6 +260,10 @@ export class Title extends React.Component<TitleProps, any> {
     });
   }
 
+    handleBackToList = () => {
+      this.props.goTo("/skills");
+    }
+
     render() {
         const {value, suggestions} = this.state;
         const selectedSource = this.props.sources.filter(dropDownableSource => dropDownableSource.source.id === this.props.selectedSourceId);
@@ -267,19 +277,32 @@ export class Title extends React.Component<TitleProps, any> {
         let title: JSX.Element = (<div/>);
         if (this.props.sources.length === 1) {
             // TODO: hidding since now it doesnt make sense to have a lonely span (<span className="mdl-layout-title">{this.props.sources[0].label}</span>);
-            title = <span />;
+            title = (
+                <div>
+                    {
+                        !this.props.isSourceListPage &&
+                        <a onClick={this.handleBackToList}>{"<< Back to list"}</a>
+                    }
+                </div>
+            );
         } else {
             title = (
-                <Autosuggest
-                    suggestions={suggestions}
-                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                    getSuggestionValue={this.getSuggestionValue}
-                    renderSuggestion={renderSuggestion}
-                    shouldRenderSuggestions={shouldRender}
-                    inputProps={inputProps}
-                    theme={theme}
-                />
+                <div className={theme.link_container}>
+                    {
+                        !this.props.isSourceListPage &&
+                        <a onClick={this.handleBackToList}>{"<< Back to list"}</a>
+                    }
+                    <Autosuggest
+                        suggestions={suggestions}
+                        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                        getSuggestionValue={this.getSuggestionValue}
+                        renderSuggestion={renderSuggestion}
+                        shouldRenderSuggestions={shouldRender}
+                        inputProps={inputProps}
+                        theme={theme}
+                    />
+                </div>
             );
         }
         return title;
