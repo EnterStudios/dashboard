@@ -20,6 +20,8 @@ export interface SourceProperties {
     validation_enabled?: boolean;
     hasIntegrated?: boolean;
     sourceType?: string;
+    maxErrors?: string;
+    maxAverageResponseTime?: string;
     locale?: string;
 }
 
@@ -42,6 +44,8 @@ export class Source implements SourceProperties {
     public validation_enabled?: boolean | undefined;
     public hasIntegrated?: boolean | undefined;
     public sourceType?: string;
+    public maxErrors?: string | undefined;
+    public maxAverageResponseTime?: string | undefined;
     public locale?: string;
 
     constructor(props: SourceProperties) {
@@ -62,6 +66,9 @@ export class Source implements SourceProperties {
         if (props.validation_enabled) this.validation_enabled = props.validation_enabled;
         if (props.hasIntegrated) this.hasIntegrated = props.hasIntegrated;
         if (props.sourceType) this.sourceType = props.sourceType;
+        if (props.maxErrors) this.maxErrors = props.maxErrors;
+        if (props.maxAverageResponseTime) this.maxAverageResponseTime = props.maxAverageResponseTime;
+
         if (props.locale) this.locale = props.locale;
         if (props.created) {
             if (props.created instanceof Date) {

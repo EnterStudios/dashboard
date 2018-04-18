@@ -10,6 +10,8 @@ import "../../themes/listitem.scss";
 
 import {CancelableComponent} from "../../components/CancelableComponent";
 import {Cell, Grid} from "../../components/Grid";
+import {InputTextLine} from "../../components/InputTextLine";
+
 import Source from "../../models/source";
 import User from "../../models/user";
 import {State} from "../../reducers";
@@ -63,6 +65,10 @@ interface IntegrationSpokesState {
     credentialsChanged: boolean;
     allowCustomJson: boolean;
     customJson?: string;
+    maxErrors?: string;
+    maxAverageResponseTime?: string;
+    hasIntegrated?: boolean;
+
 }
 
 function mapStateToProps(state: State.All): IntegrationSpokesGlobalStateProps {
@@ -111,6 +117,8 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
         }
     };
 
+    static ONLY_NUMBER_REGEX = new RegExp(/^\d*$/);
+
     constructor(props: IntegrationSpokesProps) {
         super(props);
 
@@ -124,6 +132,8 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
         this.handleShowAdvanced = this.handleShowAdvanced.bind(this);
         this.handleCustomJsonCheckChange = this.handleCustomJsonCheckChange.bind(this);
         this.handleCustomJsonChange = this.handleCustomJsonChange.bind(this);
+        this.handleMaxErrorsChange = this.handleMaxErrorsChange.bind(this);
+        this.handleMaxAverageResponseTimeChange = this.handleMaxAverageResponseTimeChange.bind(this);
 
         this.state = {
             showPage: IntegrationSpokes.PAGES[0].value,
@@ -136,6 +146,8 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
             proxyUrl: "https://proxy.bespoken.tools",
             credentialsChanged: false,
             allowCustomJson: false,
+            maxErrors: this.props && this.props.source && this.props.source.maxErrors || "100",
+            maxAverageResponseTime: this.props && this.props.source && this.props.source.maxAverageResponseTime || "1000",
         };
     }
 
@@ -175,6 +187,21 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
         this.setState({sourceName: value} as IntegrationSpokesState);
     }
 
+
+    handleMaxErrorsChange(value: string) {
+        if (!IntegrationSpokes.ONLY_NUMBER_REGEX.test(value)) {
+            return;
+        }
+        this.setState({maxErrors: value} as IntegrationSpokesState);
+    }
+
+    handleMaxAverageResponseTimeChange(value: string) {
+        if (!IntegrationSpokes.ONLY_NUMBER_REGEX.test(value)) {
+            return;
+        }
+        this.setState({maxAverageResponseTime: value} as IntegrationSpokesState);
+    }
+
     handleShowAdvanced(): any {
         this.setState({hideAdvanced: !this.state.hideAdvanced} as IntegrationSpokesState);
     }
@@ -201,7 +228,10 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
         source.debug_enabled = !!this.state.proxy && !!this.state.proxying;
         source.monitoring_enabled = !!this.state.monitor;
         source.proxy_enabled = !!this.state.proxying;
+        source.hasIntegrated = this.state.hasIntegrated;
         source.customJson = (this.state.allowCustomJson && this.state.customJson) || "";
+        source.maxErrors = this.state.maxErrors;
+        source.maxAverageResponseTime = this.state.maxAverageResponseTime;
         if (showPage === "http") {
             source.url = url;
             source.aws_secret_access_key = undefined;
@@ -248,6 +278,8 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
                 const awsSecretKeyInput = obscureInput(lambdaObj.awsSecretKey);
                 const showPage = url ? "http" : lambdaObj.lambdaARN ? "lambda" : "http";
                 const sourceName = spoke.name;
+                const maxErrors = spoke.maxErrors;
+                const maxAverageResponseTime = spoke.maxAverageResponseTime;
                 this.setState({
                     ...proxy, ...httpObj, ...lambdaObj,
                     monitor: monitoring_enabled,
@@ -258,12 +290,15 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
                     sourceName,
                     customJson,
                     allowCustomJson: !!customJson,
+                    maxErrors,
+                    maxAverageResponseTime,
+                    hasIntegrated: spoke.hasIntegrated,
                 } as IntegrationSpokesState);
             }));
     }
 
     render() {
-        const {showPage, proxy, proxying, allowCustomJson, customJson, monitor, message, sourceName, hideAdvanced, awsSecretKey, awsAccessKey, credentialsChanged, proxyUrl, ...others} = this.state;
+        const {showPage, proxy, proxying, allowCustomJson, customJson, monitor, message, sourceName, hideAdvanced, awsSecretKey, awsAccessKey, credentialsChanged, proxyUrl, maxErrors, maxAverageResponseTime, hasIntegrated, ...others} = this.state;
         let saveDisabled: boolean;
         switch (showPage) {
             case "http":
@@ -283,6 +318,25 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
                     <Input label="Source Name" value={sourceName} onChange={this.handleSourceNameChange}/>
                 </Cell>
                 <Cell col={6}/>
+                <Cell col={12}>
+                    <p style={{margin: 0}}> We can send you notifications based on your integrated data:</p>
+                </Cell>
+                <Cell col={12}>
+                    <InputTextLine
+                        leftText="Number of errors in the last 30 minutes > "
+                        value={maxErrors}
+                        rightText=""
+                        onValueChange={this.handleMaxErrorsChange}/>
+                </Cell>
+                <Cell col={12}>
+                    <InputTextLine
+                        leftText="Average response time in last 30 minutes > "
+                        rightText=""
+                        value={maxAverageResponseTime}
+                        onValueChange={this.handleMaxAverageResponseTimeChange}/>
+                </Cell>
+                <Cell col={6}/>
+
                 <Cell col={12}>
                     <p style={{margin: 0}}>To use monitoring and our proxying features, provide information about your
                         endpoint below:</p>

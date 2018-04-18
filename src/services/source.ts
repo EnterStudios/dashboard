@@ -208,6 +208,9 @@ export namespace source {
             sourceToSend.validation_script = source.validation_script || "";
             sourceToSend.hasIntegrated = source.hasIntegrated || "";
             sourceToSend.sourceType = source.sourceType || "";
+            sourceToSend.maxErrors = source.maxErrors || "";
+            sourceToSend.maxAverageResponseTime = source.maxAverageResponseTime || "";
+
             sourceToSend.locale = source.locale || "";
             db.ref().child("/sources/" + source.id)
                 .update(sourceToSend,

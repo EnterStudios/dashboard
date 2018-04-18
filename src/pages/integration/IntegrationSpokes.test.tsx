@@ -76,8 +76,8 @@ describe("IntegrationSpokes", function () {
         });
 
         it("Tests the error message exists.", function () {
-            expect(wrapper.find("p")).to.have.length(5); // There's two banner messages and 2 description messages as well.
-            expect(wrapper.find("p").at(4)).to.have.style("visibility", "hidden");
+            expect(wrapper.find("p")).to.have.length(6); // There's two banner messages and 3 description messages as well.
+            expect(wrapper.find("p").at(5)).to.have.style("visibility", "hidden");
         });
 
         it("Tests the dropdown for page selector exists.", function () {
@@ -277,6 +277,9 @@ describe("IntegrationSpokes", function () {
                 button.simulate("click");
                 source.url = "http://test.url.fake/";
                 source.customJson = "";
+                source.maxErrors = "100";
+                source.maxAverageResponseTime = "1000";
+                source.hasIntegrated = undefined;
                 expect(saveSpoke).to.be.calledOnce;
                 const args = saveSpoke.args[0];
                 expect(args[0]).to.deep.equal(user);
@@ -294,6 +297,10 @@ describe("IntegrationSpokes", function () {
                 source.lambda_arn = "fakeARN";
                 source.aws_access_key_id = "ABC123";
                 source.aws_secret_access_key = "123ABC";
+                source.maxErrors = "100";
+                source.maxAverageResponseTime = "1000";
+                source.hasIntegrated = undefined;
+
                 expect(saveSpoke).to.be.calledOnce;
                 const args = saveSpoke.args[0];
                 expect(args[0]).to.deep.equal(user);

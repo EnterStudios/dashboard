@@ -1,0 +1,24 @@
+@import "dashboard";
+@import "input";
+
+.textLineBlock {
+    display: inline-flex;
+}
+
+.input {
+    padding: 0 5px 0px 5px ;
+    width: 50px;
+}
+
+.input.disabled > .inputElement, .input > .inputElement {
+    color: black !important;
+}
+
+.label {
+    color: black !important;
+}
+
+.inputElement {
+    color: black !important;
+    padding: 0;
+}
