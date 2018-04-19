@@ -278,7 +278,7 @@ export class Title extends React.Component<TitleProps, any> {
         if (this.props.sources.length === 1) {
             // TODO: hidding since now it doesnt make sense to have a lonely span (<span className="mdl-layout-title">{this.props.sources[0].label}</span>);
             title = (
-                <div>
+                <div className={theme.link_container}>
                     {
                         !this.props.isSourceListPage &&
                         <a onClick={this.handleBackToList}>{"<< Back to list"}</a>

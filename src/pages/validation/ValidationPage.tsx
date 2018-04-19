@@ -224,8 +224,10 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
         this.props.setLoading(false);
     }
 
-    handleRun(e: any) {
-        const {locale} = this.props.source;
+    async handleRun(e: any) {
+        let {locale} = this.props.source;
+        // If user has not selected locale then we default to en-US
+        if (!locale) locale = "en-US";
         e.preventDefault();
         const self = this;
         this.setState((prevState: any) => {

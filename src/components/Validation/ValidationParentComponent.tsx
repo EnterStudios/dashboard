@@ -152,7 +152,6 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
     }
 
     render() {
-        const redirectoToVendorIdpage = () => window.open("https://developer.amazon.com/mycid.html", "_blank");
         const scriptIsNotSaved = this.props && this.props.source && (this.props.script !== this.props.source.validation_script);
         const validationEnabledStyle = this.state.enableValidation ? buttonStyle.enabled : "";
         return (
@@ -172,7 +171,6 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                         </Cell>
                         <Cell style={{position: "relative"}} col={5} hideTablet={true} hidePhone={true}>
                             <TooltipButton className={buttonStyle.info_button} icon={"info"} tooltip={"Enable Monitoring and get notified instantly when there is a change in your validation results overtime."} />
-                            {this.props && !this.props.vendorID && <TooltipButton className={buttonStyle.vendor_id_tooltip} onClick={redirectoToVendorIdpage} icon={"info"} tooltip={"Enter the vendor ID from your Amazon account at developer.amazon.com/mycid.html."} />}
                             <div className={`${buttonStyle.enable_monitoring} ${validationEnabledStyle}`} >
                                 <div>
                                     <span>{this.state.enableValidation ? "DISABLE" : "ENABLE"}</span>
@@ -217,7 +215,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                     </Button>
                 </Cell>
                 <Cell className={`${validationStyle.button_container} ${validationStyle.right}`} offset={8} col={2}>
-                    <Button className={buttonStyle.validation_button} primary={true} raised={true} disabled={this.props.loadingValidationResults}>
+                    <Button className={buttonStyle.validation_button} primary={true} raised={true} disabled={this.props.loadingValidationResults || this.props.script === "\"\": \"\""}>
                         {this.props.loadingValidationResults
                             ?
                             <ProgressBar className="circularProgressBar" type="circular" mode="indeterminate"/>
