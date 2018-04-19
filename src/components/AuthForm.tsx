@@ -61,13 +61,10 @@ export class AuthForm extends React.Component<AuthFormProps, AuthFormState> {
                     onSignUpWithEmail={this.props.onSignUpWithEmail}
                     onEmailChange={this.onEmailChange}
                     onResetPassword={this.onResetPassword}
+                    onLoginWithAmazon={this.props.onLoginWithAmazon}
+                    onLoginWithGithub={this.props.onLoginWithGithub}
+                    location={this.props.location}
                 />
-                <div className="mdl-card__actions clearfix">
-                    <LoginAmazon onLoginWithAmazon={this.props.onLoginWithAmazon} location={this.props.location} />
-                </div>
-                <div className="mdl-card__actions clearfix">
-                    <LoginGithub onLoginWithGithub={this.props.onLoginWithGithub} location={this.props.location} />
-                </div>
             </div>
         );
     }
@@ -159,6 +156,9 @@ export interface NormalLoginFormProps {
     onSignUpWithEmail: (email: string, pass: string, confirmPass: string) => void;
     onResetPassword: (email: string) => void;
     error?: string;
+    onLoginWithGithub?: () => void;
+    onLoginWithAmazon?: (isFromWebsite: boolean) => void;
+    location?: any;
 }
 
 interface NormalLoginFormState {
@@ -307,6 +307,12 @@ export class NormalLoginForm extends React.Component<NormalLoginFormProps, Norma
                     onConfirmPasswordChange={this.onConfirmPassChange}
                     onPasswordSubmit={this.onFormSubmit}
                     onConfirmPasswordSubmit={this.onFormSubmit} />
+                <div className="mdl-card__actions clearfix">
+                    <LoginAmazon onLoginWithAmazon={this.props.onLoginWithAmazon} location={this.props.location} />
+                </div>
+                <div className="mdl-card__actions clearfix">
+                    <LoginGithub onLoginWithGithub={this.props.onLoginWithGithub} location={this.props.location} />
+                </div>
                 <div className={`${theme.actions} mdl-card__actions clearfix`}>
                     {loginBtn}
                     {signupBtn}

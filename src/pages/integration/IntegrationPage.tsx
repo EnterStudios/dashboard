@@ -27,6 +27,7 @@ export class IntegrationPage extends React.Component<IntegrationPageProps, Integ
     constructor(props: IntegrationPageProps) {
         super(props);
         this.handleTabChange = this.handleTabChange.bind(this);
+        this.handleSettingsClick = this.handleSettingsClick.bind(this);
         this.state = {
             tabIndex: 0
         };
@@ -35,6 +36,10 @@ export class IntegrationPage extends React.Component<IntegrationPageProps, Integ
     handleTabChange(index: number) {
         this.state.tabIndex = index;
         this.setState(this.state);
+    }
+
+    handleSettingsClick () {
+        this.props.goTo(`/skills/${this.props.source && this.props.source.id}/settings`);
     }
 
     render() {
@@ -73,7 +78,7 @@ export class IntegrationPage extends React.Component<IntegrationPageProps, Integ
                                             <h4 style={{marginTop: 0}}>Code-Free Integration</h4>
                                             <p>The Code-Free SDK works with your service (either HTTP or Lambda) via our Bespoken Proxy.</p>
                                             <p>It automatically captures key information about how your service is operating, and it can pro-actively alert you about any issues with how it is working.</p>
-                                            <p>To use it, simply configure the settings for your service on the <a href={`/skills/${this.props.source && this.props.source.id}/settings`}>Settings</a> page.</p>
+                                            <p>To use it, simply configure the settings for your service on the <a href="#" onClick={this.handleSettingsClick}>Settings</a> page.</p>
                                         </div>
                                     </Cell>
                                 </Grid>

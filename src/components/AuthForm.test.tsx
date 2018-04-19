@@ -4,7 +4,7 @@ import * as React from "react";
 import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
 
-import { AuthForm, LoginForms, LoginGithub, NormalLoginForm, PasswordReset } from "./AuthForm";
+import { AuthForm, LoginAmazon, LoginForms, LoginGithub, NormalLoginForm, PasswordReset } from "./AuthForm";
 
 // Setup chai with sinon-chai
 chai.use(sinonChai);
@@ -16,7 +16,6 @@ describe("AuthForm", function () {
         const wrapper = shallow(<AuthForm onSubmit={onSubmit} />);
         // A form, two inputs and a button
         expect(wrapper.find("NormalLoginForm")).to.have.length(1);
-        expect(wrapper.find("LoginGithub")).to.have.length(1);
     });
 
     it("Tests top level callback for submit", function () {
@@ -47,8 +46,7 @@ describe("AuthForm", function () {
                 onSubmit={onSubmit}
                 onLoginWithGithub={onLoginWithGithub} />
         ));
-
-        wrapper.find("LoginGithub").simulate("loginWithGithub");
+        wrapper.find("NormalLoginForm").simulate("loginWithGithub");
         expect(onLoginWithGithub).to.have.been.calledOnce;
     });
 
@@ -158,6 +156,8 @@ describe("AuthForm", function () {
             expect(wrapper.find("LoginForms")).to.have.length(1);
             expect(wrapper.find("Themed")).to.have.length(2);
             expect(wrapper.find("PasswordReset")).to.have.length(1);
+            expect(wrapper.find(LoginGithub)).to.have.length(1);
+            expect(wrapper.find(LoginAmazon)).to.have.length(1);
 
             let loginForm = wrapper.find("LoginForms").first();
 
@@ -167,8 +167,9 @@ describe("AuthForm", function () {
 
             expect(loginBtn.prop("label")).to.equal("Login");
 
-            let signUpBtn = wrapper.find("Themed").at(1);
-            expect(signUpBtn.prop("label")).to.equal("Register");
+            // hiding register button for now according to specs
+            // let signUpBtn = wrapper.find("Themed").at(1);
+            // expect(signUpBtn.prop("label")).to.equal("Register");
         });
 
         describe("With filled state.", function () {
@@ -202,8 +203,9 @@ describe("AuthForm", function () {
 
                 expect(loginBtn.prop("label")).to.equal("Cancel");
 
-                let signUpBtn = wrapper.find("Themed").at(1);
-                expect(signUpBtn.prop("label")).to.equal("Submit");
+                // hidding register button for now according to specs
+                // let signUpBtn = wrapper.find("Themed").at(1);
+                // expect(signUpBtn.prop("label")).to.equal("Submit");
             });
 
             it("Throws callback and state for onEmailChange.", function () {

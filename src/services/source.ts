@@ -14,6 +14,7 @@ export namespace source {
     const LINK_URL: string = SOURCE_URL + "linkSource";
     const VALIDATE_URL: string = SOURCE_URL + "validateSource";
     const CREATE_SOURCES_FROM_AMAZON: string = SOURCE_URL + "createSourcesFromAmazon";
+    const GET_VENDOR_IDS: string = SOURCE_URL + "getVendorIds";
     const AUTH_TOKEN_URL: string = SOURCE_URL + "authToken";
     export const LINK_AVS_URL: string = SOURCE_URL + "linkAVS";
 
@@ -272,6 +273,31 @@ export namespace source {
             const sources = await result.json();
             if (sources.length) {
                 return Promise.resolve(sources);
+            } else {
+                return Promise.reject(new Error(result.statusText));
+            }
+        } catch (err) {
+            return Promise.reject(err);
+        }
+    }
+
+    export async function getVendorIds(SMAPIAccessToken: string): Promise<any> {
+        const requestBody = JSON.stringify({
+            "sm_api_access_token": SMAPIAccessToken,
+        });
+        try {
+            const result: Response = await fetch(GET_VENDOR_IDS, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: requestBody
+            }).catch(err => {
+                return err;
+            });
+            const vendorsArray = await result.json();
+            if (vendorsArray) {
+                return Promise.resolve(vendorsArray);
             } else {
                 return Promise.reject(new Error(result.statusText));
             }

@@ -10,6 +10,8 @@ import {Cell, Grid} from "../Grid/index";
 import {Title} from "../Title";
 import EventHandler = __React.EventHandler;
 import Source from "../../models/source";
+import {UserDetails} from "../../models/user";
+import auth from "../../services/auth";
 import {remoteservice} from "../../services/remote-service";
 import SourceService from "../../services/source";
 import {ValidationResultComponent} from "./ValidationResultComponent";
@@ -81,6 +83,20 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                 ...prevState,
                 enableValidation: nextProps.source.validation_enabled,
             }));
+        }
+    }
+
+    async componentDidMount () {
+        const userDetails: UserDetails = await auth.currentUserDetails();
+        if (userDetails && userDetails.smAPIAccessToken && !userDetails.vendorID) {
+            this.props.setLoading(true);
+            const vendorsId = await SourceService.getVendorIds(userDetails.smAPIAccessToken);
+            // for now we default to the first vendorID, later we might add a way for the user to pick vendor id
+            const vendorID = vendorsId && vendorsId.length && vendorsId[0].id;
+            if (vendorID) {
+                await auth.updateCurrentUser({ vendorID });
+            }
+            this.props.setLoading(false);
         }
     }
 
@@ -185,11 +201,6 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                                       active={this.props.showSnackbar}
                                       label={this.props.snackbarLabel}
                                       onClick={this.props.handleSnackbarClick}/>
-                            <div className={validationStyle.token_container}>
-                                <span>Vendor ID:</span>
-                                <Input theme={inputTheme} className={`sm-input ${inputTheme.validation_input} ${inputTheme.vendor_input}`} label="Vendor ID" value={this.props.vendorID}
-                                       onChange={this.props.handleVendorIDChange} required={true}/>
-                            </div>
                         </Cell>
                     </Grid>
                 </Cell>
