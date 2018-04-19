@@ -225,6 +225,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
     }
 
     handleRun(e: any) {
+        const {locale} = this.props.source;
         e.preventDefault();
         const self = this;
         this.setState((prevState: any) => {
@@ -235,7 +236,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                 self.setupChannel(this.state.token, timestamp);
                 SourceService.validateSource(this.props.user.userId, this.state.script,
                     this.state.token, timestamp, this.state.vendorID,
-                    this.state.smAPIAccessToken, this.url())
+                    this.state.smAPIAccessToken, this.url(), locale)
                     .then((validationResults: any) => {
                         // TODO: wait for expired smapi code to add a snackbar with refresh link
                         if (validationResults.status && validationResults.status === 401) {
@@ -365,6 +366,18 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
         }));
     }
 
+    handleShowSnackbarScriptEmpty = () => {
+        this.setState(prevState => ({
+            ...prevState,
+            snackbarLabel: (
+                <div>
+                    You need to have a script to enable monitoring
+                </div>
+            ),
+            showSnackbar: true
+        }));
+    }
+
     async handleVerifyEmailClick() {
         await remoteservice.defaultService().auth().currentUser.sendEmailVerification();
         this.setState({ ...this.state, emailVerificationStatus: "sent" });
@@ -426,6 +439,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                         handleMonitorEnabledCheckChange={this.handleMonitorEnabledCheckChange}
                         handleShowSnackbarEnableMonitoring={this.handleShowSnackbarEnableMonitoring}
                         handleShowSnackbarVerifyEmail={this.handleShowSnackbarVerifyEmail}
+                        handleShowSnackbarScriptEmpty={this.handleShowSnackbarScriptEmpty}
                     />
                 )}
                 {

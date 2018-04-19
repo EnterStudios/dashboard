@@ -227,7 +227,7 @@ export namespace source {
 
     export function validateSource(userId: string, script: string, token: string,
         timestamp: number, vendorID: string, smAPIAccessToken: string,
-        redirectURL: string): Promise<any> {
+        redirectURL: string, locale?: string, voiceId?: string): Promise<any> {
         const query: Query = new Query();
         query.add({ parameter: "user_id", value: userId });
         query.add({ parameter: "script", value: script });
@@ -236,6 +236,8 @@ export namespace source {
         query.add({ parameter: "vendor_id", value: vendorID });
         query.add({ parameter: "sm_api_access_token", value: smAPIAccessToken });
         query.add({ parameter: "redirect_url", value: redirectURL });
+        if (locale) query.add({ parameter: "locale", value: locale });
+        if (voiceId) query.add({ parameter: "voice_id", value: voiceId });
         return fetch(VALIDATE_URL, {
             method: "POST",
             headers: {

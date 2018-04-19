@@ -50,6 +50,7 @@ export interface ValidationParentComponentProps {
     setLoading: (value: boolean) => (dispatch: Redux.Dispatch<any>) => void;
     handleShowSnackbarEnableMonitoring: () => any;
     handleShowSnackbarVerifyEmail: () => any;
+    handleShowSnackbarScriptEmpty: () => any;
 }
 
 interface ValidationParentComponentState {
@@ -110,12 +111,22 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
     async handleEnableValidation () {
         // adding this to allow user to disable monitoring even if he doesn't have vendor or token
         // this.state.enableValidation means is already active so handleEnableValidation will disable it
+        if (this.state.enableValidation) {
+            const validation_enabled = !this.state.enableValidation;
+            const sourceToUpdate = {...this.props.source, validation_enabled, validation_script: this.props.script};
+            await this.updateSourceObject(sourceToUpdate);
+            return;
+        }
+        if (!this.props.script || this.props.script === "\"\": \"\"") {
+            this.props.handleShowSnackbarScriptEmpty();
+            return;
+        }
         const user = remoteservice.defaultService().auth().currentUser;
         if (!user || !user.emailVerified) {
             this.props.handleShowSnackbarVerifyEmail();
             return;
         }
-        if ((this.props.token && this.props.vendorID) || this.state.enableValidation) {
+        if (this.props.token && this.props.vendorID) {
             const validation_enabled = !this.state.enableValidation;
             const sourceToUpdate = {...this.props.source, validation_enabled, validation_script: this.props.script};
             await this.updateSourceObject(sourceToUpdate);
