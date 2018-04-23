@@ -1,10 +1,7 @@
-import * as moment from "moment";
 import * as React from "react";
 import {IconButton} from "react-toolbox";
 import Dialog from "react-toolbox/lib/dialog";
-import LogQuery from "../../models/log-query";
 import Source from "../../models/source";
-import logService from "../../services/log";
 import MonitoringService from "../../services/monitoring";
 import SourceService from "../../services/source";
 
@@ -51,7 +48,6 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
             sourceType: "ALEXA SKILL"
         };
 
-        this.getSourceType = this.getSourceType.bind(this);
         this.handleItemClick = this.handleItemClick.bind(this);
         this.handleDeleteSource = this.handleDeleteSource.bind(this);
         this.updateSourceObject = this.updateSourceObject.bind(this);
@@ -67,11 +63,7 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
             const sourceId = this.props.source && this.props.source.id;
             const result = sourceId && this.props.source.validation_enabled && await MonitoringService.getSourceStatus(sourceId);
             const isSourceUp = result && result.status === "up" ? true : false;
-            let sourceType = this.props.source.sourceType || "ALEXA SKILL";
-            if (!this.props.source.sourceType) {
-                sourceType = await this.getSourceType();
-                await this.updateSourceObject({...this.props.source, sourceType: sourceType || "ALEXA SKILL"});
-            }
+            const sourceType = this.props.source.sourceType || "ALEXA SKILL";
             this.setState((prevState) => ({
                 ...prevState,
                 isSourceUp,
@@ -85,23 +77,6 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
                 sourceType: "ALEXA SKILL",
             }));
         }
-    }
-
-    async getSourceType () {
-        const query: LogQuery = new LogQuery({
-            source: this.props.source,
-            startTime: moment().subtract(7, "days"), // TODO: change 7 for the right time span once implemented
-            endTime: moment(),
-            limit: 1
-        });
-        const logs = await logService.getLogs(query);
-        const alexaLogsCount = logs.filter(log => {
-            return log.payload && log.payload.request;
-        }).length;
-        const googleLogsCount = logs.filter(log => {
-            return log.payload && (log.payload.result || log.payload.inputs);
-        }).length;
-        return alexaLogsCount && googleLogsCount ? "HYBRID SOURCE" : googleLogsCount ? "GOOGLE ACTION" : "ALEXA SKILL";
     }
 
     handleItemClick () {

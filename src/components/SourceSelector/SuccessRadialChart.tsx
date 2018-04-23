@@ -90,7 +90,7 @@ export class DailyEventsBarChart extends LoadingComponent.Component<any, DailyEv
 
     render() {
         const {data} = this.state;
-        if (!data || !data.successRatio) {
+        if (!data) {
             return (
                <Grid style={{margin: 0, marginLeft: 200}} className="graph-loader">
                     <ProgressBar className="graph-loader" type="circular" mode="indeterminate" />
@@ -98,7 +98,7 @@ export class DailyEventsBarChart extends LoadingComponent.Component<any, DailyEv
             );
         }
         return (
-            <RadialChart successRatio={data.successRatio} />
+            <RadialChart successRatio={data.successRatio || 0} />
         );
     }
 }
