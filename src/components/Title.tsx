@@ -46,7 +46,9 @@ export class Title extends React.Component<TitleProps, any> {
     render() {
         const selectedSource = this.props.sources.filter(dropDownableSource => dropDownableSource.source.id === this.props.selectedSourceId);
         const selectedSourceName = selectedSource[0] ? selectedSource[0].label : "";
-        const selectedSourceType = selectedSource[0] && selectedSource[0].source.sourceType ? selectedSource[0].source.sourceType : "alexa";
+        const selectedSourceType = selectedSource[0] &&
+            selectedSource[0].source.sourceType &&
+            ["alexa", "google", "hybrid"].indexOf(selectedSource[0].source.sourceType) >= 0 ? selectedSource[0].source.sourceType : "alexa";
         const selectedSourceLocale = selectedSource[0] && selectedSource[0].source.locale ? selectedSource[0].source.locale : "en-US";
         let title: JSX.Element = (<div/>);
         if (this.props.sources.length > 0) {

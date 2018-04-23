@@ -240,8 +240,18 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                     this.state.token, timestamp, this.state.vendorID,
                     this.state.smAPIAccessToken, this.url(), locale)
                     .then((validationResults: any) => {
-                        // TODO: wait for expired smapi code to add a snackbar with refresh link
-                        if (validationResults.status && validationResults.status === 401) {
+                        if (validationResults.indexOf("Security token lacks sufficient information") >= 0 ||
+                            validationResults.indexOf("Please provide a valid validation token.") >= 0) {
+                            self.setState({
+                                ...self.state,
+                                dialogActive: true,
+                                loadingValidationResults: false,
+                                showSnackbar: true,
+                                snackbarLabel: (
+                                    <div dangerouslySetInnerHTML={{__html: validationResults}} />
+                                ),
+                            });
+                        } else if (validationResults.status && validationResults.status === 401) {
                             self.setState({
                                 ...self.state,
                                 dialogActive: true,
@@ -262,7 +272,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                             });
                         }
                     })
-                    .catch(() => {
+                    .catch((error) => {
                         self.setState({
                             ...self.state,
                             loadingValidationResults: false,
