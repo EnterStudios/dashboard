@@ -239,7 +239,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                     </Button>
                 </Cell>
                 <Cell className={`${validationStyle.button_container} ${validationStyle.right}`} offset={8} col={2}>
-                    <Button className={buttonStyle.validation_button} primary={true} raised={true} disabled={this.props.loadingValidationResults || !!this.props.token || emptyOrIncompleteScript}>
+                    <Button className={buttonStyle.validation_button} primary={true} raised={true} disabled={this.props.loadingValidationResults || !this.props.token || emptyOrIncompleteScript}>
                         {this.props.loadingValidationResults
                             ?
                             <ProgressBar className="circularProgressBar" type="circular" mode="indeterminate"/>
