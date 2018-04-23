@@ -272,7 +272,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                             });
                         }
                     })
-                    .catch((error) => {
+                    .catch(() => {
                         self.setState({
                             ...self.state,
                             loadingValidationResults: false,
