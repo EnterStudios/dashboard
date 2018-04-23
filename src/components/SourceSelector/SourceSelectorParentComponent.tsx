@@ -1,3 +1,4 @@
+import * as moment from "moment";
 import * as React from "react";
 import * as ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import {connect} from "react-redux";
@@ -5,10 +6,13 @@ import {replace} from "react-router-redux";
 import {setLoading} from "../../actions/loading";
 import {AmazonFlowFlag, setAmazonFlow} from "../../actions/session";
 import {deleteSource, getSources, setCurrentSource} from "../../actions/source";
+import LogQuery from "../../models/log-query";
 import Source from "../../models/source";
 import {User, UserDetails} from "../../models/user";
 import {State} from "../../reducers";
 import auth from "../../services/auth";
+import logService from "../../services/log";
+import SourceService from "../../services/source";
 import AmazonVendorPane from "../AmazonVendorPane";
 import SourceSelectorCreate from "./SourceSelectorCreateComponent";
 import SourceSelectorItem from "./SourceSelectorItemComponent";
@@ -80,9 +84,22 @@ export class SourceSelector extends React.Component<SourceSelectorProps, SourceS
         this.handleLoadingChange = this.handleLoadingChange.bind(this);
     }
 
-    componentDidUpdate (prevProps: SourceSelectorProps, prevState: SourceSelectorState) {
+    async componentDidUpdate (prevProps: SourceSelectorProps, prevState: SourceSelectorState) {
         if (!prevProps.source || !this.props.source) {
             (this.props.setSource && this.props.sources && this.props.sources.length) && this.props.setSource(this.props.sources[0]);
+        }
+        if (this.props.source && prevProps.source && this.props.source.id !== prevProps.source.id) {
+            const query: LogQuery = new LogQuery({
+                source: this.props.source,
+                startTime: moment().subtract(7, "days"), // TODO: change 7 for the right time span once implemented
+                endTime: moment(),
+                limit: 1
+            });
+            const logs = await logService.getLogs(query);
+            if (logs.length) {
+                await SourceService.updateSourceObj({...this.props.source, hasIntegrated: true});
+                await this.props.getSources();
+            }
         }
     }
 

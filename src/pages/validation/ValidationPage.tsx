@@ -372,7 +372,15 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
 
     async handleVerifyEmailClick() {
         await remoteservice.defaultService().auth().currentUser.sendEmailVerification();
-        this.setState({ ...this.state, emailVerificationStatus: "sent" });
+        this.setState(prevState => ({
+            ...prevState,
+            snackbarLabel: (
+                <div>
+                    Verification email sent!
+                </div>
+            ),
+            showSnackbar: true
+        }));
     }
 
     handleSnackbarClick() {

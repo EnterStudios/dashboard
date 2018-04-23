@@ -90,7 +90,7 @@ export class ValidationPageRadialChart extends LoadingComponent.Component<any, V
 
     render() {
         const {data} = this.state;
-        if (!data || (!data.successRatio && data.successRatio !== 0)) {
+        if (!data) {
             return (
                <Grid style={{margin: 0, width: 200}} className="graph-loader">
                     <ProgressBar className="graph-loader" type="circular" mode="indeterminate" />
@@ -98,7 +98,7 @@ export class ValidationPageRadialChart extends LoadingComponent.Component<any, V
             );
         }
         return (
-            <RadialChart successRatio={data.successRatio} small={true} />
+            <RadialChart successRatio={data.successRatio || 0} small={true} />
         );
     }
 }

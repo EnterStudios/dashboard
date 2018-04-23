@@ -127,13 +127,14 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
     async handleEnableValidation () {
         // adding this to allow user to disable monitoring even if he doesn't have vendor or token
         // this.state.enableValidation means is already active so handleEnableValidation will disable it
+        const emptyOrIncompleteScript = !this.props.script || this.props.script.indexOf("\"\": \"\"") >= 0 || this.props.script.indexOf(": \"\"") >= 0 || this.props.script.indexOf("\"\":") >= 0;
         if (this.state.enableValidation) {
             const validation_enabled = !this.state.enableValidation;
             const sourceToUpdate = {...this.props.source, validation_enabled, validation_script: this.props.script};
             await this.updateSourceObject(sourceToUpdate);
             return;
         }
-        if (!this.props.script || this.props.script === "\"\": \"\"") {
+        if (emptyOrIncompleteScript) {
             this.props.handleShowSnackbarScriptEmpty();
             return;
         }
@@ -151,9 +152,24 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         }
     }
 
+    handleCopyToClipBoard = () => {
+        const textArea = document.createElement("textarea");
+        textArea.value = this.props.token;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            document.execCommand("copy");
+        } catch (err) {
+            console.error("Oops, unable to copy", err);
+        }
+    }
+
     render() {
         const scriptIsNotSaved = this.props && this.props.source && (this.props.script !== this.props.source.validation_script);
         const validationEnabledStyle = this.state.enableValidation ? buttonStyle.enabled : "";
+        const emptyOrIncompleteScript = !this.props.script || this.props.script.indexOf("\"\": \"\"") >= 0 || this.props.script.indexOf(": \"\"") >= 0 || this.props.script.indexOf("\"\":") >= 0;
         return (
             <form onSubmit={this.props.handleRun}>
                 <Cell col={12} tablet={12}>
@@ -185,6 +201,14 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                                         (
                                             <div>
                                                 <a className={validationStyle.refresh_token} href="#" onClick={this.props.handleGetTokenClick}>Refresh</a>
+                                                <a className={validationStyle.copy_token} href="#" onClick={this.handleCopyToClipBoard} title={"copy"}>
+                                                    <svg fill="#75bfca" height="24" viewBox="0 0 24 24" width="24"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M0 0h24v24H0z" fill="none"/>
+                                                        <path
+                                                            d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                                                    </svg>
+                                                </a>
                                                 <Input theme={inputTheme}
                                                        className={`sm-input ${inputTheme.validation_input} ${validationStyle.token_input}`}
                                                        label="Validation Token" value={this.props.token}
@@ -215,7 +239,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                     </Button>
                 </Cell>
                 <Cell className={`${validationStyle.button_container} ${validationStyle.right}`} offset={8} col={2}>
-                    <Button className={buttonStyle.validation_button} primary={true} raised={true} disabled={this.props.loadingValidationResults || this.props.script === "\"\": \"\""}>
+                    <Button className={buttonStyle.validation_button} primary={true} raised={true} disabled={this.props.loadingValidationResults || emptyOrIncompleteScript}>
                         {this.props.loadingValidationResults
                             ?
                             <ProgressBar className="circularProgressBar" type="circular" mode="indeterminate"/>
