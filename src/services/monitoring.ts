@@ -15,7 +15,7 @@ namespace MonitoringService {
         status: string;
     }
 
-    const BASE_URL = process.env.MONITOR_API_URL ?
+    const BASE_URL = process.env.NODE_ENV === "production" ?
         process.env.MONITOR_API_URL :
         "http://209.177.90.133";
 
