@@ -35,14 +35,10 @@ $transition-time: 0.3s;
 
 :global{
   .collapse {
-    height: 325px;
     opacity:1;
     -webkit-transition: all .5s ease-in-out;
     -moz-transition: all .5s ease-in-out;
     transition: all .5s ease-in-out;
-      &.extraHeight {
-          height: 635px;
-      }
   }
 
   .collapsed {

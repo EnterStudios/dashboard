@@ -337,46 +337,48 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
                 </Cell>
                 <Cell col={6}/>
 
-                <Cell col={12}>
-                    <p style={{margin: 0}}>To use monitoring and our proxying features, provide information about your
-                        endpoint below:</p>
-                </Cell>
-                <Cell style={{marginTop: -10}} col={3}>
-                    <Dropdown
-                        theme={DropdownTheme}
-                        source={IntegrationSpokes.PAGES}
-                        value={showPage}
-                        onChange={this.handleSourceSwap}
-                    />
-                </Cell>
-                <Cell col={9}/>
-                <Cell style={{marginTop: 15}} col={6}>
-                    <IntegrationSpokesSwapper
-                        theme={InputTheme}
-                        showPage={showPage}
-                        onChange={this.handleSwapperChange}
-                        url={this.props.source && this.props.source.url}
-                        {...others} />
-                </Cell>
-                <Cell col={6}/>
-                <Cell col={3}>
-                    <Checkbox
-                        theme={CheckboxTheme}
-                        label={"Outage Notification"}
-                        checked={monitor}
-                        onChange={this.handleMonitorCheckChange}/>
-                </Cell>
-                <Cell col={9}/>
-                <Cell col={12}>
-                    <p>Enable “Outage Notification” will:</p>
-                    <ol>
-                        <li>Ping service at one-minute interval</li>
-                        <li>Notify email address registered if the service does not respond</li>
-                    </ol>
-                </Cell>
+
                 <Cell col={12}><Button style={{fontSize: 12}} label="Advanced" onClick={this.handleShowAdvanced}/></Cell>
                 <Cell col={12} className={`collapse ${hideAdvanced ? "collapsed" : ""} ${!hideAdvanced && allowCustomJson ? "extraHeight" : ""}`}>
                     <Grid>
+                        <Cell col={12}>
+                            <p style={{margin: 0}}>To use monitoring and our proxying features, provide information about your
+                                endpoint below:</p>
+                        </Cell>
+                        <Cell style={{marginTop: -10}} col={3}>
+                            <Dropdown
+                                theme={DropdownTheme}
+                                source={IntegrationSpokes.PAGES}
+                                value={showPage}
+                                onChange={this.handleSourceSwap}
+                            />
+                        </Cell>
+                        <Cell col={9}/>
+                        <Cell style={{marginTop: 15}} col={6}>
+                            <IntegrationSpokesSwapper
+                                theme={InputTheme}
+                                showPage={showPage}
+                                onChange={this.handleSwapperChange}
+                                url={this.props.source && this.props.source.url}
+                                {...others} />
+                        </Cell>
+                        <Cell col={6}/>
+                        <Cell col={3}>
+                            <Checkbox
+                                theme={CheckboxTheme}
+                                label={"Outage Notification"}
+                                checked={monitor}
+                                onChange={this.handleMonitorCheckChange}/>
+                        </Cell>
+                        <Cell col={9}/>
+                        <Cell col={12}>
+                            <p>Enable “Outage Notification” will:</p>
+                            <ol>
+                                <li>Ping service at one-minute interval</li>
+                                <li>Notify email address registered if the service does not respond</li>
+                            </ol>
+                        </Cell>
+
                         <Cell col={3}>
                             <Checkbox
                                 theme={CheckboxTheme}
