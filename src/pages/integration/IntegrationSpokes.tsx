@@ -331,7 +331,7 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
                 <Cell col={12}>
                     <InputTextLine
                         leftText="Average response time in last 30 minutes > "
-                        rightText=""
+                        rightText=" milliseconds"
                         value={maxAverageResponseTime}
                         onValueChange={this.handleMaxAverageResponseTimeChange}/>
                 </Cell>
