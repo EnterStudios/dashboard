@@ -46,9 +46,9 @@ export default class ValidationPageGlobalStats extends React.Component<Validatio
     render() {
         return (
             <div className={GlobalStatsStyle.container}>
-                <div className={`${GlobalStatsStyle.row} ${GlobalStatsStyle.processed_items}`}>
-                    <span>2 ITEMS PROCESSED</span>
-                </div>
+                {/*<div className={`${GlobalStatsStyle.row} ${GlobalStatsStyle.processed_items}`}>*/}
+                    {/*<span>2 ITEMS PROCESSED</span>*/}
+                {/*</div>*/}
                 <div className={GlobalStatsStyle.row}>
                     <div className={GlobalStatsStyle.radial}>
                         <SuccessRadialChart source={this.props.source} startDate={this.props.startDate} endDate={this.props.endDate} />

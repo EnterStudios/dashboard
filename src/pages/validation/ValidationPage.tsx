@@ -345,9 +345,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
             ...prevState,
             snackbarLabel: (
                 <div>
-                    You must first enter your vendor ID - <a href="https://developer.amazon.com/mycid.html"
-                                                             target="_blank">click here</a> to get it, and your
-                    validation token <a href={"#"} onClick={this.handleGetTokenClick}>click here</a> to get it
+                    You must first enter your validation token <a href={"#"} onClick={this.handleGetTokenClick}>click here</a> to get it
                 </div>
             ),
             showSnackbar: true
