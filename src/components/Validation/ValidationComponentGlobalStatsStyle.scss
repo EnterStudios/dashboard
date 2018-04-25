@@ -13,11 +13,14 @@
         .radial {
             height: 150px;
             flex-shrink: 0;
+            > div {
+                top: -30px;
+            }
         }
         .stats {
             flex-grow: 1;
             display: flex;
-            align-items: flex-end;
+            align-items: center;
         }
         .bars_container {
             display: flex;
