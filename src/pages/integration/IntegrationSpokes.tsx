@@ -12,6 +12,8 @@ import {CancelableComponent} from "../../components/CancelableComponent";
 import {Cell, Grid} from "../../components/Grid";
 import {InputTextLine} from "../../components/InputTextLine";
 
+
+import {getSources} from "../../actions/source";
 import Source from "../../models/source";
 import User from "../../models/user";
 import {State} from "../../reducers";
@@ -45,6 +47,8 @@ interface IntegrationSpokesStandardProps {
 }
 
 interface IntegrationSpokesProps extends IntegrationSpokesGlobalStateProps, IntegrationSpokesStandardProps {
+    user: User;
+    getSources: () => Promise<Source[]>;
 }
 
 interface IntegrationSpokesState {
@@ -78,7 +82,11 @@ function mapStateToProps(state: State.All): IntegrationSpokesGlobalStateProps {
 }
 
 function mapDispatchToProps(dispatch: Redux.Dispatch<any>) {
-    return {/* nothing to match at the moment */};
+    return {
+        getSources: function (): Promise<Source[]> {
+            return dispatch(getSources());
+        },
+    };
 }
 
 function getResource(state: IntegrationSpokesState): SpokesService.HTTP | SpokesService.Lambda {
@@ -99,6 +107,7 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
         user: undefined,
         source: undefined,
         onSpokesSaved: Noop,
+        getSources: undefined,
     };
 
     static PAGES: DropdownValue[] = [{value: "http", label: "HTTP"}, {value: "lambda", label: "Lambda"}];
@@ -222,7 +231,7 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
                 message: "Saving..."
             }
         } as IntegrationSpokesState);
-        const {source: {secretKey, id, created, members, validation_enabled, validation_script}, user, onSpokesSaved} = this.props;
+        const {source: {secretKey, id, created, members}, user, onSpokesSaved} = this.props;
         const {proxy, showPage, credentialsChanged, url} = this.state;
         const source: Source = {id, name: this.state.sourceName, secretKey, created, members};
         source.debug_enabled = !!this.state.proxy && !!this.state.proxying;
@@ -246,10 +255,10 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
         const resource = getResource({...this.state, awsSecretKey: source.aws_secret_access_key, awsAccessKey: source.aws_access_key_id} as IntegrationSpokesState);
         const spokeSaved = await SpokesService.savePipe(user, source, resource, proxy);
         if (spokeSaved && onSpokesSaved) onSpokesSaved();
-        this.resolve(SourceService.updateSourceObj({...source, validation_enabled, validation_script})
-            .then(() => {
-                // this is to update parent route status so the graph wont need a page refresh to show/hide correctly
-                this.props.source.monitoring_enabled = !!this.state.monitor;
+        this.resolve(SourceService.updateSourceObj({...this.props.source, ...source})
+            .then(async () => {
+                // here we call the getSources that will update our store state updating any change made here
+                await this.props.getSources && this.props.getSources();
                 return {style: IntegrationSpokes.STANDARD_MESSAGE_STYLE, message: "Settings have been saved."};
             }).catch(function (err: Error) {
                 console.error(err);

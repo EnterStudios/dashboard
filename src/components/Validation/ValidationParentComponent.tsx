@@ -102,7 +102,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
 
     async updateSourceObject (source: Source) {
         this.props.setLoading(true);
-        await SourceService.updateSourceObj(source);
+        await SourceService.updateSourceObj({...source, validation_script: this.props.script});
         const updatedSource = await SourceService.getSourceObj(this.props.source.id);
         await this.props.setSource(updatedSource);
         await this.props.getSources();
