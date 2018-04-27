@@ -7,6 +7,7 @@ import {Tab} from "react-toolbox/lib/tabs";
 import * as sinon from "sinon";
 import * as sinonChai from "sinon-chai";
 import ButtonMenu from "../components/ButtonMenu";
+import Source from "../models/source";
 import LocaleDropdown from "./LocaleDropdown/LocaleDropdown";
 import SourceDropdown from "./SourceDropdown/SourceDropdown";
 
@@ -16,6 +17,8 @@ import { Title } from "./Title";
 // Setup chai with sinon-chai
 chai.use(sinonChai);
 let expect = chai.expect;
+
+const InlineEditInput = require("riek").RIEInput;
 
 describe("Header", function () {
     describe("without any properties", function () {
@@ -113,7 +116,6 @@ describe("Header", function () {
     });
 
     describe("with one source", function () {
-        const sources = [{ label: "name", value: "id", source: {id: "id"} }];
         describe("Title", function () {
 
             let handleItemSelect: sinon.SinonStub;
@@ -127,9 +129,9 @@ describe("Header", function () {
             });
 
             it("Renders the span with only one source.", function () {
-                const wrapper = shallow(<Title selectedSourceId={"id"} sources={sources} />);
-                expect(wrapper.find("div")).to.have.length(2);
-                expect(wrapper.find("div").at(1).text()).to.have.equal("name");
+                const wrapper = shallow(<Title source={{id: "id", name: "name"} as Source} />);
+                const sourceNameWrapper = wrapper.find(InlineEditInput);
+                expect(sourceNameWrapper).to.have.length(1);
             });
         });
     });
@@ -190,8 +192,7 @@ describe("Header", function () {
                 handleItemSelect = sinon.stub();
                 wrapper = shallow((
                     <Title
-                        sources={sources}
-                        selectedSourceId={"id"} />
+                        source={sources[0].source as Source} />
                 ));
             });
 

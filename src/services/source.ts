@@ -201,6 +201,9 @@ export namespace source {
                 validation_enabled: !!source.validation_enabled,
                 debug_enabled: !!source.debug_enabled,
             };
+            if (source.name) {
+                sourceToSend.name = source.name;
+            }
             sourceToSend.url = source.url || "";
             sourceToSend.lambda_arn = source.lambda_arn || "";
             sourceToSend.aws_access_key_id = source.aws_access_key_id || "";
@@ -234,7 +237,6 @@ export namespace source {
         query.add({ parameter: "script", value: script });
         query.add({ parameter: "token", value: token });
         query.add({ parameter: "timestamp", value: timestamp });
-        query.add({ parameter: "vendor_id", value: vendorID });
         query.add({ parameter: "sm_api_access_token", value: smAPIAccessToken });
         query.add({ parameter: "redirect_url", value: redirectURL });
         if (locale) query.add({ parameter: "locale", value: locale });
@@ -295,12 +297,14 @@ export namespace source {
             }).catch(err => {
                 return err;
             });
-            const vendorsArray = await result.json();
-            if (vendorsArray) {
-                return Promise.resolve(vendorsArray);
-            } else {
-                return Promise.reject(new Error(result.statusText));
+            if (result.status === 200) {
+                const vendorsArray = await result.json();
+                if (vendorsArray) {
+                    return vendorsArray;
+                }
+                return [];
             }
+            return result;
         } catch (err) {
             return Promise.reject(err);
         }
