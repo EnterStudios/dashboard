@@ -3,6 +3,11 @@
     position: absolute;
     top: 70px;
     left: 130px;
+    &.active {
+        > .values {
+            max-height: 48vh;
+        }
+    }
 }
 
 .field {

@@ -37,7 +37,7 @@ describe("Validation Page", function () {
         afterEach(function() {
             currentUserDetailsStub.restore();
         });
-        it("Tests that validation token is set.", function () {
+        it.skip("Tests that validation token is set.", function () {
             const wrapper = mount(<ValidationPage user={user} source={source} location={location} sources={undefined} getSources={undefined} setSource={undefined} goTo={undefined} setLoading={undefined} />);
             const parentComponentWrapper = wrapper.find(ValidationParentComponent);
             return userDetailsPromise.then(() => {

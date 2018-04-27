@@ -108,6 +108,30 @@ $label-filled-padding-left: 0;
     }
 }
 
+.validation_page {
+    width: 80%;
+    top: 19px!important;
+    margin-left: 0;
+    font-size: 1.8rem!important;
+    color: #596170!important;
+    &:hover {
+        &:after {
+            content: " ";
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg fill="#FEBD61" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            width: 1.5rem;
+            height: 1.5rem;
+            position: absolute;
+            background-position: center;
+            background-size: contain;
+        }
+    }
+    &.validation_page_edit {
+        position: absolute!important;
+        top: 10px!important;
+        left: 128px!important;
+    }
+}
+
 .vendor_id_input input {
     width: 70%;
     border: 1px solid #D5D5D5;

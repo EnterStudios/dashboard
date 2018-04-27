@@ -40,6 +40,9 @@ namespace MonitoringService {
             cache: "default"
         };
         return fetch(url, myInit).then(function (response) {
+            if (response.status === 404) {
+                return response.statusText;
+            }
             return response.json();
         }).catch(function (err) {
             throw err;
