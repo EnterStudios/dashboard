@@ -237,7 +237,6 @@ export namespace source {
         query.add({ parameter: "script", value: script });
         query.add({ parameter: "token", value: token });
         query.add({ parameter: "timestamp", value: timestamp });
-        query.add({ parameter: "vendor_id", value: vendorID });
         query.add({ parameter: "sm_api_access_token", value: smAPIAccessToken });
         query.add({ parameter: "redirect_url", value: redirectURL });
         if (locale) query.add({ parameter: "locale", value: locale });
