@@ -35,24 +35,24 @@ export class Title extends React.Component<TitleProps, any> {
 
     updateSourceWithProps = (props: any) => {
         if (this.props.source) {
-            this.props.handleUpdateSource && this.props.handleUpdateSource({...this.props.source, ...props, name: this.state.sourceName});
+            this.props.handleUpdateSource && this.props.handleUpdateSource({...this.props.source, ...props});
         }
     }
 
     handleTypeChange = (sourceType: string) => {
-        this.updateSourceWithProps({sourceType});
+        this.updateSourceWithProps({sourceType, name: this.state.sourceName});
     }
 
     handleLocaleChange = (locale: string) => {
-        this.updateSourceWithProps({locale});
+        this.updateSourceWithProps({locale, name: this.state.sourceName});
     }
 
     handleSourceNameChange = async (value: any) => {
         const {sourceName} = value;
-        this.updateSourceWithProps({name: sourceName});
         this.setState(() => ({
             sourceName,
         }));
+        this.updateSourceWithProps({name: sourceName});
     }
 
     render() {

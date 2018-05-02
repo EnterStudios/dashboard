@@ -119,9 +119,11 @@ describe("Header", function () {
         describe("Title", function () {
 
             let handleItemSelect: sinon.SinonStub;
+            let handleUpdateSource: sinon.SinonStub;
 
             before(function () {
                 handleItemSelect = sinon.stub();
+                handleUpdateSource = sinon.stub();
             });
 
             beforeEach(function () {
@@ -132,6 +134,14 @@ describe("Header", function () {
                 const wrapper = shallow(<Title source={{id: "id", name: "name"} as Source} />);
                 const sourceNameWrapper = wrapper.find(InlineEditInput);
                 expect(sourceNameWrapper).to.have.length(1);
+            });
+
+            it("changes the source name on change event", () => {
+                const wrapper = shallow(<Title source={{id: "id", name: "name"} as Source} handleUpdateSource={handleUpdateSource} />);
+                const props: any = wrapper.find(InlineEditInput).props();
+                props.change({sourceName: "newName"});
+                expect(handleUpdateSource).to.have.been.calledOnce;
+                expect(handleUpdateSource).to.have.been.calledWith({ id: "id", name: "newName" });
             });
         });
     });
