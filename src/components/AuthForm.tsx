@@ -399,7 +399,7 @@ export class LoginForms extends React.Component<LoginFormsProps, LoginFormsState
                     onChange={this.props.onConfirmPasswordChange}
                     onKeyPress={this.onPasswordKeyPress}
                 />
-                <div style={{ color: "#d50000", marginTop: "5px", marginBottom: "10px" }}>
+                <div style={{ color: "#d50000", marginTop: "5px", marginBottom: "10px", textAlign: "center" }}>
                     <label>{this.props.error}</label>
                 </div>
             </div>

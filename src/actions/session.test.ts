@@ -375,7 +375,7 @@ describe("Session.ts", function () {
             }));
         });
 
-        it("passes through the error on failure", function (done: MochaDone) {
+        it("shows the error on failure", function (done: MochaDone) {
 
             let initialState = {};
             let store = mockStore(initialState);
@@ -389,7 +389,9 @@ describe("Session.ts", function () {
                 expect(actions[0].type).to.equal(AUTH_FORM_ERROR);
                 expect(actions[0].error).to.equal("Failure do to requirements of the test.");
                 done();
-            }));
+            })).catch((err: any) => {
+                done();
+            });
         });
     });
 

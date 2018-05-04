@@ -17,7 +17,7 @@ namespace MonitoringService {
 
     const BASE_URL = process.env.NODE_ENV === "production" ?
         process.env.MONITOR_API_URL :
-        "http://monitor-api-dev.bespoken.io";
+        "https://monitor-api-dev.bespoken.tools";
 
     export function getUpTimeSummary(query: Query, source: string): Promise < UpTimeSummary[] > {
         let url = BASE_URL + "/sources/" + source + "/pings?" + query.query();
@@ -40,6 +40,9 @@ namespace MonitoringService {
             cache: "default"
         };
         return fetch(url, myInit).then(function (response) {
+            if (response.status === 404) {
+                return response.statusText;
+            }
             return response.json();
         }).catch(function (err) {
             throw err;

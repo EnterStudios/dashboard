@@ -10,7 +10,7 @@ class ReactDiv extends React.Component<any, any> {
         super(props);
     }
 
-    render () {
+    render() {
         const {theme, ...rest} = this.props;
         return (
             <div {...rest} />
@@ -43,7 +43,7 @@ export class ValidationResultComponent extends React.Component<ValidationResultC
         };
     }
 
-    componentWillReceiveProps (nextProps: ValidationResultComponentProps) {
+    componentWillReceiveProps(nextProps: ValidationResultComponentProps) {
         const parsedHtml = new DOMParser().parseFromString(nextProps.unparsedHtml, "text/html");
         const rows = parsedHtml.documentElement.getElementsByTagName("tr");
         const resultRows: ResultRow[] = [];
@@ -54,19 +54,33 @@ export class ValidationResultComponent extends React.Component<ValidationResultC
                 const icon: string = row.cells[0].innerHTML.indexOf("/assets/Schedule.svg") > -1 ?
                     "/assets/Schedule.svg" :
                     row.cells[0].innerHTML.indexOf("/assets/Spinner.svg") > -1 ?
-                    "/assets/Spinner.svg" :
-                    row.cells[0].innerHTML;
+                        "/assets/Spinner.svg" :
+                        row.cells[0].innerHTML;
                 const text: string = row.cells[3].innerHTML;
                 const status: string = row.cells[0].innerHTML.indexOf("✔") > -1 ?
                     "success" :
                     row.cells[0].innerHTML.indexOf("✘") > -1 ?
-                    "error" :
-                    "";
+                        "error" :
+                        "";
                 resultRows.push({icon, text, status});
             }
             this.setState(() => ({
                 resultRows,
             }));
+        }
+    }
+
+    handleCopyActualResponse = (text: string) => {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            document.execCommand("copy");
+        } catch (err) {
+            console.error("Oops, unable to copy", err);
         }
     }
 
@@ -86,22 +100,24 @@ export class ValidationResultComponent extends React.Component<ValidationResultC
                 {
                     this.state.resultRows && this.state.resultRows.map((row, index) => {
                         return (
-                            <div className={`${validationStyle.validation_result_row}`} key={`parent_div${index}`}>
+                            <div className={`${validationStyle.validation_result_row} ${validationStyle.copy_actual}`}
+                                 key={`parent_div${index}`} onClick={this.handleCopyActualResponse.bind(this, row.text)}>
                                 {
                                     (row.status !== "") ?
                                         (
-                                            <TooltipDiv key={`child_div1${index}`} tooltip={row.text} >
+                                            <TooltipDiv key={`child_div1${index}`} tooltip={row.text}>
                                                 <IconButton className={iconButtonTheme[`${row.status}`]} primary={true}
                                                             theme={iconButtonTheme}
                                                             icon={row.icon}/>
-                                                <span className={`${validationStyle.result_text} ${validationStyle[`${row.status}`]}`}>
+                                                <span
+                                                    className={`${validationStyle.result_text} ${validationStyle[`${row.status}`]}`}>
                                                     {row.text}
                                                 </span>
                                             </TooltipDiv>
                                         ) :
                                         (
                                             <div className={validationStyle.align_center} key={`child_div1${index}`}>
-                                                <img src={row.icon} alt={"img-status"} />
+                                                <img src={row.icon} alt={"img-status"}/>
                                             </div>
                                         )
                                 }

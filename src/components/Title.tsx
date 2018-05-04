@@ -3,55 +3,65 @@ import Source from "../models/source";
 import LocaleDropdown from "./LocaleDropdown/LocaleDropdown";
 import SourceDropdown from "./SourceDropdown/SourceDropdown";
 
+const InlineEditInput = require("riek").RIEInput;
+
 const theme = require("../themes/autosuggest.scss");
+const inputTheme = require("../themes/input.scss");
 
 interface TitleProps {
-    sources: any[];
-    selectedSourceId: string;
+    source: Source;
     handleUpdateSource?: (source: Source) => void;
 }
 
 export class Title extends React.Component<TitleProps, any> {
 
     static defaultProps: TitleProps = {
-        sources: [],
-        selectedSourceId: ""
+        source: undefined,
     };
 
     constructor(props: TitleProps) {
         super(props);
 
         this.state = {
-            selectedSourceId: undefined,
-            value: "",
+            sourceName: "",
         };
     }
 
-    handleTypeChange = async (sourceType: string) => {
-        const selectedDropdownableSource = this.props.sources.filter(dropDownableSource => dropDownableSource.source.id === this.props.selectedSourceId);
-        const selectedSource = selectedDropdownableSource[0] && selectedDropdownableSource[0].source;
-        if (selectedSource) {
-            this.props.handleUpdateSource && await this.props.handleUpdateSource({...selectedSource, sourceType});
+    componentDidMount () {
+        this.setState(() => ({
+            sourceName: this.props.source && this.props.source.name || "",
+        }));
+    }
+
+    updateSourceWithProps = (props: any) => {
+        if (this.props.source) {
+            this.props.handleUpdateSource && this.props.handleUpdateSource({...this.props.source, ...props});
         }
     }
 
-    handleLocaleChange = async (locale: string) => {
-        const selectedDropdownableSource = this.props.sources.filter(dropDownableSource => dropDownableSource.source.id === this.props.selectedSourceId);
-        const selectedSource = selectedDropdownableSource[0] && selectedDropdownableSource[0].source;
-        if (selectedSource) {
-            this.props.handleUpdateSource && await this.props.handleUpdateSource({...selectedSource, locale});
-        }
+    handleTypeChange = (sourceType: string) => {
+        this.updateSourceWithProps({sourceType, name: this.state.sourceName});
+    }
+
+    handleLocaleChange = (locale: string) => {
+        this.updateSourceWithProps({locale, name: this.state.sourceName});
+    }
+
+    handleSourceNameChange = async (value: any) => {
+        const {sourceName} = value;
+        this.setState(() => ({
+            sourceName,
+        }));
+        this.updateSourceWithProps({name: sourceName});
     }
 
     render() {
-        const selectedSource = this.props.sources.filter(dropDownableSource => dropDownableSource.source.id === this.props.selectedSourceId);
-        const selectedSourceName = selectedSource[0] ? selectedSource[0].label : "";
-        const selectedSourceType = selectedSource[0] &&
-            selectedSource[0].source.sourceType &&
-            ["alexa", "google", "hybrid"].indexOf(selectedSource[0].source.sourceType) >= 0 ? selectedSource[0].source.sourceType : "alexa";
-        const selectedSourceLocale = selectedSource[0] && selectedSource[0].source.locale ? selectedSource[0].source.locale : "en-US";
+        const selectedSource = this.props.source;
+        const selectedSourceType = selectedSource && selectedSource.sourceType &&
+            ["alexa", "google", "hybrid"].indexOf(selectedSource.sourceType) >= 0 ? selectedSource.sourceType : "alexa";
+        const selectedSourceLocale = selectedSource && selectedSource.locale ? selectedSource.locale : "en-US";
         let title: JSX.Element = (<div/>);
-        if (this.props.sources.length > 0) {
+        if (this.props.source) {
             title = (
                 <div className={theme.title_container}>
                     {
@@ -68,7 +78,7 @@ export class Title extends React.Component<TitleProps, any> {
                                     <img src={"https://bespoken.io/wp-content/uploads/2018/03/amazon-alexa.png"} alt={"alexa icon"}/>
                         )
                     }
-                    <div className={theme.soure_name_placeholder}>{selectedSourceName}</div>
+                    <InlineEditInput className={inputTheme.validation_page} classEditing={inputTheme.validation_page_edit} propName={"sourceName"} value={this.state.sourceName} change={this.handleSourceNameChange} />
                     <SourceDropdown sourceType={selectedSourceType} handleTypeChange={this.handleTypeChange} />
                     <LocaleDropdown locale={selectedSourceLocale} handleLocaleChange={this.handleLocaleChange} />
                 </div>

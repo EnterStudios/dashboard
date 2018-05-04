@@ -87,9 +87,16 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
         }
     }
 
-    handleResetPassword(email: string) {
-        this.props.resetPassword(email);
-        // Show some feedback in the link
+    async handleResetPassword(email: string) {
+        try {
+            if (!email) {
+                this.setState(() => ({ ...this.state, error: "Please enter email to reset." }));
+            } else {
+                await this.props.resetPassword(email);
+            }
+        } catch (err) {
+            this.setState(() => ({ ...this.state, error: err.message }));
+        }
     }
 
     async handleFormSubmit(email: string, pass: string) {
