@@ -90,7 +90,10 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         const userDetails: UserDetails = await auth.currentUserDetails();
         if (userDetails && userDetails.smAPIAccessToken && !userDetails.vendorID) {
             this.props.setLoading(true);
-            const vendorsId = await SourceService.getVendorIds(userDetails.smAPIAccessToken);
+            const vendorsId = await SourceService.getVendorIds(userDetails.smAPIAccessToken).catch(err => {
+                // if there is something wrong getting the vendor ids (token invalid/expired/not existent) just continue with no sources creation or user update
+                return [];
+            });
             // for now we default to the first vendorID, later we might add a way for the user to pick vendor id
             const vendorID = vendorsId && vendorsId.length && vendorsId[0].id;
             if (vendorID) {
@@ -179,8 +182,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                                 this.props.source && this.props.source.id &&
                                 (
                                     <Title
-                                        sources={this.props.sources}
-                                        selectedSourceId={this.props.source.id}
+                                        source={this.props.source}
                                         handleUpdateSource={this.updateSourceObject}/>
                                 )
                             }

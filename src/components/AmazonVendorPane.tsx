@@ -51,7 +51,10 @@ export default class AmazonVendorPane extends React.Component<AmazonVendorPanePr
         // Only the first time the user clicks the integration we will try to create his sources from amazon.
         if (userDetails && userDetails.smAPIAccessToken && !userDetails.vendorID) {
             this.props.setLoading(true);
-            const vendorsId = await SourceService.getVendorIds(userDetails.smAPIAccessToken);
+            const vendorsId = await SourceService.getVendorIds(userDetails.smAPIAccessToken).catch(err => {
+                // if there is something wrong getting the vendor ids (token invalid/expired/not existent) just continue with no sources creation or user update
+                return [];
+            });
             // for now we default to the first vendorID, later we'll add a way for the user to pick vendor id
             const vendorID = vendorsId && vendorsId.length && vendorsId[0].id;
             if (vendorID) {

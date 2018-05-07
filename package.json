@@ -1,6 +1,6 @@
 {
   "name": "bespoken-dashboard",
-  "version": "1.0.40",
+  "version": "1.0.41",
   "description": "The dashboard for https://bespoken.tools",
   "repository": "https://github.com/bespoken/dashboard",
   "main": "./dist/scripts/dashboard.js",
@@ -81,6 +81,7 @@
     "react-addons-test-utils": "~15.4.0",
     "redux-mock-store": "~1.2.1",
     "remap-istanbul": "0.7.0",
+    "riek": "^1.1.0",
     "sass-loader": "4.1.1",
     "sinon": "~1.17.7",
     "sinon-chai": "~2.9.0",

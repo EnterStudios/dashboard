@@ -42,7 +42,7 @@ describe("Validation Page", function () {
             const parentComponentWrapper = wrapper.find(ValidationParentComponent);
             return userDetailsPromise.then(() => {
                 expect(parentComponentWrapper.find(Input)
-                    .at(0).prop("value"))
+                    .at(2).prop("value"))
                     .to.equal(userDetails.silentEchoToken);
             });
         });

@@ -111,10 +111,10 @@ export function resetPassword(email: string, callback?: (success: boolean) => vo
         callback(true);
       }
     }).catch(function (error: Error) {
-      dispatch(authFormError(error.message));
       if (callback) {
         callback(false);
       }
+      return Promise.reject(error);
     });
   };
 }
