@@ -161,7 +161,9 @@ const render = function () {
                     <IndexRoute component={LoginPage} />
                 </Route>
                 <Route path="/" component={Dashboard} onEnter={onEnterDashboard}>
-                    <Route path="/bill" component={BillPage} />
+                    if (process.env.NODE_ENV !== "production" ) {
+                        <Route path="/bill" component={BillPage} />
+                    }
                     <Route path="/skills" component={SourceListPage} />
                     <Route path="/skills/new" component={NewSourcePage} />
                     <Route path="/skills/:sourceId" onEnter={setSource} onLeave={removeSource} >
