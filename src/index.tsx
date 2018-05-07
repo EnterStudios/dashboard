@@ -18,6 +18,7 @@ import Login from "./frames/Login";
 import Source from "./models/source";
 import { FirebaseUser } from "./models/user";
 import AudioPage from "./pages/audioplayerpage/AudioPlayerPage";
+import BillPage from "./pages/BillPage";
 import ComponentsPage from "./pages/ComponentsPage";
 import IntegrationPage from "./pages/integration/StateIntegrationPage";
 import LoginPage from "./pages/LoginPage";
@@ -123,8 +124,8 @@ const onEnterDashboard: EnterHook = function (nextState: RouterState, replace: R
     if (!checkAuth(nextState, replace)) return;
     if (nextState.location.pathname === "/") return replace({ ...location, pathname: "/skills" }); // in order to redirect from dashboard base location to skills page without adding a redirect on the componentDidMount
     if (nextState.location.query.id &&
-      nextState.location.query.key &&
-      !nextState.location.pathname.match("sources/link")) {
+        nextState.location.query.key &&
+        !nextState.location.pathname.match("sources/link")) {
         replace({
             pathname: "/sources/link",
             query: nextState.location.query,
@@ -160,6 +161,8 @@ const render = function () {
                     <IndexRoute component={LoginPage} />
                 </Route>
                 <Route path="/" component={Dashboard} onEnter={onEnterDashboard}>
+                    if (process.env.NODE_ENV !== "production" ) {
+                        <Route path="/bill" component={BillPage} />}
                     <Route path="/skills" component={SourceListPage} />
                     <Route path="/skills/new" component={NewSourcePage} />
                     <Route path="/skills/:sourceId" onEnter={setSource} onLeave={removeSource} >
