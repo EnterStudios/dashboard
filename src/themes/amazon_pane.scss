@@ -93,7 +93,7 @@
 }
 
 .left_container {
-    margin: 25px 20px 30px 75px;
+    margin: 1.785714285714286rem 1.428571428571429rem 2.142857142857143rem 5.357142857142857rem;
     background-color: #fff;
     > div {
         padding: 10% 15%;
@@ -124,9 +124,10 @@
     }
 
     .validation_button {
-        padding: 0 30px;
-        margin: 0 35px 10px 0;
+        padding: 0;
+        margin: 10px 0;
         border-radius: 10px;
+        min-width: 7.272727272727273rem;
         font-size: 1.2rem;
         height: 2.5rem;
         line-height: 2.5rem;
@@ -142,7 +143,7 @@
     .info_button {
         position: absolute;
         top: 0;
-        left: 91%;
+        right: -14px;
         color: #949494!important;
         span {
             font-size: 1.8rem;
@@ -189,7 +190,7 @@
     .enable_monitoring {
         color: #E69198;
         text-align: right;
-        margin-right: 10px;
+        margin-right: 0;
         &.enabled {
             color: #00ce7d;
             button {
@@ -365,7 +366,19 @@
     }
 }
 
+@media (max-width: 900px) {
+    .left_container {
+        margin: 0;
+    }
+}
+
 @media (max-width: 839px) {
+    .left_container {
+        .validation_button {
+            margin: 0;
+        }
+    }
+
     .left_cell {
         width: 75%;
     }
@@ -378,5 +391,9 @@
 @media (max-width: 479px) {
     .left_cell {
         width: 100%!important;
+    }
+
+    .left_container {
+        margin: 0;
     }
 }

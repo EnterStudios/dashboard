@@ -7,6 +7,7 @@
     display: inline-block;
     &.right {
         text-align: right;
+        margin-left: calc(66.6666666667% + 8px);
     }
     &.left {
         margin-left: 36px;
@@ -47,7 +48,7 @@
     text-decoration: none;
     padding-right: 5px;
     position: absolute;
-    right: -25px;
+    right: -5px;
 }
 
 .token_input {
@@ -65,4 +66,20 @@
     width: 50%;
     margin-left: 28%;
     font-size: 1.2rem;
+}
+
+@media (max-width: 839px) {
+    .button_container {
+        &.right {
+            margin-left: calc(59.666667% + 8px);
+        }
+    }
+}
+
+@media (max-width: 478px) {
+    .button_container {
+        &.right {
+            margin-left: calc(34.666667% + 8px);
+        }
+    }
 }

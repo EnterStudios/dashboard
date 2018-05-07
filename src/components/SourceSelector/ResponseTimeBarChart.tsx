@@ -62,9 +62,9 @@ export class ResponseTimeBarChart extends LoadingComponent.Component<any, Respon
         if (!newProps) {
             return true;
         } else {
-            return !SourceUtils.equals(newProps.source, oldProps.source)
-                || !newProps.startDate.isSame(oldProps.startDate)
-                || !newProps.endDate.isSame(oldProps.endDate);
+            return !(SourceUtils.equals(newProps.source, this.props.source) &&
+                newProps.startDate.diff(this.props.startDate, "minutes", true) <= 1
+                && newProps.endDate.diff(this.props.endDate, "minutes", true) <= 1);
         }
     }
 

@@ -30,7 +30,7 @@ export default class SourceSelectorGlobalStats extends React.Component<SourceSel
     render() {
         return (
             <div className={GlobalStatsStyle.container}>
-                <div className={GlobalStatsStyle.row}>
+                <div className={`${GlobalStatsStyle.row} ${GlobalStatsStyle.radial_wrap}`}>
                     <div className={GlobalStatsStyle.radial}>
                         <SuccessRadialChart source={this.props.source} startDate={this.props.startDate} endDate={this.props.endDate} />
                     </div>

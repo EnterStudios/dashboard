@@ -27,6 +27,24 @@
     }
 }
 
+@media (max-width: 1366px) {
+    .menu_container {
+        right: 8%;
+        + div {
+            right: 3%;
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .menu_container {
+        right: 9%;
+        + div {
+            right: 3%;
+        }
+    }
+}
+
 @media (max-width: 667px) {
     .menu_container {
         position: absolute;
@@ -34,6 +52,12 @@
         + div {
             right: 3%;
         }
+    }
+}
+
+@media (max-width: 450px) {
+    .menu_container {
+        display: none;
     }
 }
 

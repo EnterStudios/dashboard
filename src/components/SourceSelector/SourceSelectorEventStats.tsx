@@ -108,9 +108,9 @@ export class SourceEvents extends LoadingComponent.Component<LogService.SourceSt
         if (!newProps) {
             return oldProps.source !== undefined;
         } else {
-            return !SourceUtils.equals(newProps.source, oldProps.source)
-                || !newProps.startDate.isSame(oldProps.startDate)
-                || !newProps.endDate.isSame(oldProps.endDate);
+            return !(SourceUtils.equals(newProps.source, this.props.source) &&
+                newProps.startDate.diff(this.props.startDate, "minutes", true) <= 1
+                && newProps.endDate.diff(this.props.endDate, "minutes", true) <= 1);
         }
     }
 

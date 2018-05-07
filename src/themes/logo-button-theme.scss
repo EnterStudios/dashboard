@@ -21,3 +21,10 @@
         background-position: center 0px!important;
     }
 }
+
+@media (max-width: 450px) {
+    .button {
+        min-width: 6.2rem;
+        background-position: center;
+    }
+}

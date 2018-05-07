@@ -3,6 +3,9 @@
     .row {
         display: flex;
         width: 100%;
+        &.radial_wrap {
+            flex-flow: row wrap;
+        }
         &.processed_items {
             margin-top: 20px;
             span {
