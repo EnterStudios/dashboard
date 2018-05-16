@@ -94,7 +94,7 @@ export class SourceUpTime extends LoadingComponent.Component<{ summary: UpTimeDa
             this.props.handleShowEmptyGraph && this.props.handleShowEmptyGraph(!(sourceStatus && sourcePings.length > 0));
             return sortUpTimeSummary(formatUpTimeSummary({
                 summary: sourcePings,
-                status: sourceStatus.status === "up" ? 1 : 0
+                status: !sourceStatus ? 2 : sourceStatus && sourceStatus.status === "up" ? 1 : 0
             }));
         } catch (err) {
             this.props.handleShowUpTime && this.props.handleShowUpTime(false);
@@ -113,7 +113,13 @@ export class SourceUpTime extends LoadingComponent.Component<{ summary: UpTimeDa
 
     render() {
         const {data} = this.state;
-        if (!data || !data.summary || !data.status) {
+        if (data && data.status === 2) {
+            return (
+                <Grid className="graph-loader" style={{justifyContent: "center"}}>
+                    No data available yet
+                </Grid>
+            );
+        } else if (!data || !data.summary || !data.status) {
             return (
                <Grid className="graph-loader">
                     <ProgressBar className="graph-loader" type="circular" mode="indeterminate" />
