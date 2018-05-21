@@ -36,6 +36,17 @@ export default class BillPage extends React.Component<any, any> {
             alt: llamaStandard,
             buttonColor: "#ff9934",
 
+            currentPlan: "",
+            featurePlan1: "",
+            featurePlan2: "",
+            featurePlan3: "",
+            detailPlan3: "",
+            detailPlan1: "",
+            detailPlan2: "",
+            leftCard: false,
+            testing: "",
+            monitoring: "",
+
             unitTest: "Free",
             numVirtualDevice: "1",
             numSkills: "3",
@@ -51,14 +62,24 @@ export default class BillPage extends React.Component<any, any> {
                     containterColor={sStandard.containterColor}
                     footerColor={sStandard.footerColor}
                     uriImage={sStandard.uriImage}
-                    alt={sStandard.alt}
-                    buttonColor={sStandard.buttonColor}
-                    unitTest={sStandard.unitTest}
-                    numVirtualDevice={sStandard.numVirtualDevice}
-                    numSkills={sStandard.numSkills}
-                    numLogs={sStandard.numLogs}
-                    numUsers={sStandard.numUsers}
-                    price={sStandard.price}
+                    alt={sStandard.alt} buttonColor={sStandard.buttonColor}
+                    currentPlan={"Current Plan"}
+                    featurePlan1={" Plan type : "}
+                    featurePlan2={" Number of devices: "}
+                    featurePlan3={"invoicing period: "}
+                    detailPlan3={"monthly"}
+                    detailPlan1={"Free"}
+                    detailPlan2={"1"}
+                    testing={"Testing"}
+                    unitTest={"Unit testing"}
+                    numVirtualDevice={"End-to-end Testing"}
+                    monitoring={"Monitoring"}
+                    numSkills={"Skills"}
+                    numLogs={"Logs"}
+                    numUsers={"Users"}
+                    price={"Montlhy price"}
+                    leftCard={true}
+
                 /></div>
             </div>
         );

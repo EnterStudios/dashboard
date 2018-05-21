@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,8 +32,7 @@
     <!-- Color the status bar on mobile devices -->
     <meta name="theme-color" content="#2F3BA2">
     <!-- For Sentry -->
-    <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js"
-            crossorigin="anonymous"></script>
+    <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js" crossorigin="anonymous"></script>
     <!-- For heap -->
     <script type="text/javascript">
         window.heap = window.heap || [], heap.load = function (e, t) {
@@ -59,30 +59,34 @@
     <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
     <link rel="stylesheet" href="/style/dashboard.css">
     <script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion_async.js" charset="utf-8"></script>
-    <script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/ah6uagcl';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()</script>
-</head>
-<body>
-<!-- This is where the dashboard will be injected -->
-<div id="dashboard"></div>
+    <script>(function () { var w = window; var ic = w.Intercom; if (typeof ic === "function") { ic('reattach_activator'); ic('update', intercomSettings); } else { var d = document; var i = function () { i.c(arguments) }; i.q = []; i.c = function (args) { i.q.push(args) }; w.Intercom = i; function l() { var s = d.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'https://widget.intercom.io/widget/ah6uagcl'; var x = d.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x); } if (w.attachEvent) { w.attachEvent('onload', l); } else { w.addEventListener('load', l, false); } } })()</script>
+    <script src="https://js.stripe.com/v3/"></script>
 
-<!-- Dashboard Required Dependencies -->
-<script src="https://unpkg.com/react@15.3.2/dist/react.js"></script>
-<script src="https://unpkg.com/react-dom@15.3.2/dist/react-dom.js"></script>
-<!-- Import the dashboard dependency -->
-<script src="/scripts/dashboard.js?v1"></script>
-<!-- Login with Amazon -->
-<div id="amazon-root"></div>
-<script>
-    window.onAmazonLoginReady = function() {
-    amazon.Login.setClientId('amzn1.application-oa2-client.675b266c8bca4d408e5dceed285e18bd');
-  };
-  (function(d) {
-    var a = d.createElement('script'); a.type = 'text/javascript';
-    a.async = true; a.id = 'amazon-login-sdk';
-    a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
-    d.getElementById('amazon-root').appendChild(a);
-  })(document);
-</script>
+
+</head>
+
+<body>
+    <!-- This is where the dashboard will be injected -->
+    <div id="dashboard"></div>
+
+    <!-- Dashboard Required Dependencies -->
+    <script src="https://unpkg.com/react@15.3.2/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15.3.2/dist/react-dom.js"></script>
+    <!-- Import the dashboard dependency -->
+    <script src="/scripts/dashboard.js?v1"></script>
+    <!-- Login with Amazon -->
+    <div id="amazon-root"></div>
+    <script>
+        window.onAmazonLoginReady = function () {
+            amazon.Login.setClientId('amzn1.application-oa2-client.675b266c8bca4d408e5dceed285e18bd');
+        };
+        (function (d) {
+            var a = d.createElement('script'); a.type = 'text/javascript';
+            a.async = true; a.id = 'amazon-login-sdk';
+            a.src = 'https://api-cdn.amazon.com/sdk/login1.js';
+            d.getElementById('amazon-root').appendChild(a);
+        })(document);
+    </script>
 </body>
 
 </html>

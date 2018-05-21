@@ -2,6 +2,43 @@
 import BillCard from "../components/BillCard/BillCard";
 import BarsChart from "../components/Graphs/Bar/BarsChart";
 import RadialBarChart from "../components/Graphs/Radial/ValidationRadialChart";
+const ReactStripeElements = require("react-stripe-elements");
+// import MyStoreCheckout from "./stripe/MyStoreCheckout";
+import { CheckoutC } from "./stripe/test";
+const {
+    CardElement,
+    StripeProvider,
+    Elements,
+    injectStripe,
+} = ReactStripeElements;
+
+class CardFormC extends React.Component<any, any> {
+    render() {
+        return (
+            <form onSubmit={
+                // tslint:disable-next-line:jsx-no-lambda
+                () => this.props.stripe.createToken().then((payload: any) => console.log(payload))
+            }>
+                <CardElement />
+                <button>Pay</button>
+            </form>
+        );
+    }
+}
+const CardForm = injectStripe(CardFormC);
+
+class Checkout extends React.Component<any, any> {
+    render() {
+        return (
+            <div className="Checkout">
+                <h1>Available Elements</h1>
+                <Elements>
+                    <CardForm />
+                </Elements>
+            </div>
+        );
+    }
+}
 
 const centerStyle = {
     margin: "auto",
@@ -61,6 +98,17 @@ export default class ComponentsPage extends React.Component<any, any> {
             alt: llamaStandard,
             buttonColor: "#ff9934",
 
+            currentPlan: "",
+            featurePlan1: "",
+            featurePlan2: "",
+            featurePlan3: "",
+            detailPlan3: "",
+            detailPlan1: "",
+            detailPlan2: "",
+            leftCard: false,
+            testing: "",
+            monitoring: "",
+
             unitTest: "Free",
             numVirtualDevice: "1",
             numSkills: "3",
@@ -75,13 +123,23 @@ export default class ComponentsPage extends React.Component<any, any> {
             footerColor: "#f2f2f2",
             alt: llamaPro,
             buttonColor: "#99d5dd",
-
             unitTest: "Free",
             numVirtualDevice: "2",
             numSkills: "10",
             numLogs: "Unlimited",
             numUsers: "5",
             price: "$100.00",
+
+            currentPlan: "",
+            featurePlan1: "",
+            featurePlan2: "",
+            featurePlan3: "",
+            detailPlan3: "",
+            detailPlan1: "",
+            detailPlan2: "",
+            leftCard: false,
+            testing: "",
+            monitoring: "",
 
         };
         const sEnterprise = {
@@ -91,13 +149,23 @@ export default class ComponentsPage extends React.Component<any, any> {
             footerColor: "#f6f5f3",
             alt: llamaEnterprise,
             buttonColor: "#fecd33",
-
             unitTest: "Free",
             numVirtualDevice: "1",
             numSkills: "3",
             numLogs: "10,000 000",
             numUsers: "2",
             price: "Contact Us",
+
+            currentPlan: "",
+            featurePlan1: "",
+            featurePlan2: "",
+            featurePlan3: "",
+            detailPlan3: "",
+            detailPlan1: "",
+            detailPlan2: "",
+            leftCard: false,
+            testing: "",
+            monitoring: "",
         };
 
         return (
@@ -114,21 +182,63 @@ export default class ComponentsPage extends React.Component<any, any> {
                     <div style={{ height: 250 }}><BarsChart data={data} bars={[{ dataKey: "uv", title: "Daily Events", average: 879 }]} /></div>
                 </div>
 
+
+                <StripeProvider apiKey="pk_test_pjtrb20eQPAtLomXsm4sopuW">
+                    <CheckoutC />
+                </StripeProvider>
+                <StripeProvider apiKey="pk_test_pjtrb20eQPAtLomXsm4sopuW">
+                    <Checkout />
+                </StripeProvider>
+
                 <div style={{ display: "flex", justifyContent: "center" }}>
+
                     <div style={{ width: 232, height: 700 }}>
                         <div ><BillCard letterColor={sStandard.letterColor}
                             containterColor={sStandard.containterColor}
                             footerColor={sStandard.footerColor}
                             uriImage={sStandard.uriImage}
                             alt={sStandard.alt} buttonColor={sStandard.buttonColor}
+                            currentPlan={"Current Plan"}
+                            featurePlan1={" Plan type : "}
+                            featurePlan2={" Number of devices: "}
+                            featurePlan3={"invoicing period: "}
+                            detailPlan3={"monthly"}
+                            detailPlan1={"Free"}
+                            detailPlan2={"1"}
+                            testing={"Testing"}
+                            unitTest={"Unit testing"}
+                            numVirtualDevice={"End-to-end Testing"}
+                            monitoring={"Monitoring"}
+                            numSkills={"Skills"}
+                            numLogs={"Logs"}
+                            numUsers={"Users"}
+                            price={"Montlhy price"}
+                            leftCard={true}
 
+                        /></div>
+                    </div>
+                    <div style={{ width: 232, height: 700 }}>
+                        <div ><BillCard letterColor={sStandard.letterColor}
+                            containterColor={sStandard.containterColor}
+                            footerColor={sStandard.footerColor}
+                            uriImage={sStandard.uriImage}
+                            alt={sStandard.alt} buttonColor={sStandard.buttonColor}
                             unitTest={sStandard.unitTest}
                             numVirtualDevice={sStandard.numVirtualDevice}
                             numSkills={sStandard.numSkills}
                             numLogs={sStandard.numLogs}
                             numUsers={sStandard.numUsers}
                             price={sStandard.price}
-
+                            currentPlan={sStandard.currentPlan}
+                            featurePlan1={sStandard.featurePlan1}
+                            featurePlan2={sStandard.featurePlan2}
+                            featurePlan3={sStandard.featurePlan3}
+                            detailPlan3={sStandard.detailPlan3}
+                            detailPlan1={sStandard.detailPlan1}
+                            detailPlan2={sStandard.detailPlan2}
+                            testing={sStandard.testing}
+                            monitoring={sStandard.monitoring}
+                            leftCard={sStandard.leftCard}
                         /></div>
                     </div>
                     <div style={{ width: 232 }}>
@@ -144,6 +254,16 @@ export default class ComponentsPage extends React.Component<any, any> {
                             numLogs={sPro.numLogs}
                             numUsers={sPro.numUsers}
                             price={sPro.price}
+                            currentPlan={sPro.currentPlan}
+                            featurePlan1={sPro.featurePlan1}
+                            featurePlan2={sPro.featurePlan2}
+                            featurePlan3={sPro.featurePlan3}
+                            detailPlan3={sPro.detailPlan3}
+                            detailPlan1={sPro.detailPlan1}
+                            detailPlan2={sPro.detailPlan2}
+                            testing={sPro.testing}
+                            monitoring={sPro.monitoring}
+                            leftCard={sPro.leftCard}
                         /></div >
                     </div>
                     <div style={{ width: 232 }}>
@@ -158,7 +278,18 @@ export default class ComponentsPage extends React.Component<any, any> {
                             numSkills={sEnterprise.numSkills}
                             numLogs={sEnterprise.numLogs}
                             numUsers={sEnterprise.numUsers}
-                            price={sEnterprise.price} /></div>
+                            price={sEnterprise.price}
+                            currentPlan={sEnterprise.currentPlan}
+                            featurePlan1={sEnterprise.featurePlan1}
+                            featurePlan2={sEnterprise.featurePlan2}
+                            featurePlan3={sStandard.featurePlan3}
+                            detailPlan3={sStandard.detailPlan3}
+                            detailPlan1={sEnterprise.detailPlan1}
+                            detailPlan2={sEnterprise.detailPlan2}
+                            testing={sEnterprise.testing}
+                            monitoring={sEnterprise.monitoring}
+                            leftCard={sEnterprise.leftCard}
+                        /></div>
                     </div>
 
                 </div>
