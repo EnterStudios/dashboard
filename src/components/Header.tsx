@@ -47,6 +47,7 @@ export interface HeaderProps {
     goTo?: (path: string) => (dispatch: Redux.Dispatch<any>) => void;
     amazonFlow?: boolean;
     getSources?: () => Promise<Source[]>;
+    userEmail?: string;
 }
 
 export interface HeaderState {
@@ -110,7 +111,7 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
                     <span>-> Hybrids</span>*/}
                 </div>
                 <ButtonMenu className={MenuButtonTheme.help_menu_button} raised={true} position="topRight"
-                            label="Need Help?">
+                            label="Need Help?" userEmail={this.props.userEmail}>
                     <MenuItem
                         key="1"
                         to="https://github.com/bespoken/dashboard/issues/new?labels=bug"

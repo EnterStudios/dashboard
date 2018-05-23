@@ -181,12 +181,12 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
                                 this.state && this.state.isSourceUp ?
                                     (
                                         <div className={SourceSelectorItemStyle.succeeded}>
-                                            <div>ALL YOUR ITEMS SUCCEEDED</div>
+                                            <div>ALL YOUR TESTS SUCCEEDED</div>
                                         </div>
                                     ) :
                                     (
                                         <div className={SourceSelectorItemStyle.failed}>
-                                            <div>AT LEAST 1 OF YOUR ITEMS FAILED</div>
+                                            <div>AT LEAST 1 OF YOUR TESTS FAILED</div>
                                         </div>
                                     )
                             }
@@ -195,7 +195,7 @@ export default class SourceSelectorItem extends React.Component<SourceSelectorIt
                             this.state.enableValidation && rows && rows.length &&
                             (
                                 <div className={SourceSelectorItemStyle.items_processed_Text}>
-                                    {rows && rows.length || "0"} TOTAL ITEMS
+                                    {rows && rows.length || "0"} TOTAL TESTS
                                 </div>
                             )
                         }
