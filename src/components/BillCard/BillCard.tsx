@@ -2,7 +2,6 @@ import * as React from "react";
 
 const BillCardStyle = require("./BillCardStyle.scss");
 
-
 interface BillCardProps {
     uriImage: string;
     letterColor: string;
@@ -10,7 +9,6 @@ interface BillCardProps {
     footerColor: string;
     alt: string;
     buttonColor: string;
-
     currentPlan: string;
     featurePlan1: string;
     featurePlan2: string;
@@ -18,10 +16,8 @@ interface BillCardProps {
     detailPlan1: string;
     detailPlan2: string;
     detailPlan3: string;
-
     testing: string;
     monitoring: string;
-
     unitTest: string;
     numVirtualDevice: string;
     numSkills: string;
@@ -29,7 +25,6 @@ interface BillCardProps {
     numUsers: string;
     price: string;
     leftCard: boolean;
-
 }
 
 interface BillCardState {

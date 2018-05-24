@@ -20,10 +20,28 @@
     display: inline-block;
     position: absolute;
     right: 6%;
-    margin-top: -7px;
+    margin-top: 5px;
     + div {
         position: absolute;
         right: 2%;
+    }
+}
+
+@media (max-width: 1366px) {
+    .menu_container {
+        right: 8%;
+        + div {
+            right: 3%;
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .menu_container {
+        right: 9%;
+        + div {
+            right: 3%;
+        }
     }
 }
 
@@ -34,6 +52,12 @@
         + div {
             right: 3%;
         }
+    }
+}
+
+@media (max-width: 450px) {
+    .menu_container {
+        display: none;
     }
 }
 

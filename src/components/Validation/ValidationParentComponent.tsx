@@ -176,7 +176,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         return (
             <form onSubmit={this.props.handleRun}>
                 <Cell col={12} tablet={12}>
-                    <Grid>
+                    <Grid style={{paddingRight: 0}}>
                         <Cell col={7} tablet={8} phone={6}>
                             {
                                 this.props.source && this.props.source.id &&
@@ -187,7 +187,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                                 )
                             }
                         </Cell>
-                        <Cell style={{position: "relative"}} col={5} hideTablet={true} hidePhone={true}>
+                        <Cell style={{position: "relative", marginRight: 0, marginLeft: 16}} col={5} hideTablet={true} hidePhone={true}>
                             <TooltipButton className={buttonStyle.info_button} icon={"info"} tooltip={"Enable Monitoring and get notified instantly when there is a change in your validation results overtime."} />
                             <div className={`${buttonStyle.enable_monitoring} ${validationEnabledStyle}`} >
                                 <div>

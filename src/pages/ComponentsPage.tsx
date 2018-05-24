@@ -69,7 +69,6 @@ export default class ComponentsPage extends React.Component<any, any> {
             footerColor: "#e8f5fe",
             alt: llamaStandard,
             buttonColor: "#ff9934",
-
             currentPlan: "",
             featurePlan1: "",
             featurePlan2: "",
@@ -80,7 +79,6 @@ export default class ComponentsPage extends React.Component<any, any> {
             leftCard: false,
             testing: "",
             monitoring: "",
-
             unitTest: "Free",
             numVirtualDevice: "1",
             numSkills: "3",
@@ -101,7 +99,6 @@ export default class ComponentsPage extends React.Component<any, any> {
             numLogs: "Unlimited",
             numUsers: "5",
             price: "$100.00",
-
             currentPlan: "",
             featurePlan1: "",
             featurePlan2: "",
@@ -112,7 +109,6 @@ export default class ComponentsPage extends React.Component<any, any> {
             leftCard: false,
             testing: "",
             monitoring: "",
-
         };
         const sEnterprise = {
             uriImage: uri + llamaEnterprise + ".jpg",
@@ -127,7 +123,6 @@ export default class ComponentsPage extends React.Component<any, any> {
             numLogs: "10,000 000",
             numUsers: "2",
             price: "Contact Us",
-
             currentPlan: "",
             featurePlan1: "",
             featurePlan2: "",
@@ -166,7 +161,6 @@ export default class ComponentsPage extends React.Component<any, any> {
                     <PaymentForm />
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
-
                     <div style={{ width: 232, height: 700 }}>
                         <div ><BillCard letterColor={sStandard.letterColor}
                             containterColor={sStandard.containterColor}

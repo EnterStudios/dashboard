@@ -35,7 +35,6 @@ export default class BillPage extends React.Component<any, any> {
             footerColor: "#e8f5fe",
             alt: llamaStandard,
             buttonColor: "#ff9934",
-
             currentPlan: "",
             featurePlan1: "",
             featurePlan2: "",
@@ -46,7 +45,6 @@ export default class BillPage extends React.Component<any, any> {
             leftCard: false,
             testing: "",
             monitoring: "",
-
             unitTest: "Free",
             numVirtualDevice: "1",
             numSkills: "3",
@@ -79,7 +77,6 @@ export default class BillPage extends React.Component<any, any> {
                     numUsers={"Users"}
                     price={"Montlhy price"}
                     leftCard={true}
-
                 /></div>
             </div>
         );

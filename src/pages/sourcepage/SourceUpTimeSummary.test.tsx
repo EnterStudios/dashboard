@@ -1,5 +1,5 @@
 import * as chai from "chai";
-import { shallow, ShallowWrapper } from "enzyme";
+import {mount, shallow, ShallowWrapper} from "enzyme";
 import * as moment from "moment";
 import * as React from "react";
 import * as sinon from "sinon";
@@ -16,6 +16,7 @@ import SourceUpTime from "./SourceUptime";
 
 chai.use(sinonChai);
 const expect = chai.expect;
+const jsdom = require("mocha-jsdom");
 
 const summary: MonitoringService.UpTimeSummary[] = [
   {
@@ -33,7 +34,7 @@ describe("SourceTimeSummary", function () {
 
     let sources: Source[];
     let source: Source;
-
+    jsdom();
     before(function () {
         sources = dummySources(2);
         source = sources[0];
@@ -60,6 +61,40 @@ describe("SourceTimeSummary", function () {
 
         it("Checks the up time graph has a default data of 0.", function () {
             expect(wrapper.find(UpTimeChart).prop("data")).to.have.length(0); // One for each day.
+        });
+    });
+
+    describe("Source Not Found", function () {
+        let startTime: moment.Moment;
+        let endTime: moment.Moment;
+        let responseService: sinon.SinonStub;
+        let wrapper: any;
+
+        before(function () {
+            endTime = moment(new Date(2017, 2, 20));
+            startTime = moment(new Date(2017, 2, 13));
+
+            responseService = sinon.stub(MonitoringService, "getSourceStatus").returns(Promise.resolve());
+        });
+
+        beforeEach(function () {
+            responseService.reset();
+
+            wrapper = mount(<SourceUpTime
+                source={source}
+                startDate={startTime}
+                endDate={endTime} />);
+            const loadingPromise = (wrapper.instance() as SourceUpTime).loadingPromise;
+            return loadingPromise;
+        });
+
+        after(function () {
+            responseService.restore();
+        });
+
+        it("Checks the up time graph has a default when source is not found.", function () {
+            wrapper.setState({data: {status: 2}});
+            expect(wrapper.find("div").at(0).props().children).to.equal("No data available yet");
         });
     });
 
