@@ -1,44 +1,16 @@
 ﻿import * as React from "react";
 import BillCard from "../components/BillCard/BillCard";
+import { CardFormC } from "../components/BillCard/CardForm";
+import { PaymentForm } from "../components/BillCard/payment";
 import BarsChart from "../components/Graphs/Bar/BarsChart";
 import RadialBarChart from "../components/Graphs/Radial/ValidationRadialChart";
 const ReactStripeElements = require("react-stripe-elements");
-// import MyStoreCheckout from "./stripe/MyStoreCheckout";
-import { CheckoutC } from "./stripe/test";
+
 const {
-    CardElement,
     StripeProvider,
     Elements,
-    injectStripe,
 } = ReactStripeElements;
 
-class CardFormC extends React.Component<any, any> {
-    render() {
-        return (
-            <form onSubmit={
-                // tslint:disable-next-line:jsx-no-lambda
-                () => this.props.stripe.createToken().then((payload: any) => console.log(payload))
-            }>
-                <CardElement />
-                <button>Pay</button>
-            </form>
-        );
-    }
-}
-const CardForm = injectStripe(CardFormC);
-
-class Checkout extends React.Component<any, any> {
-    render() {
-        return (
-            <div className="Checkout">
-                <h1>Available Elements</h1>
-                <Elements>
-                    <CardForm />
-                </Elements>
-            </div>
-        );
-    }
-}
 
 const centerStyle = {
     margin: "auto",
@@ -181,15 +153,18 @@ export default class ComponentsPage extends React.Component<any, any> {
 
                     <div style={{ height: 250 }}><BarsChart data={data} bars={[{ dataKey: "uv", title: "Daily Events", average: 879 }]} /></div>
                 </div>
+                <div style={{ maxWidth: 300, height: 100, padding: 30 }}>
+                    <b>Payment form 1</b>
+                    <StripeProvider apiKey="pk_test_pjtrb20eQPAtLomXsm4sopuW">
 
-
-                <StripeProvider apiKey="pk_test_pjtrb20eQPAtLomXsm4sopuW">
-                    <CheckoutC />
-                </StripeProvider>
-                <StripeProvider apiKey="pk_test_pjtrb20eQPAtLomXsm4sopuW">
-                    <Checkout />
-                </StripeProvider>
-
+                        <Elements>
+                            <CardFormC />
+                        </Elements>
+                    </StripeProvider>
+                </div>
+                <div style={{ padding: 30 }}>
+                    <PaymentForm />
+                </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
 
                     <div style={{ width: 232, height: 700 }}>
