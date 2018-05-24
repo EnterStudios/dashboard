@@ -54,7 +54,7 @@ class SplitFormC extends React.Component<any & { fontSize: string }, any> {
         } else {
             console.log("Stripe.js hasnt loaded yet.");
         }
-    };
+    }
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
@@ -130,7 +130,7 @@ export class PaymentForm extends React.Component<any, any> {
         } else {
             document.querySelector("#stripe-js").addEventListener("load", () => {
                 // Create Stripe instance once Stripe.js loads
-                this.setState({ stripe: (window as any).Stripe("pk_test_12345") });
+                this.setState({ stripe: (window as any).Stripe("pk_test_pjtrb20eQPAtLomXsm4sopuW") });
             });
         }
     }
