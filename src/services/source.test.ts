@@ -133,6 +133,7 @@ describe("Source Service", function () {
 
         db.ref = sinon.stub().returns(ref);
         ref.child = sinon.stub().returns(ref);
+        ref.update = sinon.stub().returns(ref);
     });
 
     describe("Tests the Link Source function", function () {
@@ -374,16 +375,16 @@ describe("Source Service", function () {
                 return SourceService.deleteSource(new SourceModel.Source(source), mockAuth, db)
                     .then(function (source: SourceModel.Source) {
                         // Deleting happens at "users/<uid>/sources/<source.id>";
-                        const firstCall = childStub.firstCall;
+                        const firstCall = childStub.secondCall;
                         expect(firstCall).to.be.calledWith("users");
 
-                        const secondCall = childStub.secondCall;
+                        const secondCall = childStub.thirdCall;
                         expect(secondCall).to.be.calledWith(mockAuth.currentUser.uid);
 
-                        const thirdCall = childStub.thirdCall;
+                        const thirdCall = childStub.getCall(3);
                         expect(thirdCall).to.be.calledWith("sources");
 
-                        const fourthCall = childStub.getCall(3);
+                        const fourthCall = childStub.getCall(4);
                         expect(fourthCall).to.be.calledWith(source.id);
 
                     });

@@ -137,11 +137,12 @@ export namespace source {
             });
     }
 
-    export function deleteSource(source: Source, auth: remoteservice.auth.Auth = remoteservice.defaultService().auth(), db: remoteservice.database.Database = remoteservice.defaultService().database()): Promise<Source> {
+    export async function deleteSource(source: Source, auth: remoteservice.auth.Auth = remoteservice.defaultService().auth(), db: remoteservice.database.Database = remoteservice.defaultService().database()): Promise<Source> {
         const user = auth.currentUser;
         const ref = db.ref();
         const key = source.id;
 
+        await ref.child("/sources/" + source.id).update({deleted: true});
         // tslint:disable:no-null-keyword
         return ref.child("users").child(user.uid).child("sources").child(key).set(null).then(function () {
             return removeMembers(user.uid, source);
