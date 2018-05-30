@@ -12,6 +12,8 @@ import Source from "../models/source";
 import logService from "../services/log";
 import sourceService from "../services/source";
 import { Location } from "../utils/Location";
+import { Cell, Grid } from "./Grid";
+
 
 import Noop from "../utils/Noop";
 
@@ -22,6 +24,7 @@ const MenuButtonTheme = require("../themes/button_menu_theme.scss");
 const TabMenuTheme = require("../themes/tab_menu_theme.scss");
 const TopBarTheme = require("../themes/topbar_theme.scss");
 const theme = require("../themes/autosuggest.scss");
+const SourcePagePaneStyle = require("../themes/amazon_pane.scss");
 
 export interface Dropdownable {
   value: string;
@@ -48,6 +51,10 @@ export interface HeaderProps {
     amazonFlow?: boolean;
     getSources?: () => Promise<Source[]>;
     userEmail?: string;
+    handleVisualClick?: () => void;
+    handleYamlEditorClick?: () => void;
+    isYamlEditor?: boolean;
+    isValidationPage?: boolean;
 }
 
 export interface HeaderState {
@@ -99,6 +106,23 @@ export class Header extends React.Component<HeaderProps, HeaderState> {
     const random = Math.floor((Math.random() * 10) + 1);
     return (
         <header className={this.classes()}>
+            {
+                this.props.isValidationPage &&
+                (
+                    <Grid className={TabMenuTheme.editor_container} noSpacing={true}>
+                        <Cell className={SourcePagePaneStyle.left_cell} col={9} phone={4} tablet={6}>
+                            <div className={SourcePagePaneStyle.left_container}>
+                                <div className={TabMenuTheme.editor_selector}>
+                                    <span className={this.props.isYamlEditor ? TabMenuTheme.active : ""}
+                                          onClick={this.props.handleYamlEditorClick}>Yaml Editor</span>
+                                    <span className={this.props.isYamlEditor ? "" : TabMenuTheme.active}
+                                          onClick={this.props.handleVisualClick}>Visual</span>
+                                </div>
+                            </div>
+                        </Cell>
+                    </Grid>
+                )
+            }
             <div className={classNames("mdl-layout__header-row", TopBarTheme.gray_top_bar)} />
             <div className={classNames("mdl-layout__header-row", TopBarTheme.container)}>
                 <Home

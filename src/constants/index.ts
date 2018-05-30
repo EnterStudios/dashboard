@@ -20,6 +20,9 @@ export const SET_AMAZON_FLOW: SET_AMAZON_FLOW = "bst/SET_AMAZON_FLOW";
 export type SET_LOADING = "bst/SET_LOADING";
 export const SET_LOADING: SET_LOADING = "bst/SET_LOADING";
 
+export type SET_EDITOR = "bst/SET_EDITOR";
+export const SET_EDITOR: SET_EDITOR = "bst/SET_EDITOR";
+
 export const SENDING_REQUEST = "SENDING_REQUEST";
 
 export const LOGIN_USER_PENDING = "bst/LOGIN_USER_PENDING";

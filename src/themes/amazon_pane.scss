@@ -90,6 +90,12 @@
     width: 73% !important;
     margin: 0;
     padding: 8px;
+    &.yaml_editor {
+        padding-right: 0;
+        > div.left_container {
+            margin-right: 0;
+        }
+    }
 }
 
 .left_container {
@@ -227,6 +233,14 @@
     margin: 0;
     padding: 0;
     border-bottom: none;
+    &.yaml_editor {
+        background-color: #EEF2F5;
+        padding-top: 8px;
+        > div.right_container {
+            margin-top: 1.785714285714286rem;
+            background-color: #fff;
+        }
+    }
 }
 
 .right_container {

@@ -12,6 +12,7 @@ import RightPanel from "../../components/RightPanel";
 import SourcePageTwoPane from "../../components/SourcePageTwoPane";
 import ValidationPageGlobalStats from "../../components/Validation/ValidationComponentGlobalStats";
 import ValidationParentComponent from "../../components/Validation/ValidationParentComponent";
+import {ValidationResultYamlComponent} from "../../components/Validation/ValidationResultYamlComponent";
 import Source from "../../models/source";
 import {User, UserDetails} from "../../models/user";
 import { State } from "../../reducers";
@@ -27,6 +28,8 @@ interface ValidationPageState {
     loadingValidationResults: boolean;
     monitorEnabled: boolean;
     script: string;
+    yamlScript: string;
+    visualScript: string;
     validationResults: any;
     token: string;
     tokenChanged: boolean;
@@ -112,6 +115,8 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
             vendorID: "",
             vendorIDChanged: false,
             myHeight: 0,
+            yamlScript: "",
+            visualScript: "",
         };
         this.onMeasure = this.onMeasure.bind(this);
         this.handleRun = this.handleRun.bind(this);
@@ -148,23 +153,33 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
         if (source) {
             const fbSource = await SourceService.getSourceObj(source.id);
             const script = fbSource && fbSource.validation_script;
+            const visualScript = source.isYamlEditor === undefined ? fbSource && fbSource.validation_script : fbSource && fbSource.visualScript;
+            const yamlScript = fbSource && fbSource.yamlScript;
             this.setState(() => ({
                 ...this.state,
+                validationResults: undefined,
                 script,
+                visualScript,
+                yamlScript,
             }));
         }
     }
 
     componentDidMount() {
         const self = this;
-        const currentScript = (this.props.source && this.props.source.validation_script) || "";
+        const fbSource = this.props.source;
+        const script = fbSource && fbSource.validation_script;
+        const visualScript = fbSource && fbSource.isYamlEditor === undefined ? fbSource && fbSource.validation_script : fbSource && fbSource.visualScript;
+        const yamlScript = fbSource && fbSource.yamlScript;
         auth.currentUserDetails().then((userDetails: UserDetails) => {
             self.setState({
                 ...this.state,
                 token: userDetails.silentEchoToken,
                 vendorID: userDetails.vendorID,
                 smAPIAccessToken: userDetails.smAPIAccessToken,
-                script: currentScript,
+                script,
+                visualScript,
+                yamlScript,
             });
         });
     }
@@ -202,6 +217,18 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
         });
     }
 
+    handleYamlScriptChange = (value: string) => {
+        this.setState((prevState: ValidationPageState) => {
+            return {...this.state, yamlScript: value};
+        });
+    }
+
+    handleVisualScriptChange = (value: string) => {
+        this.setState((prevState: ValidationPageState) => {
+            return {...this.state, visualScript: value};
+        });
+    }
+
     handleHelpChange(e: any) {
         e.preventDefault();
         this.setState({...this.state, showHelp: !this.state.showHelp});
@@ -217,7 +244,16 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
 
     async updateSourceObject (source: Source) {
         this.props.setLoading(true);
-        await SourceService.updateSourceObj(source);
+        const sourceToSend = {
+            ...source,
+            validation_script: source.isYamlEditor ? this.state.yamlScript : this.state.visualScript,
+        };
+        if (source.isYamlEditor) {
+            sourceToSend.yamlScript = this.state.yamlScript
+        } else {
+            sourceToSend.visualScript = this.state.visualScript;;
+        }
+        await SourceService.updateSourceObj(sourceToSend);
         const updatedSource = await SourceService.getSourceObj(this.props.source.id);
         await this.props.getSources();
         await this.props.setSource(updatedSource);
@@ -225,6 +261,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
     }
 
     async handleRun(e: any) {
+        const scriptToRun = this.props.source.isYamlEditor ? this.state.yamlScript : this.state.visualScript;
         let {locale} = this.props.source;
         // If user has not selected locale then we default to en-US
         if (!locale) locale = "en-US";
@@ -236,7 +273,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
             const validateSource = () => {
                 const timestamp = Date.now();
                 self.setupChannel(this.state.token, timestamp);
-                SourceService.validateSource(this.props.user.userId, this.state.script,
+                SourceService.validateSource(this.props.user.userId, scriptToRun,
                     this.state.token, timestamp, this.state.vendorID,
                     this.state.smAPIAccessToken, this.url(), locale)
                     .then((validationResults: any) => {
@@ -279,8 +316,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                         });
                     });
             };
-            const sourceToUpdate = {...this.props.source, validation_script: this.state.script};
-            await this.updateSourceObject(sourceToUpdate);
+            await this.updateSourceObject(this.props.source);
             if (this.state.tokenChanged || this.state.vendorIDChanged) {
                 const props: any = {};
                 if (this.state.tokenChanged) {
@@ -414,8 +450,9 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
 
     render() {
         const dropdownableSources = this.props.sources && this.props.sources.length && this.props.sources.map(source => ({source, label: source.name, value: source.id}));
+        const isYamlEditor = this.props.source && this.props.source.isYamlEditor;
         return (
-            <SourcePageTwoPane>
+            <SourcePageTwoPane isYamlEditor={isYamlEditor}>
                 {(
                     <ValidationParentComponent
                         source={this.props.source}
@@ -425,6 +462,8 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                         token={this.state.token}
                         vendorID={this.state.vendorID}
                         script={this.state.script}
+                        yamlScript={this.state.yamlScript}
+                        visualScript={this.state.visualScript}
                         scriptHint={ValidationPage.scriptHint}
                         showSnackbar={this.state.showSnackbar}
                         snackbarLabel={this.state.snackbarLabel}
@@ -442,34 +481,41 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                         handleSnackbarClick={this.handleSnackbarClick}
                         handleVendorIDChange={this.handleVendorIDChange}
                         handleScriptChange={this.handleScriptChange}
+                        handleYamlScriptChange={this.handleYamlScriptChange}
+                        handleVisualScriptChange={this.handleVisualScriptChange}
                         handleHelpChange={this.handleHelpChange}
                         handleDialogToggle={this.handleDialogToggle}
                         handleMonitorEnabledCheckChange={this.handleMonitorEnabledCheckChange}
                         handleShowSnackbarEnableMonitoring={this.handleShowSnackbarEnableMonitoring}
                         handleShowSnackbarVerifyEmail={this.handleShowSnackbarVerifyEmail}
                         handleShowSnackbarScriptEmpty={this.handleShowSnackbarScriptEmpty}
+                        isYamlEditor={isYamlEditor}
                     />
                 )}
                 {
                     process.env.NODE_ENV !== "production" ?
                         (
-                            !(this.props.source && this.props.source.hasIntegrated) ?
+                            this.props.source && this.props.source.isYamlEditor ?
                                 (
-                                    <RightPanel handleGetStarted={this.handleGetStarted}/>
+                                    this.state && <ValidationResultYamlComponent unparsedHtml={this.state.validationResults} />
                                 ) :
-                                (
-                                    <ValidationPageGlobalStats source={this.props.source}
-                                                               startDate={moment().subtract(7, "days")}
-                                                               endDate={moment()} setLoading={this.props.setLoading}
-                                                               goTo={this.props.goTo}/>
-                                )
+                                !(this.props.source && this.props.source.hasIntegrated) ?
+                                    (
+                                        <RightPanel handleGetStarted={this.handleGetStarted}/>
+                                    ) :
+                                    (
+                                        <ValidationPageGlobalStats source={this.props.source}
+                                                                   startDate={moment().subtract(7, "days")}
+                                                                   endDate={moment()} setLoading={this.props.setLoading}
+                                                                   goTo={this.props.goTo}/>
+                                    )
                         ) :
                         (
                             !(this.props.source && this.props.source.hasIntegrated) ?
-                                (
-                                    <RightPanel handleGetStarted={this.handleGetStarted}/>
-                                ) :
-                                ""
+                                    (
+                                        <RightPanel handleGetStarted={this.handleGetStarted}/>
+                                    ) :
+                                    ""
                         )
                 }
             </SourcePageTwoPane>

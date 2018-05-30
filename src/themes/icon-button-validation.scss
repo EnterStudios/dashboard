@@ -7,6 +7,31 @@ button.toggle {
     height: 2.8rem;
     line-height: 2.8rem;
     padding: 0;
+    &.yaml_button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 2rem;
+        height: 2rem;
+        line-height: 2rem;
+        &.success {
+            background-color: $color-success;
+            span {
+                line-height: 1.5rem!important;
+            }
+        }
+        &.error {
+            background-color: $color-error;
+            span {
+                line-height: 1.6rem!important;
+                font-size: 1.6rem!important;
+            }
+        }
+        > span {
+            line-height: 2rem!important;
+            color: #fff;
+        }
+    }
     &.success {
         background-color: $color-success;
         span {

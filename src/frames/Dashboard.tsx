@@ -54,12 +54,12 @@ interface DashboardProps {
   setUser: (user: User) => (dispatch: Redux.Dispatch<any>) => void;
   loading: boolean;
   setLoading: (value: boolean) => (dispatch: Redux.Dispatch<any>) => void;
+  source: Source;
 }
 
 interface DashboardState {
   showModal: boolean;
   emailVerificationStatus: "loading" | "asking" | "sent" | "done";
-  isValidationPage?: boolean; // temporal boolean to remove source title on validationPage
 }
 
 function mapStateToProps(state: State.All) {
@@ -69,6 +69,7 @@ function mapStateToProps(state: State.All) {
     sources: state.source.sources,
     amazonFlow: state.session.amazonFlow,
     loading: state.loading.loading,
+    source: state.source.currentSource,
   };
 }
 
@@ -93,7 +94,7 @@ function mapDispatchToProps(dispatch: any) {
       return dispatch(setUser(user));
     },
     setLoading: function (value: boolean) {
-        return dispatch(setLoading(value));
+      return dispatch(setLoading(value));
     },
   };
 }
@@ -118,7 +119,6 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     this.state = {
       showModal: false,
       emailVerificationStatus: "loading",
-      isValidationPage: false,
     };
 
     showAskingSnackbar = !this.props.user.emailVerified;
@@ -170,19 +170,11 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     }
 
   componentDidUpdate(previousProps: DashboardProps, previousState: DashboardState) {
-    const pathsArray = ["stats", "logs", "integration", "audio", "settings"];
-    const isValidationPage = pathsArray.some(path => {
-        return location.pathname.indexOf(path) < 0;
-    });
     if (showAskingSnackbar && this.state.emailVerificationStatus === "loading" && previousState.emailVerificationStatus === "loading") {
       showAskingSnackbar = false;
       this.setState((prevState, prevProps) => ({
-        ...this.state, isValidationPage, emailVerificationStatus: "asking",
+        ...this.state, emailVerificationStatus: "asking",
       }));
-    } else if (previousState.isValidationPage !== isValidationPage) {
-        this.setState((prevState, prevProps) => ({
-            ...this.state, isValidationPage,
-        }));
     }
   }
 
@@ -264,9 +256,6 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
   }
 
   handlePageSwap(button: PageButton) {
-    this.setState(prevState => {
-      return { ...prevState, isValidationPage: false };
-    });
     if (button.name === "Check Stats") {
       this.props.goTo("/skills/" + this.props.currentSource.id + "/stats");
     } else if (button.name === "Check Logs") {
@@ -274,9 +263,6 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     } else if (button.name === "Integration") {
       this.props.goTo("/skills/" + this.props.currentSource.id + "/integration");
     } else if (button.name === "Validation") {
-      this.setState(prevState => {
-        return { ...prevState, isValidationPage: true };
-      });
       this.props.goTo("/skills/" + this.props.currentSource.id);
     } else if (button.name === "Audio Metrics") {
       this.props.goTo("/skills/" + this.props.currentSource.id + "/audio");
@@ -328,8 +314,31 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
     this.props.setUser({ ...this.props.user, emailVerified: true });
   }
 
+    handleVisualEditor = () => {
+      if (this.props.source) {
+          this.updateSourceObject({...this.props.source, isYamlEditor: false, validation_script: this.props.source.visualScript});
+      }
+    }
+
+    handleYamlEditor = () => {
+        if (this.props.source) {
+            this.updateSourceObject({...this.props.source, isYamlEditor: true, validation_script: this.props.source.yamlScript});
+        }
+    }
+
+    updateSourceObject = async (source: Source) => {
+        this.props.setLoading(true);
+        await SourceService.updateSourceObj(source);
+        const updatedSource = await SourceService.getSourceObj(this.props.source.id);
+        await this.props.getSources();
+        await this.props.setSource(updatedSource);
+        this.props.setLoading(false);
+    }
+
   render() {
+    const isValidationPage = this.props.source && this.props.source.id && RegExp(`^/skills/${this.props.source.id}/?$`).test(this.props.location && this.props.location.pathname);
     const isSourceListPage = /^\/skills\/?$/.test(this.props.location && this.props.location.pathname);
+    const isYamlEditor = this.props.source && this.props.source.isYamlEditor;
     return (
       <Layout header={true} style={isSourceListPage ? {overflowY: "hidden"} : {}}>
         <Popup
@@ -355,7 +364,11 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
               displayHomeButton={this.props.location.pathname !== "/"}
               amazonFlow={this.props.amazonFlow}
               getSources={this.props.getSources}
-              userEmail={this.props.user && this.props.user.email}>
+              userEmail={this.props.user && this.props.user.email}
+              handleVisualClick={this.handleVisualEditor}
+              handleYamlEditorClick={this.handleYamlEditor}
+              isYamlEditor={isYamlEditor}
+              isValidationPage={isValidationPage}>
               <UserControl
                   login={this.props.login}
                   logout={this.props.logout}

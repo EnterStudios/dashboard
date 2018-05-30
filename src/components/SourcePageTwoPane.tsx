@@ -7,6 +7,7 @@ export interface SourcePageTwoPaneProps {
     spacing?: boolean;
     leftStyle?: React.CSSProperties;
     rightStyle?: React.CSSProperties;
+    isYamlEditor?: boolean;
 }
 
 interface TwoPaneState {
@@ -34,12 +35,12 @@ export class SourcePageTwoPane extends React.Component<SourcePageTwoPaneProps, T
             <Grid
                 className={SourcePagePaneStyle.main_grid}
                 noSpacing={this.props.spacing}>
-                <Cell className={SourcePagePaneStyle.left_cell} col={9} phone={4} tablet={6}>
+                <Cell className={`${SourcePagePaneStyle.left_cell} ${this.props.isYamlEditor ? SourcePagePaneStyle.yaml_editor : ""}`} col={9} phone={4} tablet={6}>
                     <div className={SourcePagePaneStyle.left_container} style={this.props.leftStyle}>
                         {leftObj}
                     </div>
                 </Cell>
-                <Cell className={SourcePagePaneStyle.right_cell} col={3} hidePhone={true} tablet={2}>
+                <Cell className={`${SourcePagePaneStyle.right_cell} ${this.props.isYamlEditor ? SourcePagePaneStyle.yaml_editor : ""}`} col={3} hidePhone={true} tablet={2}>
                     <div className={SourcePagePaneStyle.right_container} style={this.props.rightStyle}>
                         {rightObj}
                     </div>

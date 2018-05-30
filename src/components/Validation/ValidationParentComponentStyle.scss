@@ -68,6 +68,33 @@
     font-size: 1.2rem;
 }
 
+.yaml_editor_container {
+    margin: 0 36px;
+    width: 100%;
+    button {
+        background-color: #4A4B4D;
+        color: #fff;
+        font-size: 1.5rem;
+        border: none;
+        margin: 0 0 5px 5px;
+        width: 13%;
+        padding: 5px 0;
+        font-family: 'Khand', sans-serif;;
+        float: right;
+    }
+    > span {
+        width: calc(74% - 10px);
+        display: inline-block;
+    }
+}
+
+:global {
+    .ace_editor, .ace_editor div, .ace_editor span{
+        font-family: monospace;
+        font-size: 14px !important;
+    }
+}
+
 @media (max-width: 839px) {
     .button_container {
         &.right {

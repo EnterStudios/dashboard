@@ -214,8 +214,10 @@ export namespace source {
             sourceToSend.sourceType = source.sourceType || "";
             sourceToSend.maxErrors = source.maxErrors || "";
             sourceToSend.maxAverageResponseTime = source.maxAverageResponseTime || "";
-
             sourceToSend.locale = source.locale || "";
+            sourceToSend.isYamlEditor = !!source.isYamlEditor;
+            sourceToSend.visualScript = source.visualScript || "";
+            sourceToSend.yamlScript = source.yamlScript || "";
             db.ref().child("/sources/" + source.id)
                 .update(sourceToSend,
                 (err: Error): firebase.Promise<any> => {

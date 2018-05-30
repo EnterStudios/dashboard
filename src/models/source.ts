@@ -23,6 +23,9 @@ export interface SourceProperties {
     maxErrors?: string;
     maxAverageResponseTime?: string;
     locale?: string;
+    isYamlEditor?: boolean;
+    visualScript?: string;
+    yamlScript?: string;
 }
 
 export class Source implements SourceProperties {
@@ -47,6 +50,9 @@ export class Source implements SourceProperties {
     public maxErrors?: string | undefined;
     public maxAverageResponseTime?: string | undefined;
     public locale?: string;
+    public isYamlEditor?: boolean;
+    public visualScript?: string;
+    public yamlScript?: string;
 
     constructor(props: SourceProperties) {
 
@@ -68,8 +74,10 @@ export class Source implements SourceProperties {
         if (props.sourceType) this.sourceType = props.sourceType;
         if (props.maxErrors) this.maxErrors = props.maxErrors;
         if (props.maxAverageResponseTime) this.maxAverageResponseTime = props.maxAverageResponseTime;
-
         if (props.locale) this.locale = props.locale;
+        if (props.isYamlEditor) this.isYamlEditor = props.isYamlEditor;
+        if (props.visualScript) this.visualScript = props.visualScript;
+        if (props.yamlScript) this.yamlScript = props.yamlScript;
         if (props.created) {
             if (props.created instanceof Date) {
                 this.created = props.created.toISOString();

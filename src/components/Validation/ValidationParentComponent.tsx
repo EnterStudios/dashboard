@@ -1,4 +1,5 @@
 import * as React from "react";
+import AceEditor from "react-ace";
 import {IconButton} from "react-toolbox";
 import Checkbox from "react-toolbox/lib/checkbox";
 import Input from "react-toolbox/lib/input";
@@ -17,10 +18,15 @@ import SourceService from "../../services/source";
 import {ValidationResultComponent} from "./ValidationResultComponent";
 import {ValidationTestComponent} from "./ValidationTestComponent";
 
+import "brace/mode/yaml";
+import "brace/theme/monokai";
+
 const inputTheme = require("../../themes/input.scss");
 const checkboxTheme = require("../../themes/checkbox-theme.scss");
 const buttonStyle = require("../../themes/amazon_pane.scss");
 const validationStyle = require("./ValidationParentComponentStyle.scss");
+
+const yaml = require("js-yaml-parser");
 
 export interface ValidationParentComponentProps {
     handleRun: (e: any) => void;
@@ -38,8 +44,12 @@ export interface ValidationParentComponentProps {
     snackbarLabel: string;
     vendorID: string;
     script: string;
+    yamlScript: string;
+    visualScript: string;
     scriptHint: any;
     handleScriptChange: (value: string) => void;
+    handleYamlScriptChange: (value: string) => void;
+    handleVisualScriptChange: (value: string) => void;
     handleHelpChange: (e: any) => void;
     showHelp: boolean;
     validationHelp: JSX.Element;
@@ -53,11 +63,13 @@ export interface ValidationParentComponentProps {
     handleShowSnackbarEnableMonitoring: () => any;
     handleShowSnackbarVerifyEmail: () => any;
     handleShowSnackbarScriptEmpty: () => any;
+    isYamlEditor?: boolean;
 }
 
 interface ValidationParentComponentState {
     enableValidation?: boolean;
     showMessage?: boolean;
+    yamlResult?: string;
 }
 
 const TooltipButton = Tooltip(IconButton);
@@ -86,7 +98,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         }
     }
 
-    async componentDidMount () {
+    async componentDidMount() {
         const userDetails: UserDetails = await auth.currentUserDetails();
         if (userDetails && userDetails.smAPIAccessToken && !userDetails.vendorID) {
             this.props.setLoading(true);
@@ -97,26 +109,31 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
             // for now we default to the first vendorID, later we might add a way for the user to pick vendor id
             const vendorID = vendorsId && vendorsId.length && vendorsId[0].id;
             if (vendorID) {
-                await auth.updateCurrentUser({ vendorID });
+                await auth.updateCurrentUser({vendorID});
             }
             this.props.setLoading(false);
         }
     }
 
-    async updateSourceObject (source: Source) {
+    async updateSourceObject(source: Source) {
         this.props.setLoading(true);
-        await SourceService.updateSourceObj({...source, validation_script: this.props.script});
+        const sourceToSend = {
+            ...source,
+            validation_script: source.isYamlEditor ? this.props.yamlScript : this.props.visualScript,
+        };
+        if (source.isYamlEditor) {
+            sourceToSend.yamlScript = this.props.yamlScript;
+        } else {
+            sourceToSend.visualScript = this.props.visualScript;
+        }
+        await SourceService.updateSourceObj(sourceToSend);
         const updatedSource = await SourceService.getSourceObj(this.props.source.id);
         await this.props.setSource(updatedSource);
         await this.props.getSources();
-        this.setState((prevState) => ({
-            showMessage: false,
-            enableValidation: !prevState.enableValidation,
-        }));
         this.props.setLoading(false);
     }
 
-    async handleSaveScript () {
+    async handleSaveScript() {
         try {
             const sourceToUpdate = {...this.props.source, validation_script: this.props.script};
             // update source with script on firebase
@@ -127,13 +144,13 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         }
     }
 
-    async handleEnableValidation () {
+    async handleEnableValidation() {
         // adding this to allow user to disable monitoring even if he doesn't have vendor or token
         // this.state.enableValidation means is already active so handleEnableValidation will disable it
         const emptyOrIncompleteScript = !this.props.script || this.props.script.indexOf("\"\": \"\"") >= 0 || this.props.script.indexOf(": \"\"") >= 0 || this.props.script.indexOf("\"\":") >= 0;
         if (this.state.enableValidation) {
             const validation_enabled = !this.state.enableValidation;
-            const sourceToUpdate = {...this.props.source, validation_enabled, validation_script: this.props.script};
+            const sourceToUpdate = {...this.props.source, validation_enabled};
             await this.updateSourceObject(sourceToUpdate);
             return;
         }
@@ -148,7 +165,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         }
         if (this.props.token && this.props.vendorID) {
             const validation_enabled = !this.state.enableValidation;
-            const sourceToUpdate = {...this.props.source, validation_enabled, validation_script: this.props.script};
+            const sourceToUpdate = {...this.props.source, validation_enabled};
             await this.updateSourceObject(sourceToUpdate);
         } else {
             this.props.handleShowSnackbarEnableMonitoring();
@@ -169,12 +186,42 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         }
     }
 
+    handleCheckSyntax = async (event: any) => {
+        event.preventDefault();
+        const elements = document.getElementsByClassName("ace_gutter-cell");
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].classList.remove("ace_error");
+        }
+        try {
+            const yamlScript = await yaml.safeLoad(this.props.yamlScript);
+            if (yamlScript) {
+                this.setState(prevState => ({
+                    ...prevState,
+                    yamlResult: "yaml syntax is ok",
+                }));
+            }
+        } catch (error) {
+            if (error && error.name === "YAMLException" && error.reason.indexOf("duplicated mapping key") < 0 && error.mark && error.mark.line) {
+                this.setState(prevState => ({
+                    ...prevState,
+                    yamlResult: error.message,
+                }));
+                for (let i = 0; i < elements.length; i++) {
+                    if (elements[i].innerHTML.indexOf(error.mark.line) > -1) {
+                        elements[i].classList.add("ace_error");
+                    }
+                }
+            }
+        }
+    }
+
     render() {
-        const scriptIsNotSaved = this.props && this.props.source && (this.props.script !== this.props.source.validation_script);
+        const editorScript = this.props.source && this.props.source.isYamlEditor ? this.props.yamlScript : this.props.visualScript;
+        const scriptIsNotSaved = this.props.source && (editorScript !== this.props.source.validation_script);
         const validationEnabledStyle = this.state.enableValidation ? buttonStyle.enabled : "";
-        const emptyOrIncompleteScript = !this.props.script || this.props.script.indexOf("\"\": \"\"") >= 0 || this.props.script.indexOf(": \"\"") >= 0 || this.props.script.indexOf("\"\":") >= 0;
+        const emptyOrIncompleteScript = this.props.source && !this.props.source.isYamlEditor && (!this.props.script || this.props.script.indexOf("\"\": \"\"") >= 0 || this.props.script.indexOf(": \"\"") >= 0 || this.props.script.indexOf("\"\":") >= 0);
         return (
-            <form onSubmit={this.props.handleRun}>
+            <form onSubmit={this.props.handleRun} style={{position: "relative"}}>
                 <Cell col={12} tablet={12}>
                     <Grid style={{paddingRight: 0}}>
                         <Cell col={7} tablet={8} phone={6}>
@@ -187,14 +234,16 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                                 )
                             }
                         </Cell>
-                        <Cell style={{position: "relative", marginRight: 0, marginLeft: 16}} col={5} hideTablet={true} hidePhone={true}>
-                            <TooltipButton className={buttonStyle.info_button} icon={"info"} tooltip={"Enable Monitoring and get notified instantly when there is a change in your validation results overtime."} />
-                            <div className={`${buttonStyle.enable_monitoring} ${validationEnabledStyle}`} >
+                        <Cell style={{position: "relative", marginRight: 0, marginLeft: 16}} col={5}
+                              hideTablet={true} hidePhone={true}>
+                            <TooltipButton className={buttonStyle.info_button} icon={"info"}
+                                           tooltip={"Enable Monitoring and get notified instantly when there is a change in your validation results overtime."}/>
+                            <div className={`${buttonStyle.enable_monitoring} ${validationEnabledStyle}`}>
                                 <div>
                                     <span>{this.state.enableValidation ? "DISABLE" : "ENABLE"}</span>
                                     <span>MONITORING</span>
                                 </div>
-                                <IconButton icon={"power_settings_new"} onClick={this.handleEnableValidation} />
+                                <IconButton icon={"power_settings_new"} onClick={this.handleEnableValidation}/>
                             </div>
                             <div className={validationStyle.token_container}>
                                 <span>Validation Token:</span>
@@ -202,9 +251,12 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                                     (this.props && this.props.token &&
                                         (
                                             <div>
-                                                <a className={validationStyle.refresh_token} href="#" onClick={this.props.handleGetTokenClick}>Refresh</a>
-                                                <a className={validationStyle.copy_token} href="#" onClick={this.handleCopyToClipBoard} title={"copy"}>
-                                                    <svg fill="#75bfca" height="24" viewBox="0 0 24 24" width="24"
+                                                <a className={validationStyle.refresh_token} href="#"
+                                                   onClick={this.props.handleGetTokenClick}>Refresh</a>
+                                                <a className={validationStyle.copy_token} href="#"
+                                                   onClick={this.handleCopyToClipBoard} title={"copy"}>
+                                                    <svg fill="#75bfca" height="24" viewBox="0 0 24 24"
+                                                         width="24"
                                                          xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M0 0h24v24H0z" fill="none"/>
                                                         <path
@@ -218,7 +270,8 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                                             </div>
                                         )
                                     ) ||
-                                    <a className={`${validationStyle.get_token}`} href="#" onClick={this.props.handleGetTokenClick}>Get validation token</a>
+                                    <a className={`${validationStyle.get_token}`} href="#"
+                                       onClick={this.props.handleGetTokenClick}>Get validation token</a>
                                 }
                             </div>
                             <Snackbar className="sm-snackbar" action="Dismiss" type="cancel"
@@ -229,24 +282,53 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                     </Grid>
                 </Cell>
                 <Cell className={validationStyle.main_container} col={12}>
-                    <ValidationTestComponent script={this.props.script || ""} handleScriptChange={this.props.handleScriptChange} />
-                    <ValidationResultComponent unparsedHtml={this.props.validationResults} />
+                    {
+                        !this.props.isYamlEditor &&
+                        <ValidationTestComponent script={this.props.visualScript || ""}
+                                                 handleScriptChange={this.props.handleVisualScriptChange}/>
+                    }
+                    {
+                        !this.props.isYamlEditor &&
+                        <ValidationResultComponent unparsedHtml={this.props.validationResults}/>
+                    }
+                    {
+                        this.props.isYamlEditor &&
+                        <div className={validationStyle.yaml_editor_container}>
+                            <span>{this.state && this.state.yamlResult}</span><button>run</button><button onClick={this.handleCheckSyntax}>check syntax</button>
+                            <AceEditor
+                                style={{width: "100%", height: "400px"}}
+                                mode="yaml"
+                                theme="monokai"
+                                name="yamlEditor"
+                                onChange={this.props.handleYamlScriptChange}
+                                fontSize={14}
+                                showPrintMargin={false}
+                                showGutter={true}
+                                highlightActiveLine={true}
+                                value={this.props.yamlScript}/>
+                        </div>
+                    }
                 </Cell>
                 <Cell col={12}>
                     {this.props.showHelp ? this.props.validationHelp : undefined}
                 </Cell>
                 <Cell className={`${validationStyle.button_container} ${validationStyle.left}`} col={2}>
-                    <Button type="button" onClick={this.handleSaveScript} className={buttonStyle.validation_button} primary={true} raised={true} disabled={!scriptIsNotSaved}>
+                    <Button type="button" onClick={this.handleSaveScript} className={buttonStyle.validation_button}
+                            primary={true} raised={true} disabled={!scriptIsNotSaved}>
                         <span>Save script</span>
                     </Button>
                 </Cell>
                 <Cell className={`${validationStyle.button_container} ${validationStyle.right}`} offset={8} col={2}>
-                    <Button className={buttonStyle.validation_button} primary={true} raised={true} disabled={this.props.loadingValidationResults || !this.props.token || emptyOrIncompleteScript}>
-                        {this.props.loadingValidationResults
-                            ?
-                            <ProgressBar className="circularProgressBar" type="circular" mode="indeterminate"/>
-                            : <span>Run Skill ></span>}
-                    </Button>
+                    {
+                        this.props.source && !this.props.source.isYamlEditor &&
+                        <Button className={buttonStyle.validation_button} primary={true} raised={true}
+                                disabled={this.props.loadingValidationResults || !this.props.token || emptyOrIncompleteScript}>
+                            {this.props.loadingValidationResults
+                                ?
+                                <ProgressBar className="circularProgressBar" type="circular" mode="indeterminate"/>
+                                : <span>Run Skill ></span>}
+                        </Button>
+                    }
                 </Cell>
                 <Cell col={12}>
                     {

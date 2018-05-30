@@ -1,0 +1,119 @@
+@import "../../themes/dashboard";
+
+.container {
+    width: 100%;
+    padding-top: 16rem;
+
+    .sequence_container {
+        position: relative;
+        width: 90%;
+        left: -44px;
+        border: 1px solid #5F6362;
+        border-bottom: none;
+        background-color: #EEF2F5;
+        padding: 0 0 8px 15px;
+        &:last-child {
+            border-bottom: 1px solid #5F6362;
+        }
+        .sequence_title {
+            display: inline-block;
+            height: 30px;
+            line-height: 30px;
+            font-size: 1.2rem;
+            .loading_status {
+                position: absolute;
+                right: 5px;
+                top: 5px;
+                &.clock {
+                    width: 30px;
+                }
+                &.spinner {
+                    width: 40px;
+                    right: 0;
+                    top: 0px;
+                }
+            }
+        }
+    }
+
+    .title {
+        width: 100%;
+        display: inline-block;
+        text-align: center;
+        span {
+            width: 100%;
+            display: inline-block;
+            font-size: 1.8rem;
+            color: #787878;
+            font-weight: bold;
+            letter-spacing: -1px;
+            &.secondary_text {
+                font-size: 1.2rem;
+                font-weight: normal;
+                white-space: nowrap;
+                word-break: break-all;
+            }
+        }
+    }
+
+    .validation_result_row {
+        > div {
+            position: relative;
+            width: 90%;
+            display: inline-block;
+            text-align: left;
+            margin-bottom: 5px;
+            .row_icon_status {
+                position: absolute;
+                left: 120px;
+                &.success {
+                    color: $color-success;
+                }
+                &.error {
+                    color: $color-error;
+                }
+            }
+            span {
+                font-size: 1.1rem;
+                display: block;
+                color: #5F6362;
+                font-weight: 600;
+                &.yaml_result {
+                    font-weight: normal;
+                }
+            }
+        }
+    }
+
+    .align_center {
+        text-align: center;
+    }
+
+    .result_text {
+        font-size: 1.4rem;
+        background-color: #EBEBEB;
+        padding: 5px 0 6px 15px;
+        height: 2.5rem;
+        line-height: 2.5rem;
+        letter-spacing: -1px;
+        margin-left: -10px;
+        &.success {
+            color: $color-success;
+        }
+        &.error {
+            color: $color-error;
+        }
+    }
+}
+
+@media (max-width: 1366px) {
+    .container {
+        padding-top: 18rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .container {
+        padding-top: 22rem;
+    }
+}
