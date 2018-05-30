@@ -342,13 +342,15 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                 <Cell className={`${validationStyle.button_container} ${validationStyle.right}`} offset={8} col={2}>
                     {
                         this.props.source && !this.props.source.isYamlEditor &&
-                        <Button className={buttonStyle.validation_button} primary={true} raised={true}
-                                disabled={this.props.loadingValidationResults || !this.props.token || emptyOrIncompleteScript}>
-                            {this.props.loadingValidationResults
-                                ?
-                                <ProgressBar className="circularProgressBar" type="circular" mode="indeterminate"/>
-                                : <span>Run Skill ></span>}
-                        </Button>
+                        (
+                            <Button className={buttonStyle.validation_button} primary={true} raised={true}
+                                    disabled={this.props.loadingValidationResults || !this.props.token || emptyOrIncompleteScript}>
+                                {this.props.loadingValidationResults
+                                    ?
+                                    <ProgressBar className="circularProgressBar" type="circular" mode="indeterminate"/>
+                                    : <span>Run Skill ></span>}
+                            </Button>
+                        )
                     }
                 </Cell>
                 <Cell col={12}>
