@@ -249,9 +249,9 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
             validation_script: source.isYamlEditor ? this.state.yamlScript : this.state.visualScript,
         };
         if (source.isYamlEditor) {
-            sourceToSend.yamlScript = this.state.yamlScript
+            sourceToSend.yamlScript = this.state.yamlScript;
         } else {
-            sourceToSend.visualScript = this.state.visualScript;;
+            sourceToSend.visualScript = this.state.visualScript;
         }
         await SourceService.updateSourceObj(sourceToSend);
         const updatedSource = await SourceService.getSourceObj(this.props.source.id);

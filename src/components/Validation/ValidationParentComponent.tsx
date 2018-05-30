@@ -1,5 +1,4 @@
 import * as React from "react";
-import AceEditor from "react-ace";
 import {IconButton} from "react-toolbox";
 import Checkbox from "react-toolbox/lib/checkbox";
 import Input from "react-toolbox/lib/input";
@@ -18,15 +17,22 @@ import SourceService from "../../services/source";
 import {ValidationResultComponent} from "./ValidationResultComponent";
 import {ValidationTestComponent} from "./ValidationTestComponent";
 
-import "brace/mode/yaml";
-import "brace/theme/monokai";
-
 const inputTheme = require("../../themes/input.scss");
 const checkboxTheme = require("../../themes/checkbox-theme.scss");
 const buttonStyle = require("../../themes/amazon_pane.scss");
 const validationStyle = require("./ValidationParentComponentStyle.scss");
 
 const yaml = require("js-yaml-parser");
+const AceEditor = (props: any) => {
+    if (typeof window !== "undefined") {
+        const Ace = require("react-ace").default;
+        require("brace/mode/yaml");
+        require("brace/theme/monokai");
+
+        return <Ace {...props}/>;
+    }
+    return undefined;
+};
 
 export interface ValidationParentComponentProps {
     handleRun: (e: any) => void;
@@ -215,6 +221,14 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         }
     }
 
+    handleYamlRun = async (event: any) => {
+        event.preventDefault();
+        await this.handleCheckSyntax(event);
+        if (this.state.yamlResult === "yaml syntax is ok") {
+            this.props.handleRun({preventDefault: () => {}});
+        }
+    }
+
     render() {
         const editorScript = this.props.source && this.props.source.isYamlEditor ? this.props.yamlScript : this.props.visualScript;
         const scriptIsNotSaved = this.props.source && (editorScript !== this.props.source.validation_script);
@@ -294,7 +308,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                     {
                         this.props.isYamlEditor &&
                         <div className={validationStyle.yaml_editor_container}>
-                            <span>{this.state && this.state.yamlResult}</span><button>run</button><button onClick={this.handleCheckSyntax}>check syntax</button>
+                            <span>{this.state && this.state.yamlResult}</span><button onClick={this.handleYamlRun}>run</button><button onClick={this.handleCheckSyntax}>check syntax</button>
                             <AceEditor
                                 style={{width: "100%", height: "400px"}}
                                 mode="yaml"
