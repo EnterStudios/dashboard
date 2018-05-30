@@ -190,7 +190,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         } catch (err) {
             console.error("Oops, unable to copy", err);
         }
-    };
+    }
 
     handleCheckSyntax = async (event: any) => {
         event.preventDefault();
@@ -219,7 +219,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                 }
             }
         }
-    };
+    }
 
     handleYamlRun = async (event: any) => {
         event.preventDefault();
@@ -230,7 +230,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                 }
             });
         }
-    };
+    }
 
     render() {
         const editorScript = this.props.source && this.props.source.isYamlEditor ? this.props.yamlScript : this.props.visualScript;
@@ -335,8 +335,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                     {this.props.showHelp ? this.props.validationHelp : undefined}
                 </Cell>
                 <Cell className={`${validationStyle.button_container} ${validationStyle.left}`} col={2}>
-                    <Button type="button" onClick={this.handleSaveScript} className={buttonStyle.validation_button}
-                            primary={true} raised={true} disabled={!scriptIsNotSaved}>
+                    <Button type="button" onClick={this.handleSaveScript} className={buttonStyle.validation_button} primary={true} raised={true} disabled={!scriptIsNotSaved}>
                         <span>Save script</span>
                     </Button>
                 </Cell>

@@ -94,7 +94,8 @@ export class ValidationResultYamlComponent extends React.Component<ValidationRes
                                 </span>
                                 {
                                     sequence.resultRows.map((row, index) =>
-                                        <div className={`${validationStyle.validation_result_row}`} key={`parent_row_div${index}`}>
+                                        (
+                                            <div className={`${validationStyle.validation_result_row}`} key={`parent_row_div${index}`}>
                                             <div>
                                                 {row.status && <span className={`${validationStyle.row_icon_status} ${validationStyle[row.status]}`}>{row.icon}</span>}
                                                 <span>Input</span>
@@ -109,6 +110,7 @@ export class ValidationResultYamlComponent extends React.Component<ValidationRes
                                                 <span className={validationStyle.yaml_result}>{row.actual}</span>
                                             </div>
                                         </div>
+                                        )
                                     )
                                 }
                             </div>
