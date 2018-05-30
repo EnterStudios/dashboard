@@ -451,7 +451,6 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
     render() {
         const dropdownableSources = this.props.sources && this.props.sources.length && this.props.sources.map(source => ({source, label: source.name, value: source.id}));
         const isYamlEditor = this.props.source && this.props.source.isYamlEditor;
-        console.log("isYamlEditor", isYamlEditor);
         return (
             <SourcePageTwoPane isYamlEditor={isYamlEditor}>
                 {(

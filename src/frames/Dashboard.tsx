@@ -337,7 +337,6 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
   render() {
     const isValidationPage = this.props.source && this.props.source.id && RegExp(`/skills/${this.props.source.id}/?$`).test(this.props.location && this.props.location.pathname);
-    console.log("isValidationPage", isValidationPage);
     const isSourceListPage = /\/skills\/?$/.test(this.props.location && this.props.location.pathname);
     const isYamlEditor = this.props.source && this.props.source.isYamlEditor;
     return (
