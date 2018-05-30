@@ -190,7 +190,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         } catch (err) {
             console.error("Oops, unable to copy", err);
         }
-    }
+    };
 
     handleCheckSyntax = async (event: any) => {
         event.preventDefault();
@@ -219,15 +219,18 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                 }
             }
         }
-    }
+    };
 
     handleYamlRun = async (event: any) => {
         event.preventDefault();
         await this.handleCheckSyntax(event);
         if (this.state.yamlResult === "yaml syntax is ok") {
-            this.props.handleRun({preventDefault: () => {}});
+            this.props.handleRun({
+                preventDefault: () => {
+                }
+            });
         }
-    }
+    };
 
     render() {
         const editorScript = this.props.source && this.props.source.isYamlEditor ? this.props.yamlScript : this.props.visualScript;
@@ -284,8 +287,10 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                                             </div>
                                         )
                                     ) ||
-                                    <a className={`${validationStyle.get_token}`} href="#"
-                                       onClick={this.props.handleGetTokenClick}>Get validation token</a>
+                                    (
+                                        <a className={`${validationStyle.get_token}`} href="#"
+                                           onClick={this.props.handleGetTokenClick}>Get validation token</a>
+                                    )
                                 }
                             </div>
                             <Snackbar className="sm-snackbar" action="Dismiss" type="cancel"
@@ -298,8 +303,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                 <Cell className={validationStyle.main_container} col={12}>
                     {
                         !this.props.isYamlEditor &&
-                        <ValidationTestComponent script={this.props.visualScript || ""}
-                                                 handleScriptChange={this.props.handleVisualScriptChange}/>
+                        <ValidationTestComponent script={this.props.visualScript || ""} handleScriptChange={this.props.handleVisualScriptChange}/>
                     }
                     {
                         !this.props.isYamlEditor &&
@@ -307,20 +311,24 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                     }
                     {
                         this.props.isYamlEditor &&
-                        <div className={validationStyle.yaml_editor_container}>
-                            <span>{this.state && this.state.yamlResult}</span><button onClick={this.handleYamlRun}>run</button><button onClick={this.handleCheckSyntax}>check syntax</button>
-                            <AceEditor
-                                style={{width: "100%", height: "400px"}}
-                                mode="yaml"
-                                theme="monokai"
-                                name="yamlEditor"
-                                onChange={this.props.handleYamlScriptChange}
-                                fontSize={14}
-                                showPrintMargin={false}
-                                showGutter={true}
-                                highlightActiveLine={true}
-                                value={this.props.yamlScript}/>
-                        </div>
+                        (
+                            <div className={validationStyle.yaml_editor_container}>
+                                <span>{this.state && this.state.yamlResult}</span>
+                                <button onClick={this.handleYamlRun}>run</button>
+                                <button onClick={this.handleCheckSyntax}>check syntax</button>
+                                <AceEditor
+                                    style={{width: "100%", height: "400px"}}
+                                    mode="yaml"
+                                    theme="monokai"
+                                    name="yamlEditor"
+                                    onChange={this.props.handleYamlScriptChange}
+                                    fontSize={14}
+                                    showPrintMargin={false}
+                                    showGutter={true}
+                                    highlightActiveLine={true}
+                                    value={this.props.yamlScript}/>
+                            </div>
+                        )
                     }
                 </Cell>
                 <Cell col={12}>
