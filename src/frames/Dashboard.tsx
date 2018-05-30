@@ -337,10 +337,11 @@ class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
   render() {
     const isValidationPage = this.props.source && this.props.source.id && RegExp(`/skills/${this.props.source.id}/?$`).test(this.props.location && this.props.location.pathname);
+    console.log("isValidationPage", isValidationPage);
     const isSourceListPage = /\/skills\/?$/.test(this.props.location && this.props.location.pathname);
     const isYamlEditor = this.props.source && this.props.source.isYamlEditor;
     return (
-      <Layout header={true} style={isSourceListPage ? {overflowY: "hidden"} : {}}>
+      <Layout header={true}>
         <Popup
           header={"Win an Echo Show"}
           content={<span>Thanks for being a Bespoken user.<br />Take this 5-minute survey to enter to win 1 of 2 devices. Enter before Sept 30.</span>}
