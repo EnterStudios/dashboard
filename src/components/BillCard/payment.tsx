@@ -1,3 +1,4 @@
+import { postStripe } from "../../services/sripe";
 const ReactStripeElements = require("react-stripe-elements");
 
 const {
@@ -50,6 +51,10 @@ class SplitFormC extends React.Component<any & { fontSize: string }, any> {
                 .then((payload: any) => {
                     console.log("[token]", payload);
                     // call to stripe-api
+                    console.log(" then payload = ");
+                    console.log(payload);
+                    if (payload.token)
+                        postStripe(payload.token);
                 });
         } else {
             console.log("Stripe.js hasnt loaded yet.");

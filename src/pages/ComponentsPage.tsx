@@ -1,14 +1,11 @@
 ﻿import * as React from "react";
 import BillCard from "../components/BillCard/BillCard";
-import { CardFormC } from "../components/BillCard/CardForm";
 import { PaymentForm } from "../components/BillCard/payment";
 import BarsChart from "../components/Graphs/Bar/BarsChart";
 import RadialBarChart from "../components/Graphs/Radial/ValidationRadialChart";
 const ReactStripeElements = require("react-stripe-elements");
 
 const {
-    StripeProvider,
-    Elements,
 } = ReactStripeElements;
 
 
@@ -148,15 +145,7 @@ export default class ComponentsPage extends React.Component<any, any> {
 
                     <div style={{ height: 250 }}><BarsChart data={data} bars={[{ dataKey: "uv", title: "Daily Events", average: 879 }]} /></div>
                 </div>
-                <div style={{ maxWidth: 300, height: 100, padding: 30 }}>
-                    <b>Payment form 1</b>
-                    <StripeProvider apiKey="pk_test_pjtrb20eQPAtLomXsm4sopuW">
 
-                        <Elements>
-                            <CardFormC />
-                        </Elements>
-                    </StripeProvider>
-                </div>
                 <div style={{ padding: 30 }}>
                     <PaymentForm />
                 </div>
