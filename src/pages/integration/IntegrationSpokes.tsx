@@ -264,7 +264,7 @@ export class IntegrationSpokes extends CancelableComponent<IntegrationSpokesProp
             .then(async () => {
                 // here we call the getSources that will update our store state updating any change made here
                 await this.props.getSources && this.props.getSources();
-                await this.props.setSource({...this.props.source, ...source})
+                await this.props.setSource({...this.props.source, ...source});
                 return {style: IntegrationSpokes.STANDARD_MESSAGE_STYLE, message: "Settings have been saved."};
             }).catch(function (err: Error) {
                 console.error(err);
