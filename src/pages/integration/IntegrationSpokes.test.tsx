@@ -34,7 +34,7 @@ describe("IntegrationSpokes", function () {
             // All of these tests were written *before* the prefetch was added so we're going to skip it and assume the spokes are fresh.
             prefetch = sinon.stub(SourceService, "getSourceObj").returns(Promise.reject(new Error("Error per requirements of the test.")));
 
-            wrapper = shallow(<IntegrationSpokes user={user} source={source} onSpokesSaved={onSaved} getSources={undefined} />);
+            wrapper = shallow(<IntegrationSpokes user={user} source={source} onSpokesSaved={onSaved} getSources={undefined} setSource={undefined} />);
 
             const prefetchPromise = (wrapper.instance() as IntegrationSpokes).cancelables[0] as any;
             return prefetchPromise.catch(function() { /* don't care */}); // Lets this run through without worry.
@@ -237,7 +237,7 @@ describe("IntegrationSpokes", function () {
         });
 
         beforeEach(function () {
-            wrapper = shallow(<IntegrationSpokes user={user} source={source} onSpokesSaved={onSaved} getSources={undefined} />);
+            wrapper = shallow(<IntegrationSpokes user={user} source={source} onSpokesSaved={onSaved} getSources={undefined} setSource={undefined} />);
             const promise = (wrapper.instance() as IntegrationSpokes).cancelables[0] as any;
             return promise.catch(function() { /* don't care */ });
         });
