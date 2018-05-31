@@ -1,7 +1,7 @@
-import * as React from "react";
+﻿import * as React from "react";
+import AceEditor from "react-ace";
 import { PaymentForm } from "../components/BillCard/Payment";
 import PlanCard from "../components/BillCard/PlanCard";
-import AceEditor from "react-ace";
 import BarsChart from "../components/Graphs/Bar/BarsChart";
 import RadialBarChart from "../components/Graphs/Radial/ValidationRadialChart";
 import SourceService from "../services/source";
@@ -24,7 +24,7 @@ export default class ComponentsPage extends React.Component<any, any> {
         };
     }
 
-    async componentDidMount () {
+    async componentDidMount() {
         const banner = await SourceService.getBanner("communication");
         this.setState(prevState => ({
             ...prevState,
@@ -172,12 +172,12 @@ export default class ComponentsPage extends React.Component<any, any> {
         return (
             <div>
                 <h1 style={{ ...centerStyle, ...{ textAlign: "center" } }}>Components Page</h1>
-                <div style={{minHeight: 830}}>
-                    <h2 style={{paddingLeft: 20}}>Login right panel</h2>
+                <div style={{ minHeight: 830 }}>
+                    <h2 style={{ paddingLeft: 20 }}>Login right panel</h2>
                     <div className={"global_login_container"}>
-                        <div style={{paddingTop: 0, textAlign: "center"}}>
+                        <div style={{ paddingTop: 0, textAlign: "center" }}>
                             <AceEditor
-                                style={{width: "90%", height: "90%", margin: "auto"}}
+                                style={{ width: "90%", height: "90%", margin: "auto" }}
                                 mode="html"
                                 theme="monokai"
                                 name="yamlEditor"
@@ -189,7 +189,7 @@ export default class ComponentsPage extends React.Component<any, any> {
                                 value={this.state.bannerHtml}
                                 wrapEnabled={true} />
                         </div>
-                        <div className={"banner_test"} dangerouslySetInnerHTML={{__html: this.state.bannerHtml}}  />
+                        <div className={"banner_test"} dangerouslySetInnerHTML={{ __html: this.state.bannerHtml }} />
                     </div>
                 </div>
                 <div>
@@ -202,7 +202,7 @@ export default class ComponentsPage extends React.Component<any, any> {
                     </div>
 
                     <div className="components_container" style={{ height: 250, marginBottom: 50 }}>
-                        <h2 style={{margin: 0}}>Bars chart</h2>
+                        <h2 style={{ margin: 0 }}>Bars chart</h2>
                         <BarsChart data={data} bars={[{ dataKey: "uv", title: "Daily Events", average: 879 }]} />
                     </div>
                 </div>
