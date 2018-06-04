@@ -81,6 +81,9 @@
         padding: 5px 0;
         font-family: 'Khand', sans-serif;;
         float: right;
+        &[disabled] {
+            background-color: #9D9D9D;
+        }
     }
     > span {
         width: calc(74% - 10px);

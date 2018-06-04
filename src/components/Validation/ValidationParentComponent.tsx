@@ -236,7 +236,8 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         const editorScript = this.props.source && this.props.source.isYamlEditor ? this.props.yamlScript : this.props.visualScript;
         const scriptIsNotSaved = this.props.source && (editorScript !== this.props.source.validation_script);
         const validationEnabledStyle = this.state.enableValidation ? buttonStyle.enabled : "";
-        const emptyOrIncompleteScript = this.props.source && !this.props.source.isYamlEditor && (!this.props.script || this.props.script.indexOf("\"\": \"\"") >= 0 || this.props.script.indexOf(": \"\"") >= 0 || this.props.script.indexOf("\"\":") >= 0);
+        const emptyOrIncompleteScriptVisualEditor = this.props.source && (!this.props.visualScript || this.props.visualScript.indexOf("\"\": \"\"") >= 0 || this.props.visualScript.indexOf(": \"\"") >= 0 || this.props.visualScript.indexOf("\"\":") >= 0);
+        const emptyOrIncompleteScriptYamlEditor = this.props.source && (!this.props.yamlScript || this.props.yamlScript.indexOf("\"\": \"\"") >= 0 || this.props.yamlScript.indexOf(": \"\"") >= 0 || this.props.yamlScript.indexOf("\"\":") >= 0);
         return (
             <form onSubmit={this.props.handleRun} style={{position: "relative"}}>
                 <Cell col={12} tablet={12}>
@@ -314,7 +315,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                         (
                             <div className={validationStyle.yaml_editor_container}>
                                 <span>{this.state && this.state.yamlResult}</span>
-                                <button onClick={this.handleYamlRun}>run</button>
+                                <button disabled={emptyOrIncompleteScriptYamlEditor} onClick={this.handleYamlRun}>run</button>
                                 <button onClick={this.handleCheckSyntax}>check syntax</button>
                                 <AceEditor
                                     style={{width: "100%", height: "400px"}}
@@ -344,7 +345,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                         this.props.source && !this.props.source.isYamlEditor &&
                         (
                             <Button className={buttonStyle.validation_button} primary={true} raised={true}
-                                    disabled={this.props.loadingValidationResults || !this.props.token || emptyOrIncompleteScript}>
+                                    disabled={this.props.loadingValidationResults || !this.props.token || emptyOrIncompleteScriptVisualEditor}>
                                 {this.props.loadingValidationResults
                                     ?
                                     <ProgressBar className="circularProgressBar" type="circular" mode="indeterminate"/>
