@@ -78,45 +78,47 @@ export class ValidationResultYamlComponent extends React.Component<ValidationRes
     render() {
         return (
             <div className={validationStyle.container}>
-                {
-                    this.state.resultSequences && this.state.resultSequences.map((sequence, index) => {
-                        const loadingIconClass = sequence.icon &&
-                        sequence.icon.indexOf("/assets/Schedule.svg") > -1 ?
-                            validationStyle.clock :
-                            sequence.icon && sequence.icon.indexOf("/assets/Spinner.svg") > -1 ?
-                                validationStyle.spinner :
-                                "";
-                        return (
-                            <div className={validationStyle.sequence_container} key={`parent_sequence_div${index}`}>
+                <div className={validationStyle.scrollable}>
+                    {
+                        this.state.resultSequences && this.state.resultSequences.map((sequence, index) => {
+                            const loadingIconClass = sequence.icon &&
+                            sequence.icon.indexOf("/assets/Schedule.svg") > -1 ?
+                                validationStyle.clock :
+                                sequence.icon && sequence.icon.indexOf("/assets/Spinner.svg") > -1 ?
+                                    validationStyle.spinner :
+                                    "";
+                            return (
+                                <div className={validationStyle.sequence_container} key={`parent_sequence_div${index}`}>
                                 <span className={validationStyle.sequence_title}>sequence {index + 1}
                                     {sequence.icon && <img className={`${validationStyle.loading_status} ${loadingIconClass}`} src={sequence.icon} alt={"img-status"}/>}
                                     {!sequence.icon && <IconButton className={`${iconButtonTheme[sequence.status]} ${iconButtonTheme.yaml_button}`} primary={true} theme={iconButtonTheme} icon={sequence.status === "success" ? "✔" : "✘"}/>}
                                 </span>
-                                {
-                                    sequence.resultRows.map((row, index) =>
-                                        (
-                                            <div className={`${validationStyle.validation_result_row}`} key={`parent_row_div${index}`}>
-                                            <div>
-                                                {row.status && <span className={`${validationStyle.row_icon_status} ${validationStyle[row.status]}`}>{row.icon}</span>}
-                                                <span>Input</span>
-                                                <span className={validationStyle.yaml_result}>{row.input}</span>
-                                            </div>
-                                            <div>
-                                                <span>Expected Output</span>
-                                                <span className={validationStyle.yaml_result}>{row.expected}</span>
-                                            </div>
-                                            <div>
-                                                <span>Device Output</span>
-                                                <span className={validationStyle.yaml_result}>{row.actual}</span>
-                                            </div>
-                                        </div>
+                                    {
+                                        sequence.resultRows.map((row, index) =>
+                                            (
+                                                <div className={`${validationStyle.validation_result_row}`} key={`parent_row_div${index}`}>
+                                                    <div>
+                                                        {row.status && <span className={`${validationStyle.row_icon_status} ${validationStyle[row.status]}`}>{row.icon}</span>}
+                                                        <span>Input</span>
+                                                        <span className={validationStyle.yaml_result}>{row.input}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span>Expected</span>
+                                                        <span className={validationStyle.yaml_result}>{row.expected}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span>Actual</span>
+                                                        <span className={validationStyle.yaml_result}>{row.actual}</span>
+                                                    </div>
+                                                </div>
+                                            )
                                         )
-                                    )
-                                }
-                            </div>
-                        );
-                    })
-                }
+                                    }
+                                </div>
+                            );
+                        })
+                    }
+                </div>
             </div>
         );
     }

@@ -20,7 +20,7 @@
 }
 
 .input {
-    width: 230px;
+    width: 15rem;
     height: 30px;
     padding: 0 0 0 10px;
     font-weight: 300;
@@ -78,13 +78,6 @@
     padding: 5px 10px;
 }
 
-@media (max-width: 667px) {
-    .container {
-        top: 128px;
-        left: -100px;
-    }
-}
-
 .title_container {
     position: relative;
     padding: 10px 0 0 20px;
@@ -130,6 +123,7 @@
         left: 130px;
         color: #C7C9CA;
         font-size: 1.2rem;
+        white-space: nowrap;
         /*&::after {
             content: '';
             position: relative;
@@ -166,6 +160,24 @@
 
     .inputFocused {
         opacity: 1;
+    }
+}
+
+@media (max-width: 1366px) {
+    .input {
+        width: 13rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .input {
+        width: 10rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .input {
+        width: 7rem;
     }
 }
 

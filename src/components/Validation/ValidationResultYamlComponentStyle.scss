@@ -2,12 +2,11 @@
 
 .container {
     width: 100%;
-    padding-top: 16rem;
+    padding-top: 11.25rem;
 
     .sequence_container {
         position: relative;
-        width: 90%;
-        left: -44px;
+        width: 94%;
         border: 1px solid #5F6362;
         border-bottom: none;
         background-color: #EEF2F5;
@@ -106,14 +105,29 @@
     }
 }
 
+.scrollable {
+    position: relative;
+    height: calc(31vh - 3.928571428571429rem - 8px);
+    width: 90%;
+    left: -44px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 @media (max-width: 1366px) {
     .container {
-        padding-top: 18rem;
+        padding-top: 12.7rem;
     }
 }
 
 @media (max-width: 1024px) {
     .container {
-        padding-top: 22rem;
+        padding-top: 13.7rem;
+    }
+}
+
+@media (max-width: 840px) {
+    .container {
+        padding-top: 12.65rem;
     }
 }

@@ -239,6 +239,7 @@
         > div.right_container {
             margin-top: 1.785714285714286rem;
             background-color: #fff;
+            height: calc(100% - 3.928571428571429rem - 8px);
         }
     }
 }
@@ -382,23 +383,15 @@
 
 @media (max-width: 900px) {
     .left_container {
-        margin: 0;
+        margin: 1.785714285714286rem 0 0 0;
     }
-}
 
-@media (max-width: 839px) {
-    .left_container {
-        .validation_button {
-            margin: 0;
+    .right_cell {
+        &.yaml_editor {
+            > div.right_container {
+                height: calc(100% - 3.928571428571429rem + 8px);
+            }
         }
-    }
-
-    .left_cell {
-        width: 75%;
-    }
-
-    .rigth_cell {
-        width: 25%;
     }
 }
 

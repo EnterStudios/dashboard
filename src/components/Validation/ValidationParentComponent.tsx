@@ -21,6 +21,7 @@ const inputTheme = require("../../themes/input.scss");
 const checkboxTheme = require("../../themes/checkbox-theme.scss");
 const buttonStyle = require("../../themes/amazon_pane.scss");
 const validationStyle = require("./ValidationParentComponentStyle.scss");
+const TabMenuTheme = require("../../themes/tab_menu_theme.scss");
 
 const yaml = require("js-yaml-parser");
 const AceEditor = (props: any) => {
@@ -232,15 +233,41 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
         }
     }
 
+    handleVisualClick = () => {
+        if (this.props.source) {
+            this.updateSourceObject({...this.props.source, isYamlEditor: false, validation_script: this.props.source.visualScript});
+        }
+    }
+
+    handleYamlEditorClick = () => {
+        if (this.props.source) {
+            this.updateSourceObject({...this.props.source, isYamlEditor: true, validation_script: this.props.source.yamlScript});
+        }
+    }
+
     render() {
+        const yamlResultClass = this.state && this.state.yamlResult === "yaml syntax is ok" ? validationStyle.success : validationStyle.error;
+        const yamlTitleClass = this.props.source && this.props.source.isYamlEditor ? validationStyle.yaml_title : "";
         const editorScript = this.props.source && this.props.source.isYamlEditor ? this.props.yamlScript : this.props.visualScript;
         const scriptIsNotSaved = this.props.source && (editorScript !== this.props.source.validation_script);
         const validationEnabledStyle = this.state.enableValidation ? buttonStyle.enabled : "";
         const emptyOrIncompleteScriptVisualEditor = this.props.source && (!this.props.visualScript || this.props.visualScript.indexOf("\"\": \"\"") >= 0 || this.props.visualScript.indexOf(": \"\"") >= 0 || this.props.visualScript.indexOf("\"\":") >= 0);
         const emptyOrIncompleteScriptYamlEditor = this.props.source && (!this.props.yamlScript || this.props.yamlScript.indexOf("\"\": \"\"") >= 0 || this.props.yamlScript.indexOf(": \"\"") >= 0 || this.props.yamlScript.indexOf("\"\":") >= 0);
         return (
-            <form onSubmit={this.props.handleRun} style={{position: "relative"}}>
+            <form className={validationStyle.fix_mdl} onSubmit={this.props.handleRun} style={{position: "relative"}}>
                 <Cell col={12} tablet={12}>
+                    <Grid className={TabMenuTheme.editor_container} noSpacing={true}>
+                        <Cell className={buttonStyle.left_cell} col={9} phone={4} tablet={6}>
+                            <div className={buttonStyle.left_container}>
+                                <div className={TabMenuTheme.editor_selector}>
+                                    <span className={this.props.isYamlEditor ? TabMenuTheme.active : ""}
+                                          onClick={this.handleYamlEditorClick}>YAML Editor</span>
+                                    <span className={this.props.isYamlEditor ? "" : TabMenuTheme.active}
+                                          onClick={this.handleVisualClick}>Visual</span>
+                                </div>
+                            </div>
+                        </Cell>
+                    </Grid>
                     <Grid style={{paddingRight: 0}}>
                         <Cell col={7} tablet={8} phone={6}>
                             {
@@ -252,7 +279,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                                 )
                             }
                         </Cell>
-                        <Cell style={{position: "relative", marginRight: 0, marginLeft: 16}} col={5}
+                        <Cell className={`${validationStyle.right_button_panel} ${yamlTitleClass}`} col={5}
                               hideTablet={true} hidePhone={true}>
                             <TooltipButton className={buttonStyle.info_button} icon={"info"}
                                            tooltip={"Enable Monitoring and get notified instantly when there is a change in your validation results overtime."}/>
@@ -314,11 +341,8 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                         this.props.isYamlEditor &&
                         (
                             <div className={validationStyle.yaml_editor_container}>
-                                <span>{this.state && this.state.yamlResult}</span>
-                                <button disabled={emptyOrIncompleteScriptYamlEditor} onClick={this.handleYamlRun}>run</button>
-                                <button onClick={this.handleCheckSyntax}>check syntax</button>
                                 <AceEditor
-                                    style={{width: "100%", height: "400px"}}
+                                    className={validationStyle.ace_editor}
                                     mode="yaml"
                                     theme="monokai"
                                     name="yamlEditor"
@@ -328,11 +352,14 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                                     showGutter={true}
                                     highlightActiveLine={true}
                                     value={this.props.yamlScript}/>
+                                <span className={yamlResultClass}>{this.state && this.state.yamlResult}</span>
+                                <button disabled={emptyOrIncompleteScriptYamlEditor} onClick={this.handleYamlRun}>run</button>
+                                <button onClick={this.handleCheckSyntax}>check syntax</button>
                             </div>
                         )
                     }
                 </Cell>
-                <Cell col={12}>
+                <Cell col={12} phone={6} tablet={8}>
                     {this.props.showHelp ? this.props.validationHelp : undefined}
                 </Cell>
                 <Cell className={`${validationStyle.button_container} ${validationStyle.left}`} col={2}>

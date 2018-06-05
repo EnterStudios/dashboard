@@ -63,7 +63,7 @@
 .editor_container {
     width: 100%;
     position: absolute;
-    top: 204px;
+    top: -2.214285714285714rem;
     > div {
         padding-top: 0;
         padding-bottom: 0;
@@ -82,7 +82,7 @@
     text-align: right!important;
     span {
         width: auto!important;
-        padding: 10px 30px;
+        padding: 5px 30px;
         border: 1px solid #DFDFDF;
         border-bottom: none;
         display: inline-block!important;
@@ -137,6 +137,22 @@
             position: inherit;
             top: auto;
             left: auto;
+        }
+    }
+}
+
+@media (max-width: 1366px) {
+    .editor_selector {
+        span {
+            padding: 2.6px 25px;
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .editor_selector {
+        span {
+            padding: 1.9px 20px;
         }
     }
 }

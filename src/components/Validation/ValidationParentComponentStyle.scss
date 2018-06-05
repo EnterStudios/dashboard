@@ -1,3 +1,5 @@
+@import "../../themes/dashboard";
+
 .main_container {
     display: flex;
     flex-flow: row wrap;
@@ -69,9 +71,14 @@
 }
 
 .yaml_editor_container {
+    position: relative;
+    top: -20px;
     margin: 0 36px;
     width: 100%;
     button {
+        position: absolute;
+        bottom: -84px;
+        right: 0;
         background-color: #4A4B4D;
         color: #fff;
         font-size: 1.5rem;
@@ -79,15 +86,43 @@
         margin: 0 0 5px 5px;
         width: 13%;
         padding: 5px 0;
-        font-family: 'Khand', sans-serif;;
-        float: right;
+        font-family: 'Khand', sans-serif;
+        + button {
+            width: 15%;
+            right: 10rem;
+        }
         &[disabled] {
             background-color: #9D9D9D;
         }
     }
     > span {
-        width: calc(74% - 10px);
+        position: absolute;
+        bottom: -24px;
+        width: 100%;
         display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        &.success {
+            color: $color-success;
+        }
+        &.error {
+            color: $color-error;
+        }
+    }
+    .ace_editor {
+        width: 100% !important;
+        height: calc(44vh - 3.928571428571429rem - 8px) !important;
+    }
+}
+
+.right_button_panel {
+    position: relative;
+    margin-right: 0;
+    margin-left: 16px;
+    &.yaml_title {
+        right: -40%;
+        z-index: 1;
     }
 }
 
@@ -98,10 +133,52 @@
     }
 }
 
-@media (max-width: 839px) {
+@media (max-width: 1366px) {
+    .yaml_editor_container {
+        .ace_editor {
+            height: calc(31vh - 3.928571428571429rem - 8px) !important;
+        }
+
+    }
+
+}
+
+@media (max-width: 840px) {
     .button_container {
         &.right {
             margin-left: calc(59.666667% + 8px);
+        }
+    }
+
+    .right_button_panel {
+        &.yaml_title {
+            right: -80%;
+        }
+    }
+
+    .yaml_editor_container {
+        button {
+            + button {
+                width: 21%;
+            }
+        }
+    }
+}
+
+@media (width: 840px) {
+    .right_button_panel {
+        &.yaml_title {
+            right: -40%;
+        }
+    }
+}
+
+@media (max-width: 667px) {
+    .yaml_editor_container {
+        button {
+            + button {
+                width: 26%;
+            }
         }
     }
 }
