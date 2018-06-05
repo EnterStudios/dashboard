@@ -89,7 +89,7 @@ export class ValidationResultYamlComponent extends React.Component<ValidationRes
                                     "";
                             return (
                                 <div className={validationStyle.sequence_container} key={`parent_sequence_div${index}`}>
-                                <span className={validationStyle.sequence_title}>sequence {index + 1}
+                                <span className={validationStyle.sequence_title}>Sequence {index + 1}
                                     {sequence.icon && <img className={`${validationStyle.loading_status} ${loadingIconClass}`} src={sequence.icon} alt={"img-status"}/>}
                                     {!sequence.icon && <IconButton className={`${iconButtonTheme[sequence.status]} ${iconButtonTheme.yaml_button}`} primary={true} theme={iconButtonTheme} icon={sequence.status === "success" ? "✔" : "✘"}/>}
                                 </span>
