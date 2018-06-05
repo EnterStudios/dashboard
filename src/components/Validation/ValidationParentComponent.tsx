@@ -24,6 +24,7 @@ const validationStyle = require("./ValidationParentComponentStyle.scss");
 const TabMenuTheme = require("../../themes/tab_menu_theme.scss");
 
 const yaml = require("js-yaml-parser");
+
 const AceEditor = (props: any) => {
     if (typeof window !== "undefined") {
         const Ace = require("react-ace").default;

@@ -4,6 +4,13 @@ import {IconButton} from "react-toolbox";
 const iconButtonTheme = require("../../themes/icon-button-validation.scss");
 const validationStyle = require("./ValidationResultYamlComponentStyle.scss");
 
+enum validation {
+    status = 0,
+    input = 1,
+    expected = 2,
+    actual = 3,
+}
+
 interface ResultSequence {
     status: string;
     icon: string;
@@ -35,8 +42,8 @@ export class ValidationResultYamlComponent extends React.Component<ValidationRes
         };
     }
 
-    componentWillReceiveProps(nextProps: ValidationResultYamlComponentProps) {
-        const parsedHtml = new DOMParser().parseFromString(nextProps.unparsedHtml, "text/html");
+    parseHtmlResponse = (unparsedHtml: string) => {
+        const parsedHtml = new DOMParser().parseFromString(unparsedHtml, "text/html");
         const sequences = parsedHtml.documentElement.getElementsByClassName("sequence");
         const resultSequences: ResultSequence[] = [];
         for (let i = 0; i < sequences.length; i++) {
@@ -46,17 +53,17 @@ export class ValidationResultYamlComponent extends React.Component<ValidationRes
                 for (let j = 1; j < rows.length; j++) {
                     const row = rows[j];
                     // adding some hardcoded selections and strip downs until sourceAPI code is change
-                    const icon: string = row.cells[0].innerHTML.indexOf("/assets/Schedule.svg") > -1 ?
+                    const icon: string = row.cells[validation.status].innerHTML.indexOf("/assets/Schedule.svg") > -1 ?
                         "/assets/Schedule.svg" :
                         row.cells[0].innerHTML.indexOf("/assets/Spinner.svg") > -1 ?
                             "/assets/Spinner.svg" :
                             row.cells[0].innerHTML;
-                    const input: string = row.cells[1].innerHTML;
-                    const expected: string = row.cells[2].innerHTML;
-                    const actual: string = row.cells[3].innerHTML;
-                    const status: string = row.cells[0].innerHTML.indexOf("✔") > -1 ?
+                    const input: string = row.cells[validation.input].innerHTML;
+                    const expected: string = row.cells[validation.expected].innerHTML;
+                    const actual: string = row.cells[validation.actual].innerHTML;
+                    const status: string = row.cells[validation.status].innerHTML.indexOf("✔") > -1 ?
                         "success" :
-                        row.cells[0].innerHTML.indexOf("✘") > -1 ?
+                        row.cells[validation.status].innerHTML.indexOf("✘") > -1 ?
                             "error" :
                             "";
                     resultRows.push({icon, status, input, expected, actual});
@@ -70,6 +77,11 @@ export class ValidationResultYamlComponent extends React.Component<ValidationRes
                 resultSequences.push({resultRows, status, icon});
             }
         }
+        return resultSequences;
+    }
+
+    componentWillReceiveProps(nextProps: ValidationResultYamlComponentProps) {
+        const resultSequences = this.parseHtmlResponse(nextProps.unparsedHtml);
         this.setState(() => ({
             resultSequences,
         }));

@@ -213,19 +213,19 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
 
     handleScriptChange(value: string) {
         this.setState((prevState: ValidationPageState) => {
-            return {...this.state, script: value};
+            return {...prevState, script: value};
         });
     }
 
     handleYamlScriptChange = (value: string) => {
         this.setState((prevState: ValidationPageState) => {
-            return {...this.state, yamlScript: value};
+            return {...prevState, yamlScript: value};
         });
     }
 
     handleVisualScriptChange = (value: string) => {
         this.setState((prevState: ValidationPageState) => {
-            return {...this.state, visualScript: value};
+            return {...prevState, visualScript: value};
         });
     }
 
@@ -448,6 +448,33 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
         this.props.goTo("/skills/" + this.props.source.id + "/integration");
     }
 
+    renderRightPanel = () => {
+        return process.env.NODE_ENV !== "production" ?
+            (
+                this.props.source && this.props.source.isYamlEditor ?
+                    (
+                        this.state && <ValidationResultYamlComponent unparsedHtml={this.state.validationResults} />
+                    ) :
+                    !(this.props.source && this.props.source.hasIntegrated) ?
+                        (
+                            <RightPanel handleGetStarted={this.handleGetStarted}/>
+                        ) :
+                        (
+                            <ValidationPageGlobalStats source={this.props.source}
+                                                       startDate={moment().subtract(7, "days")}
+                                                       endDate={moment()} setLoading={this.props.setLoading}
+                                                       goTo={this.props.goTo}/>
+                        )
+            ) :
+            (
+                !(this.props.source && this.props.source.hasIntegrated) ?
+                    (
+                        <RightPanel handleGetStarted={this.handleGetStarted}/>
+                    ) :
+                    ""
+            );
+    }
+
     render() {
         const dropdownableSources = this.props.sources && this.props.sources.length && this.props.sources.map(source => ({source, label: source.name, value: source.id}));
         const isYamlEditor = this.props.source && this.props.source.isYamlEditor;
@@ -493,30 +520,7 @@ export class ValidationPage extends React.Component<ValidationPageProps, Validat
                     />
                 )}
                 {
-                    process.env.NODE_ENV !== "production" ?
-                        (
-                            this.props.source && this.props.source.isYamlEditor ?
-                                (
-                                    this.state && <ValidationResultYamlComponent unparsedHtml={this.state.validationResults} />
-                                ) :
-                                !(this.props.source && this.props.source.hasIntegrated) ?
-                                    (
-                                        <RightPanel handleGetStarted={this.handleGetStarted}/>
-                                    ) :
-                                    (
-                                        <ValidationPageGlobalStats source={this.props.source}
-                                                                   startDate={moment().subtract(7, "days")}
-                                                                   endDate={moment()} setLoading={this.props.setLoading}
-                                                                   goTo={this.props.goTo}/>
-                                    )
-                        ) :
-                        (
-                            !(this.props.source && this.props.source.hasIntegrated) ?
-                                    (
-                                        <RightPanel handleGetStarted={this.handleGetStarted}/>
-                                    ) :
-                                    ""
-                        )
+                    this.renderRightPanel()
                 }
             </SourcePageTwoPane>
         );
