@@ -196,10 +196,6 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
 
     handleCheckSyntax = async (event: any) => {
         event.preventDefault();
-        const elements = document.getElementsByClassName("ace_gutter-cell");
-        for (let i = 0; i < elements.length; i++) {
-            elements[i].classList.remove("ace_error");
-        }
         try {
             const yamlScript = await yaml.safeLoad(this.props.yamlScript);
             if (yamlScript) {
@@ -214,11 +210,6 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                     ...prevState,
                     yamlResult: error.message,
                 }));
-                for (let i = 0; i < elements.length; i++) {
-                    if (elements[i].innerHTML.indexOf(error.mark.line) > -1) {
-                        elements[i].classList.add("ace_error");
-                    }
-                }
             }
         }
     }
@@ -249,6 +240,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
     render() {
         const yamlResultClass = this.state && this.state.yamlResult === "yaml syntax is ok" ? validationStyle.success : validationStyle.error;
         const yamlTitleClass = this.props.source && this.props.source.isYamlEditor ? validationStyle.yaml_title : "";
+        const yamlButtonClass = this.props.source && this.props.source.isYamlEditor ? buttonStyle.yaml_button : "";
         const editorScript = this.props.source && this.props.source.isYamlEditor ? this.props.yamlScript : this.props.visualScript;
         const scriptIsNotSaved = this.props.source && (editorScript !== this.props.source.validation_script);
         const validationEnabledStyle = this.state.enableValidation ? buttonStyle.enabled : "";
@@ -364,7 +356,7 @@ export class ValidationParentComponent extends React.Component<ValidationParentC
                     {this.props.showHelp ? this.props.validationHelp : undefined}
                 </Cell>
                 <Cell className={`${validationStyle.button_container} ${validationStyle.left}`} col={2}>
-                    <Button type="button" onClick={this.handleSaveScript} className={buttonStyle.validation_button} primary={true} raised={true} disabled={!scriptIsNotSaved}>
+                    <Button type="button" onClick={this.handleSaveScript} className={`${buttonStyle.validation_button} ${yamlButtonClass}`} primary={true} raised={true} disabled={!scriptIsNotSaved}>
                         <span>Save script</span>
                     </Button>
                 </Cell>

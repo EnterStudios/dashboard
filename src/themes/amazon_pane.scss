@@ -144,6 +144,24 @@
         &:disabled {
             background-color: rgba(0,0,0,.12)!important;;
         }
+
+        &.yaml_button {
+            background-color: #4A4B4D!important;
+            color: #fff;
+            font-size: 1.5rem;
+            border: none;
+            display: block;
+            height: 3.1rem;
+            border-radius: 0;
+            padding: 0;
+            top: -10px;
+            span {
+                font-family: 'Khand', sans-serif!important;
+            }
+            &:disabled {
+                background-color: rgba(0,0,0,.12)!important;;
+            }
+        }
     }
 
     .info_button {
