@@ -1,9 +1,7 @@
 ﻿import * as React from "react";
 import { connect } from "react-redux";
 import { AmazonFlowFlag, login, loginWithAmazon, loginWithGithub, resetPassword, setAmazonFlow, signUpWithEmail, SuccessCallback } from "../actions/session";
-import AuthForm from "../components/AuthForm";
-import Card from "../components/Card";
-import { Cell, Grid } from "../components/Grid";
+import AuthForm from "../components/AuthForm/AuthForm";
 import { Loader } from "../components/Loader/Loader";
 import User from "../models/user";
 import { State } from "../reducers";
@@ -145,24 +143,22 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
         const allProps = this.props as any;
         const location = allProps.location;
         return (
-            <Grid style={{ marginTop: "10%" }}>
-                <Cell col={4} tablet={2} hidePhone={true} />
-                <Cell col={4} tablet={4} phone={4} align={"middle"} style={{ display: "flex", justifyContent: "center" }}>
-                    <Card style={{ overflow: "visible" }}>
-                        <AuthForm
-                            error={this.state.error}
-                            onSubmit={this.handleFormSubmit}
-                            onLoginWithGithub={this.handleFormLoginWithGithub}
-                            onLoginWithAmazon={this.handleFormLoginWithAmazon}
-                            onSignUpWithEmail={this.handleFormSignUpWithEmail}
-                            onResetPassword={this.handleResetPassword}
-                            location={location}
-                        />
-                    </Card>
-                </Cell>
-                <Cell col={4} tablet={2} hidePhone={true} />
-                {this.state.loading && <Loader />}
-            </Grid>
+            <div className={"global_login_container"}>
+                <div>
+                    <AuthForm
+                        error={this.state.error}
+                        onSubmit={this.handleFormSubmit}
+                        onLoginWithGithub={this.handleFormLoginWithGithub}
+                        onLoginWithAmazon={this.handleFormLoginWithAmazon}
+                        onSignUpWithEmail={this.handleFormSignUpWithEmail}
+                        onResetPassword={this.handleResetPassword}
+                        location={location} />
+                    {this.state.loading && <Loader />}
+                </div>
+                <div>
+                    <img style={{width: "100%", height: "100%"}} src={"https://s3.amazonaws.com/bespoken-banner-images/asdasd.jpg"} />
+                </div>
+            </div>
         );
     }
 };

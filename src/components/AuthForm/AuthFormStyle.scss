@@ -1,0 +1,81 @@
+.main_form {
+    width: 100%;
+    text-align: center;
+    > div {
+        > img {
+            width: 6.5rem;
+            margin-left: -4.4rem;
+            + img {
+                width: 12rem;
+                margin-left: -1.1rem;
+                vertical-align: bottom;
+            }
+        }
+    }
+}
+
+.main_normal_login_form {
+    margin-top: 2.3rem;
+    > div {
+        width: 24rem;
+        margin: auto;
+        &.login_inputs_container {
+            margin-top: 1.8rem;
+        }
+    }
+    .or_separation {
+        text-align: center;
+        border-top: 1px solid #fff;
+        line-height: 0;
+        margin-top: 1.8rem;
+        margin-bottom: .5rem;
+        &.second {
+            //margin-top: .5rem;
+        }
+        span {
+            font-size: 2rem;
+            color: #fff;
+            background: #99D5DD;
+            padding: 0 10px;
+        }
+    }
+}
+
+.github_login_container {
+    margin-top: 2.5rem;
+}
+
+.amazon_login_button {
+    width: 100%;
+    height: 4rem;
+    background-color: #FE9901;
+    border: none!important;
+    color: #fff!important;
+    font-size: 1.5rem!important;
+    &:hover {
+        background: #FE9901!important;
+        opacity: .8;
+    }
+}
+
+.github_login_button {
+    width: 15rem;
+    height: 3rem;
+    background-color: #D77767;
+    border: none!important;
+    color: #fff!important;
+    font-size: 1.1rem!important;
+    text-indent: 1.5rem;
+    &:hover {
+        background: #D77767!important;
+        opacity: .8;
+    }
+}
+
+.regular_button {
+    height: 4rem;
+    background-color: #5FAFBC;
+    border: none!important;
+    color: #fff!important;
+    font-size: 1.5rem!important;
+}
