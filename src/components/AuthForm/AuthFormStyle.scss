@@ -45,6 +45,17 @@
     margin-top: 2.5rem;
 }
 
+.reset_password_container {
+    margin-left: auto;
+    margin-right: 1rem;
+    button {
+        background: transparent!important;
+        &:hover {
+            opacity: .5;
+        }
+    }
+}
+
 .amazon_login_button {
     width: 100%;
     height: 4rem;

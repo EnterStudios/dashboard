@@ -82,7 +82,7 @@ interface PasswordResetProps {
 export class PasswordReset extends React.Component<PasswordResetProps, any> {
     render() {
         return (
-            <div>
+            <div className={authFormStyle.reset_password_container}>
                 <Button
                     label="Reset Password"
                     onClick={this.props.onPasswordReset}
