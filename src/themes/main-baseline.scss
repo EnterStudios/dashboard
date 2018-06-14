@@ -111,7 +111,7 @@
         > div {
             width: 50%;
             margin: 0;
-            margin-top: 14vh;
+            margin-top: 24vh;
             position: absolute;
             &.no_image {
                 width: 100%;
@@ -208,7 +208,7 @@
     @media (max-height: 850px) {
         .global_login_container {
             > div {
-                margin-top: 7vh;
+                margin-top: 21vh;
                 + div {
                     margin-top: 0;
                 }
@@ -219,7 +219,6 @@
     @media (max-height: 700px) {
         .global_login_container {
             > div {
-                margin-top: 0;
             }
         }
     }
