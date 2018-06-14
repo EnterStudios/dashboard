@@ -165,7 +165,7 @@ describe("AuthForm", function () {
 
             let loginBtn = wrapper.find("Themed").first();
 
-            expect(loginBtn.prop("label")).to.equal("Login");
+            expect(loginBtn.prop("label")).to.equal("Log in");
 
             // hiding register button for now according to specs
             // let signUpBtn = wrapper.find("Themed").at(1);
