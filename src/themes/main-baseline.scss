@@ -109,7 +109,7 @@
     .global_login_container {
         display: flex;
         > div {
-            width: 57.8%;
+            width: 50%;
             margin: 0;
             margin-top: 14vh;
             position: absolute;
@@ -118,9 +118,8 @@
             }
             + div {
                 margin-top: 0;
-                width: 42.2%;
                 height: 100%;
-                left: 57.8%;
+                left: 50%;
                 &.no_image {
                     display: none;
                 }

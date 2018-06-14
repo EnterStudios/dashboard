@@ -107,7 +107,7 @@ export class LoginGithub extends React.Component<LoginGithubProps, any> {
 
     static svgStyle = {
         width: "2.5rem",
-        height: "3.5rem",
+        height: "2.2rem",
         position: "absolute",
         left: 0,
         top: 0,
