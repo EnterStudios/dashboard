@@ -5,6 +5,8 @@ import Input from "react-toolbox/lib/input";
 
 import { Icon, ICON } from "../Icon/index";
 
+const globalWindow: any = typeof (window) !== "undefined" ? window : {};
+
 const theme = require("../../themes/authform.scss");
 const authFormStyle = require("./AuthFormStyle.scss");
 
@@ -51,11 +53,15 @@ export class AuthForm extends React.Component<AuthFormProps, AuthFormState> {
         }
     }
 
+    handleLogoClick = () => {
+        globalWindow && globalWindow.location.assign("http://bespoken.io/");
+    }
+
     render() {
         return (
             <div className={authFormStyle.main_form}>
                 <div>
-                    <img src={"https://bespoken.io/wp-content/uploads/2017/07/Bespoken-Alpaca-RGB-social-1.png"} alt={"bespoken isotype"}/>
+                    <img onClick={this.handleLogoClick} src={"https://bespoken.io/wp-content/uploads/2017/07/Bespoken-Alpaca-RGB-social-1.png"} alt={"bespoken isotype"}/>
                     <img src={"https://bespoken.io/wp-content/uploads/2017/07/Bespoken-White.png"} alt={"bespoken logotype"} />
                 </div>
                 <NormalLoginForm
@@ -121,7 +127,7 @@ export class LoginGithub extends React.Component<LoginGithubProps, any> {
                     <Button
                         className={authFormStyle.github_login_button}
                         theme={theme}
-                        label="Login with Github"
+                        label="Log in with Github"
                         icon={(<Icon style={LoginGithub.svgStyle} color={"#fff"} icon={ICON.GITHUB} />)}
                         onClick={this.props.onLoginWithGithub} />
                 </div>
@@ -163,7 +169,7 @@ export class LoginAmazon extends React.Component<LoginAmazonProps, any> {
                     <Button
                         className={authFormStyle.amazon_login_button}
                         theme={theme}
-                        label="Login with Amazon"
+                        label="Log in with Amazon"
                         icon={(<Icon style={LoginAmazon.svgStyle} color={"#fff"} icon={ICON.AMAZON} />)}
                         onClick={this.props.onLoginWithAmazon} />
                 </div>
@@ -316,7 +322,7 @@ export class NormalLoginForm extends React.Component<NormalLoginFormProps, Norma
                 <Button
                     className={authFormStyle.regular_button}
                     theme={theme}
-                    label="Login"
+                    label="Log in"
                     onClick={this.onLogin} />
             );
 

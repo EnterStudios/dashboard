@@ -6,6 +6,7 @@ import { Loader } from "../components/Loader/Loader";
 import User from "../models/user";
 import { State } from "../reducers";
 import auth from "../services/auth";
+import SourceService from "../services/source";
 
 /**
  * Configuration objects to pass in to the router when pushing or replacing this page on the router.
@@ -29,6 +30,7 @@ interface LoginPageProps {
 interface LoginPageState {
     error?: string;
     loading?: boolean;
+    bannerUrl?: string;
 }
 
 function mapStateToProps(state: State.All) {
@@ -83,6 +85,11 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
                 this.props.setAmazonFlow(true);
             }, 500);
         }
+        const banner = await SourceService.getBanner("communication");
+        this.setState(prevState => ({
+            ...prevState,
+            bannerUrl: banner.url,
+        }));
     }
 
     async handleResetPassword(email: string) {
@@ -139,6 +146,10 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
         }
     }
 
+    handleBannerButtonClick = async () => {
+        window && window.open(this.state.bannerUrl, "_blank");
+    }
+
     render() {
         const allProps = this.props as any;
         const location = allProps.location;
@@ -156,7 +167,8 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
                     {this.state.loading && <Loader />}
                 </div>
                 <div>
-                    <img style={{width: "100%", height: "100%"}} src={"https://s3.amazonaws.com/bespoken-banner-images/asdasd.jpg"} />
+                    <img style={{width: "100%", height: "100%"}} src={"https://s3.amazonaws.com/bespoken-banner-images/communication-banner.jpg"} />
+                    <div className={"banner_button"} onClick={this.handleBannerButtonClick} />
                 </div>
             </div>
         );

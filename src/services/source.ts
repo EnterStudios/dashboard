@@ -310,6 +310,12 @@ export namespace source {
             return Promise.reject(err);
         }
     }
+
+    export async function getBanner(key: string, db: remoteservice.database.Database = remoteservice.defaultService().database()): Promise<any> {
+        let ref = db.ref();
+        const banner = await ref.child("/banners/" + key).once("value");
+        return banner.val();
+    }
 }
 
 export default source;

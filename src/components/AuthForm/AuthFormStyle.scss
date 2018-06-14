@@ -5,6 +5,7 @@
         > img {
             width: 6.5rem;
             margin-left: -4.4rem;
+            cursor: pointer;
             + img {
                 width: 12rem;
                 margin-left: -1.1rem;
@@ -33,7 +34,7 @@
             //margin-top: .5rem;
         }
         span {
-            font-size: 2rem;
+            font-size: 1.6rem;
             color: #fff;
             background: #99D5DD;
             padding: 0 10px;

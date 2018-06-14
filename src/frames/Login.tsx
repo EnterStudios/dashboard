@@ -35,11 +35,6 @@ export class Login extends React.Component<LoginProps, any> {
         window.localStorage.setItem("contest", "");
     }
 
-    handleBannerButtonClick = async () => {
-        // get url from dev bespoken tools
-        window.open("https://www.google.com", "_blank");
-    }
-
     render() {
         return (
             <Layout>
@@ -47,7 +42,6 @@ export class Login extends React.Component<LoginProps, any> {
                     {this.props.children}
                 </Content>
                 <Snackbar text={this.props.snackBarMessage} />
-                <div className={"banner_button"} onClick={this.handleBannerButtonClick} />
             </Layout>
         );
     }
