@@ -31,6 +31,7 @@ interface LoginPageState {
     error?: string;
     loading?: boolean;
     bannerUrl?: string;
+    hasImage?: boolean;
 }
 
 function mapStateToProps(state: State.All) {
@@ -150,12 +151,27 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
         window && window.open(this.state.bannerUrl, "_blank");
     }
 
+    handleImageLoaded = () => {
+        this.setState(prevState => ({
+            ...prevState,
+            hasImage: true,
+        }));
+    }
+
+    handleImageErrored = () => {
+        this.setState(prevState => ({
+            ...prevState,
+            hasImage: false,
+        }));
+    }
+
     render() {
         const allProps = this.props as any;
         const location = allProps.location;
+        const imageClass = this.state && this.state.hasImage ? "" : "no_image";
         return (
             <div className={"global_login_container"}>
-                <div>
+                <div className={imageClass}>
                     <AuthForm
                         error={this.state.error}
                         onSubmit={this.handleFormSubmit}
@@ -166,8 +182,8 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
                         location={location} />
                     {this.state.loading && <Loader />}
                 </div>
-                <div>
-                    <img style={{width: "100%", height: "100%"}} src={"https://s3.amazonaws.com/bespoken-banner-images/communication-banner.jpg"} />
+                <div className={imageClass}>
+                    <img style={{width: "100%", height: "100%"}} onLoad={this.handleImageLoaded} onError={this.handleImageErrored} src={"https://s3.amazonaws.com/bespoken-banner-images/communication-banner.jpg"} />
                     <div className={"banner_button"} onClick={this.handleBannerButtonClick} />
                 </div>
             </div>

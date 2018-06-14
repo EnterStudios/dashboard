@@ -113,11 +113,17 @@
             margin: 0;
             margin-top: 14vh;
             position: absolute;
+            &.no_image {
+                width: 100%;
+            }
             + div {
                 margin-top: 0;
                 width: 42.2%;
                 height: 100%;
                 left: 57.8%;
+                &.no_image {
+                    display: none;
+                }
             }
         }
     }

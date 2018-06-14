@@ -344,10 +344,10 @@ export class NormalLoginForm extends React.Component<NormalLoginFormProps, Norma
                     onPasswordSubmit={this.onFormSubmit}
                     onConfirmPasswordSubmit={this.onFormSubmit}/>
                 <div className={`${theme.actions}`}>
-                    {loginBtn}
-                    {signupBtn}
                     <PasswordReset
                         onPasswordReset={this.onPasswordReset}/>
+                    {loginBtn}
+                    {signupBtn}
                 </div>
                 <div className={`${authFormStyle.or_separation} ${authFormStyle.second}`}><span>Or</span></div>
                 <div>

@@ -47,10 +47,14 @@
 }
 
 .reset_password_container {
+    width: 100%;
+    padding-top: 1.2rem;
     margin-left: auto;
-    margin-right: 1rem;
     button {
+        margin-top: -2rem!important;
+        padding-right: 0!important;
         background: transparent!important;
+        text-align: right;
         &:hover {
             opacity: .5;
         }
