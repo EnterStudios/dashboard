@@ -89,7 +89,7 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
         const banner = await SourceService.getBanner("communication");
         this.setState(prevState => ({
             ...prevState,
-            bannerUrl: banner.url,
+            bannerUrl: banner.htmlstring,
         }));
     }
 
@@ -168,7 +168,7 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
     render() {
         const allProps = this.props as any;
         const location = allProps.location;
-        const imageClass = this.state && this.state.hasImage ? "" : "no_image";
+        const imageClass = this.state && this.state.hasImage ? "" : "";
         return (
             <div className={"global_login_container"}>
                 <div className={imageClass}>
@@ -182,9 +182,9 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
                         location={location} />
                     {this.state.loading && <Loader />}
                 </div>
-                <div className={imageClass}>
-                    <img style={{width: "100%", height: "100%"}} onLoad={this.handleImageLoaded} onError={this.handleImageErrored} src={"https://s3.amazonaws.com/bespoken-banner-images/communication-banner.jpg"} />
-                    <div className={"banner_button"} onClick={this.handleBannerButtonClick} />
+                <div className={imageClass} dangerouslySetInnerHTML={{__html: this.state.bannerUrl}}>
+                    {/*<img style={{width: "100%", height: "100%"}} onLoad={this.handleImageLoaded} onError={this.handleImageErrored} src={"https://s3.amazonaws.com/bespoken-banner-images/communication-banner.jpg"} />*/}
+                    {/*<div className={"banner_button"} onClick={this.handleBannerButtonClick} />*/}
                 </div>
             </div>
         );
