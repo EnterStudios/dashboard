@@ -31,7 +31,7 @@ interface LoginPageState {
     error?: string;
     loading?: boolean;
     bannerUrl?: string;
-    hasImage?: boolean;
+    bannerHtml?: string;
 }
 
 function mapStateToProps(state: State.All) {
@@ -73,7 +73,9 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handleResetPassword = this.handleResetPassword.bind(this);
 
-        this.state = {};
+        this.state = {
+            bannerHtml: "",
+        };
     }
 
     async componentDidMount () {
@@ -89,8 +91,57 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
         const banner = await SourceService.getBanner("communication");
         this.setState(prevState => ({
             ...prevState,
-            bannerUrl: banner.htmlstring,
+            bannerHtml: banner.htmlstring,
         }));
+        if (banner.htmlstring) {
+            this.renderCanvas();
+        }
+    }
+
+    renderCanvas = () => {
+        const c: any = document.getElementById("banner-canvas");
+        // only start drawing if there is a canvas to draw
+        if (c) {
+            const ctx = c.getContext("2d");
+            // Create gradient
+            const grd = ctx.createLinearGradient(0, 0, 200, 0);
+            grd.addColorStop(0, "#99d5dd");
+            grd.addColorStop(1, "#80C3CC");
+
+            // Create top curve
+            ctx.beginPath();
+            ctx.moveTo(0, 180);
+            ctx.quadraticCurveTo(600, 400, 810, 300);
+            ctx.closePath();
+            ctx.fillStyle = grd;
+            ctx.fill();
+
+            // Create top quadratic fill
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(810, 0);
+            ctx.lineTo(810, 301);
+            ctx.lineTo(0, 181);
+            ctx.closePath();
+            ctx.fill();
+
+            // Create bottom curve
+            ctx.beginPath();
+            ctx.moveTo(0, 1060);
+            ctx.quadraticCurveTo(1000, 1000, 810, 1080);
+            ctx.closePath();
+            ctx.fillStyle = grd;
+            ctx.fill();
+
+            // Create bottom quadratic fill
+            ctx.beginPath();
+            ctx.moveTo(0, 1080);
+            ctx.lineTo(810, 1080);
+            ctx.lineTo(810, 1080);
+            ctx.lineTo(0, 1059);
+            ctx.closePath();
+            ctx.fill();
+        }
     }
 
     async handleResetPassword(email: string) {
@@ -168,7 +219,7 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
     render() {
         const allProps = this.props as any;
         const location = allProps.location;
-        const imageClass = this.state && this.state.hasImage ? "" : "";
+        const imageClass = this.state && this.state.bannerHtml ? "" : "no_image";
         return (
             <div className={"global_login_container"}>
                 <div className={imageClass}>
@@ -182,10 +233,7 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
                         location={location} />
                     {this.state.loading && <Loader />}
                 </div>
-                <div className={imageClass} dangerouslySetInnerHTML={{__html: this.state.bannerUrl}}>
-                    {/*<img style={{width: "100%", height: "100%"}} onLoad={this.handleImageLoaded} onError={this.handleImageErrored} src={"https://s3.amazonaws.com/bespoken-banner-images/communication-banner.jpg"} />*/}
-                    {/*<div className={"banner_button"} onClick={this.handleBannerButtonClick} />*/}
-                </div>
+                <div className={imageClass} dangerouslySetInnerHTML={{__html: this.state.bannerHtml}} />
             </div>
         );
     }
