@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import Content from "../components/Content";
 import Layout from "../components/Layout";
 import Snackbar from "../components/Snackbar";
-import { CLASSES } from "../constants";
 import { State } from "../reducers";
 import "../themes/main-baseline";
 
@@ -27,7 +26,7 @@ function mapDispatchToProps(dispatch: Redux.Dispatch<any>) {
 export class Login extends React.Component<LoginProps, any> {
 
     classes() {
-        return classNames(this.props.classNames, CLASSES.COLOR.CYAN_BESPOKEN, "main_layout");
+        return classNames(this.props.classNames, "main_layout");
     }
 
     componentDidMount () {

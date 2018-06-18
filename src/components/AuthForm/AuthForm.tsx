@@ -149,8 +149,7 @@ export class LoginAmazon extends React.Component<LoginAmazonProps, any> {
         position: "absolute",
         left: 0,
         top: 0,
-        border: ".5rem solid #FFAC50",
-        padding: ".5rem",
+        padding: "1rem",
     };
 
     componentDidMount () {
@@ -331,7 +330,7 @@ export class NormalLoginForm extends React.Component<NormalLoginFormProps, Norma
                 <div>
                     <LoginAmazon onLoginWithAmazon={this.props.onLoginWithAmazon} location={this.props.location}/>
                 </div>
-                <div className={authFormStyle.or_separation}><span>Or</span></div>
+                <div className={authFormStyle.or_separation}><span>or</span></div>
                 <LoginForms
                     email={this.state.email}
                     password={this.state.password}
@@ -349,7 +348,7 @@ export class NormalLoginForm extends React.Component<NormalLoginFormProps, Norma
                     {loginBtn}
                     {signupBtn}
                 </div>
-                <div className={`${authFormStyle.or_separation} ${authFormStyle.second}`}><span>Or</span></div>
+                <div className={`${authFormStyle.or_separation} ${authFormStyle.second}`}><span>or</span></div>
                 <div>
                     <LoginGithub onLoginWithGithub={this.props.onLoginWithGithub} location={this.props.location}/>
                 </div>

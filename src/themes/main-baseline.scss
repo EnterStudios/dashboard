@@ -109,9 +109,11 @@
     .global_login_container {
         display: flex;
         > div {
+            min-height: calc(600px - 24vh);
+            height: calc(100% - 24vh);
             width: 50%;
             margin: 0;
-            margin-top: 24vh;
+            padding-top: 24vh;
             position: absolute;
             transition: 1.5s all;
             &.no_image {
@@ -119,7 +121,8 @@
                 transition: 1.5s all;
             }
             + div {
-                margin-top: 0;
+                min-height: 600px;
+                padding-top: 0;
                 height: 100%;
                 left: 50%;
                 &.no_image {
@@ -210,9 +213,12 @@
     @media (max-height: 850px) {
         .global_login_container {
             > div {
-                margin-top: 21vh;
+                min-height: calc(600px - 21vh);
+                height: calc(100% - 21vh);
+                padding-top: 21vh;
                 + div {
-                    margin-top: 0;
+                    min-height: 600px;
+                    padding-top: 0;
                 }
             }
         }

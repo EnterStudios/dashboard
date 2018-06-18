@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { AmazonFlowFlag, login, loginWithAmazon, loginWithGithub, resetPassword, setAmazonFlow, signUpWithEmail, SuccessCallback } from "../actions/session";
 import AuthForm from "../components/AuthForm/AuthForm";
 import { Loader } from "../components/Loader/Loader";
+import { CLASSES } from "../constants";
 import User from "../models/user";
 import { State } from "../reducers";
 import auth from "../services/auth";
@@ -93,55 +94,18 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
             ...prevState,
             bannerHtml: banner.htmlstring,
         }));
-        if (banner.htmlstring) {
-            this.renderCanvas();
+        if (banner.script) {
+            this.runScript(banner.script);
         }
     }
 
-    renderCanvas = () => {
-        const c: any = document.getElementById("banner-canvas");
-        // only start drawing if there is a canvas to draw
-        if (c) {
-            const ctx = c.getContext("2d");
-            // Create gradient
-            const grd = ctx.createLinearGradient(0, 0, 200, 0);
-            grd.addColorStop(0, "#99d5dd");
-            grd.addColorStop(1, "#80C3CC");
-
-            // Create top curve
-            ctx.beginPath();
-            ctx.moveTo(0, 180);
-            ctx.quadraticCurveTo(600, 400, 810, 300);
-            ctx.closePath();
-            ctx.fillStyle = grd;
-            ctx.fill();
-
-            // Create top quadratic fill
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
-            ctx.lineTo(810, 0);
-            ctx.lineTo(810, 301);
-            ctx.lineTo(0, 181);
-            ctx.closePath();
-            ctx.fill();
-
-            // Create bottom curve
-            ctx.beginPath();
-            ctx.moveTo(0, 1060);
-            ctx.quadraticCurveTo(1000, 1000, 810, 1080);
-            ctx.closePath();
-            ctx.fillStyle = grd;
-            ctx.fill();
-
-            // Create bottom quadratic fill
-            ctx.beginPath();
-            ctx.moveTo(0, 1080);
-            ctx.lineTo(810, 1080);
-            ctx.lineTo(810, 1080);
-            ctx.lineTo(0, 1059);
-            ctx.closePath();
-            ctx.fill();
-        }
+    runScript = (script: string) => {
+        console.log(script);
+        const scriptTag = document.createElement("script");
+        console.log(scriptTag);
+        scriptTag.async = true;
+        scriptTag.innerHTML = script;
+        document.body.appendChild(scriptTag);
     }
 
     async handleResetPassword(email: string) {
@@ -222,7 +186,7 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
         const imageClass = this.state && this.state.bannerHtml ? "" : "no_image";
         return (
             <div className={"global_login_container"}>
-                <div className={imageClass}>
+                <div className={`${imageClass} ${CLASSES.COLOR.CYAN_BESPOKEN}`}>
                     <AuthForm
                         error={this.state.error}
                         onSubmit={this.handleFormSubmit}
