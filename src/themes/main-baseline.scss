@@ -146,9 +146,24 @@
         }
     }
 
+    .ace_editor, .ace_editor div, .ace_editor span {
+        font-family: monospace;
+        font-size: 14px !important;
+    }
+
+    .banner_test {
+        width: 729px!important;
+        height: 972px!important;
+    }
+
     @media (max-width: 1366px) {
         html, body {
             font-size: 12px;
+        }
+
+        .banner_test {
+            width: 729px!important;
+            height: 772px!important;
         }
     }
 

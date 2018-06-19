@@ -160,9 +160,9 @@ const render = function () {
                 <Route path="/login" component={Login}>
                     <IndexRoute component={LoginPage} />
                 </Route>
+                {process.env.NODE_ENV !== "production" && <Route path="/components" component={ComponentsPage} />}
                 <Route path="/" component={Dashboard} onEnter={onEnterDashboard}>
-                    if (process.env.NODE_ENV !== "production" ) {
-                        <Route path="/bill" component={BillPage} />}
+                    {process.env.NODE_ENV !== "production" && <Route path="/bill" component={BillPage} />}
                     <Route path="/skills" component={SourceListPage} />
                     <Route path="/skills/new" component={NewSourcePage} />
                     <Route path="/skills/:sourceId" onEnter={setSource} onLeave={removeSource} >
@@ -174,7 +174,6 @@ const render = function () {
                         <Route path="/skills/:sourceId/settings" component={SettingsPage} />
                     </Route>
                     <Route path="/sources/link" component={SourcesLinkPage} />
-                    {process.env.NODE_ENV !== "production" && <Route path="/components" component={ComponentsPage} />}
                     <Route path="/notFound" component={NotFoundPage} />
                     <Route path="*" component={NotFoundPage} />
                 </Route>

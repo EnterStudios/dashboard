@@ -1,7 +1,12 @@
 ﻿import * as React from "react";
+import AceEditor from "react-ace";
 import BillCard from "../components/BillCard/BillCard";
 import BarsChart from "../components/Graphs/Bar/BarsChart";
 import RadialBarChart from "../components/Graphs/Radial/ValidationRadialChart";
+import SourceService from "../services/source";
+
+import "brace/mode/html";
+import "brace/theme/monokai";
 
 const centerStyle = {
     margin: "auto",
@@ -9,6 +14,43 @@ const centerStyle = {
     padding: "10px"
 };
 export default class ComponentsPage extends React.Component<any, any> {
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            bannerHtml: "",
+            script: "",
+        };
+    }
+
+    async componentDidMount () {
+        const banner = await SourceService.getBanner("communication");
+        this.setState(prevState => ({
+            ...prevState,
+            bannerHtml: banner.htmlstring,
+            script: banner.script
+        }));
+        if (banner.script) {
+            this.runScript(banner.script);
+        }
+    }
+
+    runScript = (script: string) => {
+        const scriptTag = document.createElement("script");
+        scriptTag.async = true;
+        scriptTag.innerHTML = script;
+        document.body.appendChild(scriptTag);
+    }
+
+    handleBannerHtmlChange = (value: string) => {
+        this.setState(() => ({
+            bannerHtml: value,
+        }));
+        if (this.state.script) {
+            this.runScript(this.state.script);
+        }
+    }
+
     render() {
 
         const data = [
@@ -102,16 +144,40 @@ export default class ComponentsPage extends React.Component<any, any> {
 
         return (
             <div>
+                <h1 style={{ ...centerStyle, ...{ textAlign: "center" } }}>Components Page</h1>
+                <div style={{minHeight: 830}}>
+                    <h2 style={{paddingLeft: 20}}>Login right panel</h2>
+                    <div className={"global_login_container"}>
+                        <div style={{paddingTop: 0, textAlign: "center"}}>
+                            <AceEditor
+                                style={{width: "90%", height: "90%", margin: "auto"}}
+                                mode="html"
+                                theme="monokai"
+                                name="yamlEditor"
+                                onChange={this.handleBannerHtmlChange}
+                                fontSize={14}
+                                showPrintMargin={false}
+                                showGutter={true}
+                                highlightActiveLine={true}
+                                value={this.state.bannerHtml}
+                                wrapEnabled={true} />
+                        </div>
+                        <div className={"banner_test"} dangerouslySetInnerHTML={{__html: this.state.bannerHtml}}  />
+                    </div>
+                </div>
                 <div>
-                    <h1 style={{ ...centerStyle, ...{ textAlign: "center" } }}>Components Page</h1>
                     <div className="components_container">
+                        <h2>Radial chart</h2>
                         <div><RadialBarChart successRatio={100} /></div>
                         <div><RadialBarChart successRatio={80} color={"#FF0000"} /></div>
                         <div><RadialBarChart successRatio={20} color={"#000"} /></div>
 
                     </div>
 
-                    <div style={{ height: 250 }}><BarsChart data={data} bars={[{ dataKey: "uv", title: "Daily Events", average: 879 }]} /></div>
+                    <div className="components_container" style={{ height: 250, marginBottom: 50 }}>
+                        <h2 style={{margin: 0}}>Bars chart</h2>
+                        <BarsChart data={data} bars={[{ dataKey: "uv", title: "Daily Events", average: 879 }]} />
+                    </div>
                 </div>
 
                 <div style={{ display: "flex", justifyContent: "center" }}>

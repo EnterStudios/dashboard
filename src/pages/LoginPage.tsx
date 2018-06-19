@@ -100,9 +100,7 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
     }
 
     runScript = (script: string) => {
-        console.log(script);
         const scriptTag = document.createElement("script");
-        console.log(scriptTag);
         scriptTag.async = true;
         scriptTag.innerHTML = script;
         document.body.appendChild(scriptTag);
