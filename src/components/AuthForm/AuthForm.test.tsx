@@ -165,7 +165,7 @@ describe("AuthForm", function () {
 
             let loginBtn = wrapper.find("Themed").first();
 
-            expect(loginBtn.prop("label")).to.equal("Login");
+            expect(loginBtn.prop("label")).to.equal("Log in");
 
             // hiding register button for now according to specs
             // let signUpBtn = wrapper.find("Themed").at(1);
@@ -297,15 +297,14 @@ describe("AuthForm", function () {
         });
 
         it("Renders properly.", function () {
-            expect(wrapper.find("h3")).to.have.length(1);
             expect(wrapper.find("Themed")).to.have.length(3);
             expect(wrapper.find("label")).to.have.length(1);
 
             let title = wrapper.find("h3").at(0);
-            expect(title.text()).to.equal("Create New Account");
+            expect(title.text()).to.equal("");
 
             let emailInput = wrapper.find("Themed").at(0);
-            expect(emailInput.prop("label")).to.equal("Email");
+            expect(emailInput.prop("label")).to.equal("Email Address");
             expect(emailInput.prop("type")).to.equal("text");
             expect(emailInput.prop("value")).to.equal("test@test.com");
 
@@ -333,7 +332,7 @@ describe("AuthForm", function () {
             expect(title.text()).to.equal("");
 
             let emailInput = wrapper.find("Themed").at(0);
-            expect(emailInput.prop("label")).to.equal("Email");
+            expect(emailInput.prop("label")).to.equal("Email Address");
             expect(emailInput.prop("type")).to.equal("text");
             expect(emailInput.prop("value")).to.equal("test@test.com");
 

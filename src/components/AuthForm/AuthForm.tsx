@@ -3,9 +3,12 @@ import * as React from "react";
 import { Button } from "react-toolbox/lib/button";
 import Input from "react-toolbox/lib/input";
 
-import { Icon, ICON } from "./Icon";
+import { Icon, ICON } from "../Icon/index";
 
-const theme = require("../themes/authform.scss");
+const globalWindow: any = typeof (window) !== "undefined" ? window : {};
+
+const theme = require("../../themes/authform.scss");
+const authFormStyle = require("./AuthFormStyle.scss");
 
 export interface AuthFormProps {
     error?: string;
@@ -50,11 +53,17 @@ export class AuthForm extends React.Component<AuthFormProps, AuthFormState> {
         }
     }
 
+    handleLogoClick = () => {
+        globalWindow && globalWindow.location.assign("http://bespoken.io/");
+    }
+
     render() {
         return (
-            <div className="mdl-card__supporting-text">
-                <img style={{ width: "65%", margin: "0 17.5%" }} src="https://bespoken.io/wp-content/uploads/Bespoken-Logo-RGB-e1500333659572.png" alt="bespoken logo" />
-
+            <div className={authFormStyle.main_form}>
+                <div>
+                    <img onClick={this.handleLogoClick} src={"https://bespoken.io/wp-content/uploads/2017/07/Bespoken-Alpaca-RGB-social-1.png"} alt={"bespoken isotype"}/>
+                    <img src={"https://bespoken.io/wp-content/uploads/2017/07/Bespoken-White.png"} alt={"bespoken logotype"} />
+                </div>
                 <NormalLoginForm
                     error={this.props.error}
                     onLogin={this.props.onSubmit}
@@ -79,7 +88,7 @@ interface PasswordResetProps {
 export class PasswordReset extends React.Component<PasswordResetProps, any> {
     render() {
         return (
-            <div style={{ position: "absolute", top: "103%" }}>
+            <div className={authFormStyle.reset_password_container}>
                 <Button
                     label="Reset Password"
                     onClick={this.props.onPasswordReset}
@@ -96,6 +105,15 @@ interface LoginGithubProps {
 
 export class LoginGithub extends React.Component<LoginGithubProps, any> {
 
+    static svgStyle = {
+        width: "2.5rem",
+        height: "2.2rem",
+        position: "absolute",
+        left: 0,
+        top: 0,
+        padding: ".5rem",
+    };
+
     componentDidMount () {
         if (this.props.location && this.props.location.query && this.props.location.query.github_login === "1") {
             this.props.onLoginWithGithub && this.props.onLoginWithGithub();
@@ -105,12 +123,12 @@ export class LoginGithub extends React.Component<LoginGithubProps, any> {
     render() {
         return (
             this.props.onLoginWithGithub ? (
-                <div style={{ width: "100%", textAlign: "Center" }}>
+                <div className={authFormStyle.github_login_container}>
                     <Button
-                        style={{ width: "92%" }}
+                        className={authFormStyle.github_login_button}
                         theme={theme}
-                        label="Login with Github"
-                        icon={(<Icon style={{ marginRight: "13px" }} width={20} height={20} icon={ICON.GITHUB} />)}
+                        label="Log in with Github"
+                        icon={(<Icon style={LoginGithub.svgStyle} color={"#fff"} icon={ICON.GITHUB} />)}
                         onClick={this.props.onLoginWithGithub} />
                 </div>
             ) : (<div />)
@@ -125,6 +143,15 @@ interface LoginAmazonProps {
 
 export class LoginAmazon extends React.Component<LoginAmazonProps, any> {
 
+    static svgStyle = {
+        width: "2rem",
+        height: "2rem",
+        position: "absolute",
+        left: 0,
+        top: 0,
+        padding: "1rem",
+    };
+
     componentDidMount () {
         if (this.props.location && this.props.location.query && this.props.location.query.amazon_login === "1") {
             // waiting for amazon script to load
@@ -137,12 +164,12 @@ export class LoginAmazon extends React.Component<LoginAmazonProps, any> {
     render() {
         return (
             this.props.onLoginWithAmazon ? (
-                <div style={{ width: "100%", textAlign: "Center" }}>
+                <div>
                     <Button
-                        style={{ width: "92%" }}
+                        className={authFormStyle.amazon_login_button}
                         theme={theme}
-                        label="Login with Amazon"
-                        icon={(<Icon style={{ marginRight: "7px" }} width={20} height={20} icon={ICON.AMAZON} />)}
+                        label="Log in with Amazon"
+                        icon={(<Icon style={LoginAmazon.svgStyle} color={"#fff"} icon={ICON.AMAZON} />)}
                         onClick={this.props.onLoginWithAmazon} />
                 </div>
             ) : (<div />)
@@ -268,6 +295,7 @@ export class NormalLoginForm extends React.Component<NormalLoginFormProps, Norma
         let signupBtn = this.state.isConfirmPassword ?
             (
                 <Button
+                    className={authFormStyle.regular_button}
                     theme={theme}
                     label="Submit"
                     onClick={this.onSubmitClicked}
@@ -275,6 +303,7 @@ export class NormalLoginForm extends React.Component<NormalLoginFormProps, Norma
             ) :
             (
                 <Button
+                    className={authFormStyle.regular_button}
                     theme={theme}
                     label="Register"
                     onClick={this.onSignUpClick} />
@@ -283,19 +312,25 @@ export class NormalLoginForm extends React.Component<NormalLoginFormProps, Norma
         let loginBtn = this.state.isConfirmPassword ?
             (
                 <Button
+                    className={authFormStyle.regular_button}
                     theme={theme}
                     label="Cancel"
                     onClick={this.onCancelClick} />
             ) :
             (
                 <Button
+                    className={authFormStyle.regular_button}
                     theme={theme}
-                    label="Login"
+                    label="Log in"
                     onClick={this.onLogin} />
             );
 
         return (
-            <div>
+            <div className={authFormStyle.main_normal_login_form}>
+                <div>
+                    <LoginAmazon onLoginWithAmazon={this.props.onLoginWithAmazon} location={this.props.location}/>
+                </div>
+                <div className={authFormStyle.or_separation}><span>or</span></div>
                 <LoginForms
                     email={this.state.email}
                     password={this.state.password}
@@ -306,18 +341,16 @@ export class NormalLoginForm extends React.Component<NormalLoginFormProps, Norma
                     onPasswordChange={this.onPasswordChange}
                     onConfirmPasswordChange={this.onConfirmPassChange}
                     onPasswordSubmit={this.onFormSubmit}
-                    onConfirmPasswordSubmit={this.onFormSubmit} />
-                <div className="mdl-card__actions clearfix">
-                    <LoginAmazon onLoginWithAmazon={this.props.onLoginWithAmazon} location={this.props.location} />
-                </div>
-                <div className="mdl-card__actions clearfix">
-                    <LoginGithub onLoginWithGithub={this.props.onLoginWithGithub} location={this.props.location} />
-                </div>
-                <div className={`${theme.actions} mdl-card__actions clearfix`}>
+                    onConfirmPasswordSubmit={this.onFormSubmit}/>
+                <div className={`${theme.actions}`}>
+                    <PasswordReset
+                        onPasswordReset={this.onPasswordReset}/>
                     {loginBtn}
                     {signupBtn}
-                    <PasswordReset
-                        onPasswordReset={this.onPasswordReset} />
+                </div>
+                <div className={`${authFormStyle.or_separation} ${authFormStyle.second}`}><span>or</span></div>
+                <div>
+                    <LoginGithub onLoginWithGithub={this.props.onLoginWithGithub} location={this.props.location}/>
                 </div>
             </div>
         );
@@ -369,20 +402,17 @@ export class LoginForms extends React.Component<LoginFormsProps, LoginFormsState
 
     render() {
         return (
-            <div>
-                {
-                    this.props.showConfirmPassword ?
-                        <h3 className={theme.h3}>Create New Account</h3> :
-                        ""
-                }
+            <div className={authFormStyle.login_inputs_container}>
                 <Input
+                    floating={false}
                     theme={theme}
-                    label="Email"
+                    label="Email Address"
                     type="text"
                     value={this.props.email}
                     onChange={this.props.onEmailChange}
                 />
                 <Input
+                    floating={false}
                     theme={theme}
                     label="Password"
                     type="password"
@@ -391,6 +421,7 @@ export class LoginForms extends React.Component<LoginFormsProps, LoginFormsState
                     onKeyPress={this.onPasswordKeyPress}
                 />
                 <Input
+                    floating={false}
                     theme={theme}
                     className={this.props.showConfirmPassword ? `${theme.showConfirm} ${theme.active}` : theme.showConfirm}
                     label="Confirm Password"

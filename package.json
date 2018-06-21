@@ -112,6 +112,7 @@
     "pusher-js": "^4.2.1",
     "raven-js": "~3.17.0",
     "react": "~15.4.0",
+    "react-ace": "^6.1.1",
     "react-autosuggest": "^9.3.2",
     "react-dom": "~15.4.0",
     "react-ga": "~2.1.2",

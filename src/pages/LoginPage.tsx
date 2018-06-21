@@ -1,13 +1,13 @@
 ﻿import * as React from "react";
 import { connect } from "react-redux";
 import { AmazonFlowFlag, login, loginWithAmazon, loginWithGithub, resetPassword, setAmazonFlow, signUpWithEmail, SuccessCallback } from "../actions/session";
-import AuthForm from "../components/AuthForm";
-import Card from "../components/Card";
-import { Cell, Grid } from "../components/Grid";
+import AuthForm from "../components/AuthForm/AuthForm";
 import { Loader } from "../components/Loader/Loader";
+import { CLASSES } from "../constants";
 import User from "../models/user";
 import { State } from "../reducers";
 import auth from "../services/auth";
+import SourceService from "../services/source";
 
 /**
  * Configuration objects to pass in to the router when pushing or replacing this page on the router.
@@ -31,6 +31,8 @@ interface LoginPageProps {
 interface LoginPageState {
     error?: string;
     loading?: boolean;
+    bannerUrl?: string;
+    bannerHtml?: string;
 }
 
 function mapStateToProps(state: State.All) {
@@ -72,7 +74,9 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handleResetPassword = this.handleResetPassword.bind(this);
 
-        this.state = {};
+        this.state = {
+            bannerHtml: "",
+        };
     }
 
     async componentDidMount () {
@@ -85,6 +89,21 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
                 this.props.setAmazonFlow(true);
             }, 500);
         }
+        const banner = await SourceService.getBanner("communication");
+        this.setState(prevState => ({
+            ...prevState,
+            bannerHtml: banner.htmlstring,
+        }));
+        if (banner.script) {
+            this.runScript(banner.script);
+        }
+    }
+
+    runScript = (script: string) => {
+        const scriptTag = document.createElement("script");
+        scriptTag.async = true;
+        scriptTag.innerHTML = script;
+        document.body.appendChild(scriptTag);
     }
 
     async handleResetPassword(email: string) {
@@ -141,28 +160,43 @@ export class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
         }
     }
 
+    handleBannerButtonClick = async () => {
+        window && window.open(this.state.bannerUrl, "_blank");
+    }
+
+    handleImageLoaded = () => {
+        this.setState(prevState => ({
+            ...prevState,
+            hasImage: true,
+        }));
+    }
+
+    handleImageErrored = () => {
+        this.setState(prevState => ({
+            ...prevState,
+            hasImage: false,
+        }));
+    }
+
     render() {
         const allProps = this.props as any;
         const location = allProps.location;
+        const imageClass = this.state && this.state.bannerHtml ? "" : "no_image";
         return (
-            <Grid style={{ marginTop: "10%" }}>
-                <Cell col={4} tablet={2} hidePhone={true} />
-                <Cell col={4} tablet={4} phone={4} align={"middle"} style={{ display: "flex", justifyContent: "center" }}>
-                    <Card style={{ overflow: "visible" }}>
-                        <AuthForm
-                            error={this.state.error}
-                            onSubmit={this.handleFormSubmit}
-                            onLoginWithGithub={this.handleFormLoginWithGithub}
-                            onLoginWithAmazon={this.handleFormLoginWithAmazon}
-                            onSignUpWithEmail={this.handleFormSignUpWithEmail}
-                            onResetPassword={this.handleResetPassword}
-                            location={location}
-                        />
-                    </Card>
-                </Cell>
-                <Cell col={4} tablet={2} hidePhone={true} />
-                {this.state.loading && <Loader />}
-            </Grid>
+            <div className={"global_login_container"}>
+                <div className={`${imageClass} ${CLASSES.COLOR.CYAN_BESPOKEN}`}>
+                    <AuthForm
+                        error={this.state.error}
+                        onSubmit={this.handleFormSubmit}
+                        onLoginWithGithub={this.handleFormLoginWithGithub}
+                        onLoginWithAmazon={this.handleFormLoginWithAmazon}
+                        onSignUpWithEmail={this.handleFormSignUpWithEmail}
+                        onResetPassword={this.handleResetPassword}
+                        location={location} />
+                    {this.state.loading && <Loader />}
+                </div>
+                <div className={imageClass} dangerouslySetInnerHTML={{__html: this.state.bannerHtml}} />
+            </div>
         );
     }
 };
