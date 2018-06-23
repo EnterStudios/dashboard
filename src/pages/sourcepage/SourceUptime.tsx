@@ -119,7 +119,7 @@ export class SourceUpTime extends LoadingComponent.Component<{ summary: UpTimeDa
                     No data available yet
                 </Grid>
             );
-        } else if (!data || !data.summary || !data.status) {
+        } else if (!data || !data.summary) {
             return (
                <Grid className="graph-loader">
                     <ProgressBar className="graph-loader" type="circular" mode="indeterminate" />

@@ -1,60 +1,84 @@
 @import "dashboard";
 
 // Login buttons
+.button {
+    text-transform: none;
+    line-height: 3rem;
+    font-weight: 300;
+}
+
 .neutral:not([disabled]) {
-  &.flat, &.toggle {
-    color: $palette-grey-700;
-    font-size: $button-font-size;
-    border: 1px solid #023333;
-  }
+    &.flat, &.toggle {
+        color: $palette-grey-700;
+        font-size: $button-font-size;
+        border: 1px solid #023333;
+    }
 }
 
 .input {
-  font-size: $input-font-size;
+    font-size: 1.6rem;
+    padding: 0;
+    margin-bottom: 1.2rem;
+    background-color: #fff;
+    font-weight: 300;
+}
+
+.inputElement {
+    color: #3f4040;
+    width: 98%;
+    font-size: 1.6rem;
+    padding: 0.5rem 0 0.5rem .5rem;
+}
+
+.bar {
+    visibility: hidden;
 }
 
 .label {
-  font-size: $input-font-size;
+    font-size: 1.6rem;
+    top: 0.7rem;
+    left: 0.5rem;
+    font-weight: 300;
 }
 
 .h3 {
-  text-align: center;
+    text-align: center;
     font-size: 1.2em;
     margin: 15px 0 0;
 }
 
 .showConfirm {
-  display: none;
-  transform: scale(0);
-  opacity: 0;
-  transition: transform .4s ease-in-out, opacity .3s ease-in-out;
+    display: none;
+    transform: scale(0);
+    opacity: 0;
+    transition: transform .4s ease-in-out, opacity .3s ease-in-out;
 
-  &.active {
-    display: block;
-    transform: scale(1);
-    opacity: 1;
-    animation: anim .4s ease-in-out;
-  }
+    &.active {
+        display: block;
+        transform: scale(1);
+        opacity: 1;
+        animation: anim .4s ease-in-out;
+    }
 }
 
 .actions {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-around;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
 }
 
 @keyframes anim {
-  0% {
-    display: none;
-    opacity: 0;
-  }
-  1% {
-    display: block;
-    opacity: 0;
-    transform: scale(0);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+    0% {
+        display: none;
+        opacity: 0;
+    }
+    1% {
+        display: block;
+        opacity: 0;
+        transform: scale(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
