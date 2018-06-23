@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const BillCardStyle = require("./BillCardStyle.scss");
+const PlanCardStyle = require("./PlanCardStyle.scss");
 
 interface BillCardProps {
     uriImage: string;
@@ -37,19 +37,19 @@ export default class BillCard extends React.Component<BillCardProps, BillCardSta
 
     render() {
         return (
-            <div className={BillCardStyle.container} style={{ color: this.props.letterColor, background: this.props.containterColor }}>
+            <div className={PlanCardStyle.container} style={{ color: this.props.letterColor, background: this.props.containterColor }}>
                 <div>
-                    <div className={BillCardStyle.img_style} >
-                        <img className={BillCardStyle.img_style} src={this.props.uriImage} alt={this.props.alt}
+                    <div className={PlanCardStyle.img_style} >
+                        <img className={PlanCardStyle.img_style} src={this.props.uriImage} alt={this.props.alt}
                             style={{ visibility: this.props.leftCard ? "hidden" : "visible" }} />
 
 
                         {(!this.props.leftCard) &&
-                            <button className={BillCardStyle.button} style={{ backgroundColor: this.props.buttonColor }} >{this.props.alt}</button>
+                            <button className={PlanCardStyle.button} style={{ backgroundColor: this.props.buttonColor }} >{this.props.alt}</button>
                         }
 
                         {(this.props.leftCard) &&
-                            <div className={BillCardStyle.plan_row_style}><b> {this.props.currentPlan} </b><br />
+                            <div className={PlanCardStyle.plan_row_style}><b> {this.props.currentPlan} </b><br />
                                 {this.props.featurePlan1} {this.props.detailPlan1} <br />
                                 {this.props.featurePlan2} {this.props.detailPlan2} <br />
                                 {this.props.featurePlan3} {this.props.detailPlan3}
@@ -59,30 +59,30 @@ export default class BillCard extends React.Component<BillCardProps, BillCardSta
                     </div>
                 </div>
 
-                <div className={BillCardStyle.containerFooter} style={{ background: this.props.footerColor }}>
+                <div className={PlanCardStyle.containerFooter} style={{ background: this.props.footerColor }}>
                     {this.props.leftCard ? this.props.testing : ""}
                 </div>
                 <div  >
-                    <p className={this.props.leftCard ? BillCardStyle.left_testing_card_style : ""}>{this.props.unitTest} </p>
-                    <p className={this.props.leftCard ? BillCardStyle.left_testing_card_style : ""}>{this.props.numVirtualDevice}<br />
+                    <p className={this.props.leftCard ? PlanCardStyle.left_testing_card_style : ""}>{this.props.unitTest} </p>
+                    <p className={this.props.leftCard ? PlanCardStyle.left_testing_card_style : ""}>{this.props.numVirtualDevice}<br />
                         {
                             this.props.leftCard ? "(Virtual Devices)" : ""
                         }
                     </p>
                 </div>
-                <div className={BillCardStyle.containerFooter} style={{ background: this.props.footerColor }}>
+                <div className={PlanCardStyle.containerFooter} style={{ background: this.props.footerColor }}>
                     {this.props.leftCard ? this.props.monitoring : ""}
                 </div>
                 <div style={{ background: this.props.containterColor }}>
-                    <p className={this.props.leftCard ? BillCardStyle.left_monitori_card_style : ""}>{this.props.numSkills} </p>
-                    <p className={this.props.leftCard ? BillCardStyle.left_monitori_card_style : ""}>{this.props.numLogs}<br />
+                    <p className={this.props.leftCard ? PlanCardStyle.left_monitori_card_style : ""}>{this.props.numSkills} </p>
+                    <p className={this.props.leftCard ? PlanCardStyle.left_monitori_card_style : ""}>{this.props.numLogs}<br />
                         {
                             this.props.leftCard ? " (Events per month)" : ""
                         }
                     </p>
-                    <p className={this.props.leftCard ? BillCardStyle.left_monitori_card_style : ""}>{this.props.numUsers}</p>
+                    <p className={this.props.leftCard ? PlanCardStyle.left_monitori_card_style : ""}>{this.props.numUsers}</p>
                 </div>
-                <div className={BillCardStyle.containerFooter} style={{ background: this.props.footerColor }} >
+                <div className={PlanCardStyle.containerFooter} style={{ background: this.props.footerColor }} >
                     <b>{this.props.price}</b>
                 </div>
 

@@ -1,8 +1,10 @@
 import * as moment from "moment";
 import * as React from "react";
-import BillCard from "../components/BillCard/BillCard";
+import BillForm from "../components/BillCard/BillForm";
+import PaymentForm from "../components/BillCard/Payment";
 import Source from "../models/source";
 import service from "../services/source";
+const PaymentStyle = require("../components/BillCard/PaymentStyle.scss");
 
 
 export default class BillPage extends React.Component<any, any> {
@@ -26,58 +28,43 @@ export default class BillPage extends React.Component<any, any> {
     }
 
     render() {
-        const uri = "https://bespoken.io/wp-content/uploads/2018/05/";
-        const llamaStandard = "llama-standard";
+        const uri = "https://bespoken.io/wp-content/uploads/2018/06/";
+        const llama = "llama-pay";
+        const llamaLogo = "Bespoken-Logo-Web-White";
         const sStandard = {
-            uriImage: uri + llamaStandard + ".jpg",
-            letterColor: "#798a9a",
-            containterColor: "#fcfdff",
-            footerColor: "#e8f5fe",
-            alt: llamaStandard,
-            buttonColor: "#ff9934",
-            currentPlan: "",
-            featurePlan1: "",
-            featurePlan2: "",
-            featurePlan3: "",
-            detailPlan3: "",
-            detailPlan1: "",
-            detailPlan2: "",
-            leftCard: false,
-            testing: "",
-            monitoring: "",
-            unitTest: "Free",
-            numVirtualDevice: "1",
-            numSkills: "3",
-            numLogs: "10,000 000",
-            numUsers: "2",
+            uriImageLLamaPay: uri + llama + ".png",
+            uriImageLLamalogo: uri + llamaLogo + ".png",
+            date: "june 18th, 2018",
+            currentPlan: "pro",
+            planToSubscribe: "standard",
+            altLlamaPay: "llama pay",
+            altLlamaLogo: "logo",
+            backgoundColor: "#99d5dc",
             price: "$25.00",
         };
 
         return (
+            <div style={{
+                "display": "flex",
+                "justifyContent": "center",
+                "width": "100%",
+                "height": "600px",
+            }} >
+                <div className={PaymentStyle.cardContainer}
+                >
 
-            <div style={{ width: 367, height: 700 }}>
-                <div ><BillCard letterColor={sStandard.letterColor}
-                    containterColor={sStandard.containterColor}
-                    footerColor={sStandard.footerColor}
-                    uriImage={sStandard.uriImage}
-                    alt={sStandard.alt} buttonColor={sStandard.buttonColor}
-                    currentPlan={"Current Plan"}
-                    featurePlan1={" Plan type : "}
-                    featurePlan2={" Number of devices: "}
-                    featurePlan3={"invoicing period: "}
-                    detailPlan3={"monthly"}
-                    detailPlan1={"Free"}
-                    detailPlan2={"1"}
-                    testing={"Testing"}
-                    unitTest={"Unit testing"}
-                    numVirtualDevice={"End-to-end Testing"}
-                    monitoring={"Monitoring"}
-                    numSkills={"Skills"}
-                    numLogs={"Logs"}
-                    numUsers={"Users"}
-                    price={"Montlhy price"}
-                    leftCard={true}
-                /></div>
+                    <BillForm uriImageLLamaPay={sStandard.uriImageLLamaPay}
+                        uriImageLLamalogo={sStandard.uriImageLLamalogo}
+                        date={sStandard.date}
+                        currentPlan={sStandard.currentPlan}
+                        planToSubscribe={sStandard.planToSubscribe}
+                        altLlamaPay={sStandard.altLlamaPay}
+                        altLlamaLogo={sStandard.altLlamaLogo}
+                        backgoundColor={sStandard.backgoundColor}
+                        price={sStandard.price}
+                    />
+                    <PaymentForm />
+                </div>
             </div>
         );
     }

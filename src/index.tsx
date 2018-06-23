@@ -25,6 +25,7 @@ import LoginPage from "./pages/LoginPage";
 import LogsPage from "./pages/logspage/ConvoPage";
 import NewSourcePage from "./pages/NewSourcePage";
 import NotFoundPage from "./pages/NotFoundPage";
+import PlanPage from "./pages/PlanPage";
 import SettingsPage from "./pages/settingspage/StateSettingsPage";
 import SourceListPage from "./pages/SourceListPage";
 import SourcePage from "./pages/sourcepage/SourcePage";
@@ -162,7 +163,9 @@ const render = function () {
                 </Route>
                 <Route path="/" component={Dashboard} onEnter={onEnterDashboard}>
                     if (process.env.NODE_ENV !== "production" ) {
-                        <Route path="/bill" component={BillPage} />}
+                        <Route path="/plans" component={PlanPage} />}
+                    if (process.env.NODE_ENV !== "production" ) {
+                        <Route path="/bills" component={BillPage} />}
                     <Route path="/skills" component={SourceListPage} />
                     <Route path="/skills/new" component={NewSourcePage} />
                     <Route path="/skills/:sourceId" onEnter={setSource} onLeave={removeSource} >

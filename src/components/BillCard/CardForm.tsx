@@ -51,7 +51,8 @@ export class CardFormC extends React.Component<any, any> {
                         console.log(" then payload = ");
                         console.log(payload);
                         if (payload.id)
-                            postStripe(payload.id);
+                            console.log(payload.id);
+                        // postStripe(payload.id);
                     });
             }}>
 

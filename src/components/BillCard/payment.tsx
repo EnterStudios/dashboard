@@ -1,5 +1,10 @@
+import { connect } from "react-redux";
+import { User, UserDetails, UserProperties } from "../../models/user";
+import { State } from "../../reducers";
+import auth from "../../services/auth";
 import { postStripe } from "../../services/sripe";
 const ReactStripeElements = require("react-stripe-elements");
+const PaymentStyle = require("./PaymentStyle.scss");
 
 const {
     StripeProvider,
@@ -10,19 +15,7 @@ const {
     CardCVCElement,
     PostalCodeElement,
 } = ReactStripeElements;
-const handleBlur = () => {
-    console.log("[blur]");
-};
-const handleChange = (change: any) => {
-    console.log("[change]", change);
-};
 
-const handleFocus = () => {
-    console.log("[focus]");
-};
-const handleReady = () => {
-    console.log("[ready]");
-};
 const createOptions = (fontSize: string) => {
     return {
         style: {
@@ -43,79 +36,104 @@ const createOptions = (fontSize: string) => {
 };
 
 class SplitFormC extends React.Component<any & { fontSize: string }, any> {
+    constructor() {
+        super();
+        this.state = {
+            stripe: undefined,
+            message: undefined,
+        };
+    }
     handleSubmit = (ev: any) => {
         ev.preventDefault();
         if (this.props.stripe) {
             this.props.stripe
                 .createToken()
-                .then((payload: any) => {
-                    console.log("[token]", payload);
-                    // call to stripe-api
-                    console.log(" then payload = ");
-                    console.log(payload);
-                    if (payload.token)
-                        postStripe(payload.token);
+                .then(async (payload: any) => {
+
+                    if (payload.token) {
+                        const userDetail: UserDetails = await auth.currentUserDetails();
+                        const userProperties: UserProperties = {
+                            email: "daisy@gmail.com",
+                            userId: "RSBBpkg5w1VTXKUGRuCLiJjC0aH3",
+                            stripeCustomerObjId: userDetail.stripeCustomerObjId ?
+                                userDetail.stripeCustomerObjId : undefined,
+                            stripeSusbcribedPlanId: userDetail.stripeSusbcribedPlanId ?
+                                userDetail.stripeSusbcribedPlanId : undefined,
+                        };
+                        const user = new User(userProperties);
+                        const planToSubscribe = "standard";
+                        const helper = await postStripe(user, payload.token.id, planToSubscribe);
+                        this.setState({
+                            message: helper
+                        });
+                    } else {
+                        console.error("fail to try to create a token ", payload);
+                        this.setState({
+                            message: payload.error.message
+                        });
+                    }
                 });
         } else {
-            console.log("Stripe.js hasnt loaded yet.");
+            this.setState({
+                message: "Stripe.js hasnt loaded yet."
+            });
+            console.error("Stripe.js hasnt loaded yet.");
         }
     }
     render() {
+        const { message } = this.state;
         return (
             <form onSubmit={this.handleSubmit}>
-                <label>
-                    Card number
-            <CardNumberElement
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        onFocus={handleFocus}
-                        onReady={handleReady}
+                <label>{"Card number"}
+                    <CardNumberElement {...createOptions(this.props.fontSize)} />
+                </label>
+                <label>{"Expiration date"}
+                    <CardExpiryElement
                         {...createOptions(this.props.fontSize)}
                     />
                 </label>
-                <label>
-                    Expiration date
-            <CardExpiryElement
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        onFocus={handleFocus}
-                        onReady={handleReady}
+                <label>{"CVC"}
+                    <CardCVCElement
                         {...createOptions(this.props.fontSize)}
                     />
                 </label>
-                <label>
-                    CVC
-            <CardCVCElement
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        onFocus={handleFocus}
-                        onReady={handleReady}
+                <label>{"Postal code"}
+                    <PostalCodeElement
                         {...createOptions(this.props.fontSize)}
                     />
                 </label>
-                <label>
-                    Postal code
-            <PostalCodeElement
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        onFocus={handleFocus}
-                        onReady={handleReady}
-                        {...createOptions(this.props.fontSize)}
-                    />
-                </label>
-                <button>Pay</button>
+                <button>{"Subscribe"}</button>
+                <div><label>{message}</label></div>
             </form>
         );
     }
 }
 const SplitForm = injectStripe(SplitFormC);
 
-export class PaymentForm extends React.Component<any, any> {
+export interface PaymentFormProps {
+    user: User;
+}
+
+function mapStateToProps(state: State.All) {
+    return {
+        user: state.session.user,
+
+    };
+}
+
+function mapDispatchToProps(dispatch: Redux.Dispatch<any>) {
+    return {
+    };
+}
+
+export class PaymentForm extends React.Component<PaymentFormProps, any> {
     constructor() {
         super();
         this.state = {
             stripe: undefined,
             elementFontSize: window.innerWidth < 450 ? "14px" : "18px",
+
+            // user: undefined
         };
         window.addEventListener("resize", () => {
             if (window.innerWidth < 450 && this.state.elementFontSize !== "14px") {
@@ -126,10 +144,13 @@ export class PaymentForm extends React.Component<any, any> {
             ) {
                 this.setState({ elementFontSize: "18px" });
             }
+
         });
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        // let userDetails: UserDetails = await auth.currentUserDetails();
+        // console.log(userDetails);
         if ((window as any).Stripe) {
             this.setState({ stripe: (window as any).Stripe("pk_test_pjtrb20eQPAtLomXsm4sopuW") });
         } else {
@@ -137,6 +158,7 @@ export class PaymentForm extends React.Component<any, any> {
                 // Create Stripe instance once Stripe.js loads
                 this.setState({ stripe: (window as any).Stripe("pk_test_pjtrb20eQPAtLomXsm4sopuW") });
             });
+
         }
     }
 
@@ -144,13 +166,31 @@ export class PaymentForm extends React.Component<any, any> {
         const { elementFontSize } = this.state;
         return (
             <StripeProvider apiKey="pk_test_pjtrb20eQPAtLomXsm4sopuW">
-                <div className="Checkout">
-                    <b>Payment form</b>
-                    <Elements>
+                {/* <div  className="Checkout"> */}
+                <div className={PaymentStyle.container}>
+                    <div>
+                        <img src="https://bespoken.io/wp-content/uploads/2018/05/voicexplogo-e1526593815539.png"
+                            alt="security logo" />
+                        <img src="https://bespoken.io/wp-content/uploads/2018/05/voicexplogo-e1526593815539.png"
+                            alt="security logo" />
+                    </div>
+                    <div>
+                        <img src="https://bespoken.io/wp-content/uploads/2018/05/voicexplogo-e1526593815539.png"
+                            alt="security logo" />
+                        <img src="https://bespoken.io/wp-content/uploads/2018/05/voicexplogo-e1526593815539.png"
+                            alt="security logo" />
+                    </div>
+                    <b>Payment form {this.props.user.email} </b>
+                    < Elements>
                         <SplitForm fontSize={elementFontSize} />
                     </Elements>
-                </div>
-            </StripeProvider>
+                </div >
+            </StripeProvider >
         );
     }
 }
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(PaymentForm);

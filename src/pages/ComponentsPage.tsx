@@ -1,13 +1,8 @@
 ﻿import * as React from "react";
-import BillCard from "../components/BillCard/BillCard";
-import { PaymentForm } from "../components/BillCard/payment";
+import { PaymentForm } from "../components/BillCard/Payment";
+import PlanCard from "../components/BillCard/PlanCard";
 import BarsChart from "../components/Graphs/Bar/BarsChart";
 import RadialBarChart from "../components/Graphs/Radial/ValidationRadialChart";
-const ReactStripeElements = require("react-stripe-elements");
-
-const {
-} = ReactStripeElements;
-
 
 const centerStyle = {
     margin: "auto",
@@ -147,11 +142,11 @@ export default class ComponentsPage extends React.Component<any, any> {
                 </div>
 
                 <div style={{ padding: 30 }}>
-                    <PaymentForm />
+                    <PaymentForm user={undefined} />
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     <div style={{ width: 232, height: 700 }}>
-                        <div ><BillCard letterColor={sStandard.letterColor}
+                        <div ><PlanCard letterColor={sStandard.letterColor}
                             containterColor={sStandard.containterColor}
                             footerColor={sStandard.footerColor}
                             uriImage={sStandard.uriImage}
@@ -176,7 +171,7 @@ export default class ComponentsPage extends React.Component<any, any> {
                         /></div>
                     </div>
                     <div style={{ width: 232, height: 700 }}>
-                        <div ><BillCard letterColor={sStandard.letterColor}
+                        <div ><PlanCard letterColor={sStandard.letterColor}
                             containterColor={sStandard.containterColor}
                             footerColor={sStandard.footerColor}
                             uriImage={sStandard.uriImage}
@@ -200,7 +195,7 @@ export default class ComponentsPage extends React.Component<any, any> {
                         /></div>
                     </div>
                     <div style={{ width: 232 }}>
-                        <div ><BillCard letterColor={sPro.letterColor}
+                        <div ><PlanCard letterColor={sPro.letterColor}
                             containterColor={sPro.containterColor}
                             footerColor={sPro.footerColor}
                             uriImage={sPro.uriImage}
@@ -225,7 +220,7 @@ export default class ComponentsPage extends React.Component<any, any> {
                         /></div >
                     </div>
                     <div style={{ width: 232 }}>
-                        <div ><BillCard letterColor={sEnterprise.letterColor}
+                        <div ><PlanCard letterColor={sEnterprise.letterColor}
                             containterColor={sEnterprise.containterColor}
                             footerColor={sEnterprise.footerColor}
                             uriImage={sEnterprise.uriImage}

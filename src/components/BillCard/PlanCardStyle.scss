@@ -1,0 +1,66 @@
+.container {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    height: 100%;
+    max-width: 200px;
+    max-height: 410px;
+    > div {
+        width: 100%;
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        justify-content: center;
+        > p {
+            font-size: 1.36rem;
+            text-align: center;
+            width: 100%;
+            margin: auto;
+            padding: 1.2rem;
+            font-family: Khand;
+            &.left_testing_card_style {
+                line-height: 1.15rem;
+                font-size: 1rem;
+            }
+            &.left_monitori_card_style {
+                line-height: 1.3rem;
+                font-size: 1rem;
+            }
+        }
+    }
+}
+
+.containerFooter{
+    height: 40px;
+    font-size: 25px;
+    font-family: Khand;
+}
+.button {
+    text-indent: 0;
+    border-radius: 5px;
+    color: #fff;
+    height: 48px;
+    position: absolute;
+    bottom: 1rem;
+    font-size: 2rem;
+    width: 10rem;
+    border: none;
+}
+
+.img_style{
+    display: flex;
+    align-items: center;
+    justify-Content: center;
+    position: relative;
+    width: 98%;
+    height: 250;
+    padding: 1rem;
+}
+.plan_row_style{
+    position: absolute;
+    bottom: 1rem;
+    font-size: 1rem;
+    line-height: 1rem;
+
+}
+

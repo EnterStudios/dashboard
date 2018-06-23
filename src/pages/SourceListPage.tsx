@@ -3,9 +3,9 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 import { replace } from "react-router-redux";
-import {setLoading} from "../actions/loading";
-import {AmazonFlowFlag, setAmazonFlow} from "../actions/session";
-import {getSources} from "../actions/source";
+import { setLoading } from "../actions/loading";
+import { AmazonFlowFlag, setAmazonFlow } from "../actions/session";
+import { getSources } from "../actions/source";
 import List from "../components/List/List";
 import ListItem from "../components/List/ListItem";
 import SourceListGlobalStats from "../components/SourceSelector/SourceSelectorGlobalStats";
@@ -80,7 +80,7 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
         this.handleGotoIntegration = this.handleGotoIntegration.bind(this);
     }
 
-    handleGotoIntegration () {
+    handleGotoIntegration() {
         this.props.goTo("/skills/" + this.props.source.id + "/integration");
     }
 
@@ -97,12 +97,12 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
                             !hasAnySourceIntegrated ?
                                 (
                                     <WelcomePage source={this.props.source} goTo={this.props.goTo}
-                                                 handleLoadingChange={this.props.setLoading}
-                                                 getSources={this.props.getSources}/>
+                                        handleLoadingChange={this.props.setLoading}
+                                        getSources={this.props.getSources} />
                                 ) :
                                 (
                                     <SourceListGlobalStats setLoading={this.props.setLoading} source={this.props.source}
-                                                           startDate={moment().subtract(7, "days")} endDate={moment()}/>
+                                        startDate={moment().subtract(7, "days")} endDate={moment()} />
                                 )
                         )
                         :
@@ -110,8 +110,8 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
                             !hasAnySourceIntegrated ?
                                 (
                                     <WelcomePage source={this.props.source} goTo={this.props.goTo}
-                                                 handleLoadingChange={this.props.setLoading}
-                                                 getSources={this.props.getSources}/>
+                                        handleLoadingChange={this.props.setLoading}
+                                        getSources={this.props.getSources} />
                                 ) :
                                 (
                                     <div className={SourcePagePaneStyle.integrated_preview}>
@@ -128,8 +128,8 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
             <TwoPane
                 gridClass={"source-list-grid"}
                 spacing={true}
-                leftStyle={{padding: "0px 15px 0px 25px", backgroundColor: "#EEF2F5"}}
-                rightStyle={{paddingRight: 0, paddingLeft: 0}}>
+                leftStyle={{ padding: "0px 15px 0px 25px", backgroundColor: "#EEF2F5" }}
+                rightStyle={{ paddingRight: 0, paddingLeft: 0 }}>
                 {leftSide}
                 {rightSide}
             </TwoPane>

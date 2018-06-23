@@ -212,7 +212,10 @@ namespace auth {
             .then((retVal) => {
                 const data = retVal.val();
                 if (data) {
-                    return new UserDetails(data.silentEchoToken, data.smAPIAccessToken, data.vendorID);
+                    return new UserDetails(data.silentEchoToken, data.smAPIAccessToken, data.vendorID,
+                        data.stripeSusbcribedPlanId ? data.stripeSusbcribedPlanId : undefined,
+                        data.stripeCustomerObjId ? data.stripeCustomerObjId : undefined,
+                        data.stripeSusbcribedPlanName ? data.stripeSusbcribedPlanName : undefined);
                 }
                 return new UserDetails(undefined, undefined, undefined);
             });
