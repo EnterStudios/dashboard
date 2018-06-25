@@ -163,10 +163,8 @@ const render = function () {
                 </Route>
                 {process.env.NODE_ENV !== "production" && <Route path="/components" component={ComponentsPage} />}
                 <Route path="/" component={Dashboard} onEnter={onEnterDashboard}>
-                    if (process.env.NODE_ENV !== "production" ) {
-                        <Route path="/plans" component={PlanPage} />}
-                    if (process.env.NODE_ENV !== "production" ) {
-                        <Route path="/bills" component={BillPage} />}
+                    {process.env.NODE_ENV !== "production" && <Route path="/plans" component={PlanPage} />}
+                    {process.env.NODE_ENV !== "production" && <Route path="/bills" component={BillPage} />}
                     <Route path="/skills" component={SourceListPage} />
                     <Route path="/skills/new" component={NewSourcePage} />
                     <Route path="/skills/:sourceId" onEnter={setSource} onLeave={removeSource} >

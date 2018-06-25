@@ -168,8 +168,13 @@ export default class ComponentsPage extends React.Component<any, any> {
             testing: "",
             monitoring: "",
         };
+        const user = {
+            email: "email.com",
+            userId: "123",
+        };
 
         return (
+
             <div>
                 <h1 style={{ ...centerStyle, ...{ textAlign: "center" } }}>Components Page</h1>
                 <div style={{ minHeight: 830 }}>
@@ -208,7 +213,7 @@ export default class ComponentsPage extends React.Component<any, any> {
                 </div>
 
                 <div style={{ padding: 30 }}>
-                    <PaymentForm user={undefined} />
+                    <PaymentForm user={user} />
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     <div style={{ width: 232, height: 700 }}>

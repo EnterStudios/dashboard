@@ -35,7 +35,10 @@ const createOptions = (fontSize: string) => {
     };
 };
 
-class SplitFormC extends React.Component<any & { fontSize: string }, any> {
+
+
+
+class SplitFormC extends React.Component<any & { fontSize: string, user: User }, any> {
     constructor() {
         super();
         this.state = {
@@ -45,6 +48,8 @@ class SplitFormC extends React.Component<any & { fontSize: string }, any> {
     }
     handleSubmit = (ev: any) => {
         ev.preventDefault();
+        console.log(",.................................");
+        console.log(this.props.user);
         if (this.props.stripe) {
             this.props.stripe
                 .createToken()
@@ -132,8 +137,6 @@ export class PaymentForm extends React.Component<PaymentFormProps, any> {
         this.state = {
             stripe: undefined,
             elementFontSize: window.innerWidth < 450 ? "14px" : "18px",
-
-            // user: undefined
         };
         window.addEventListener("resize", () => {
             if (window.innerWidth < 450 && this.state.elementFontSize !== "14px") {
@@ -149,8 +152,6 @@ export class PaymentForm extends React.Component<PaymentFormProps, any> {
     }
 
     async componentDidMount() {
-        // let userDetails: UserDetails = await auth.currentUserDetails();
-        // console.log(userDetails);
         if ((window as any).Stripe) {
             this.setState({ stripe: (window as any).Stripe("pk_test_pjtrb20eQPAtLomXsm4sopuW") });
         } else {
@@ -180,9 +181,10 @@ export class PaymentForm extends React.Component<PaymentFormProps, any> {
                         <img src="https://bespoken.io/wp-content/uploads/2018/05/voicexplogo-e1526593815539.png"
                             alt="security logo" />
                     </div>
-                    <b>Payment form {this.props.user.email} </b>
+                    {/* <b>Payment form {this.props.user.email} </b> */}
+                    <b>Payment form   {this.props.user.email}</b>
                     < Elements>
-                        <SplitForm fontSize={elementFontSize} />
+                        <SplitForm user={this.props.user} fontSize={elementFontSize} />
                     </Elements>
                 </div >
             </StripeProvider >
