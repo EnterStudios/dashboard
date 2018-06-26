@@ -1,30 +1,38 @@
-import * as moment from "moment";
 import * as React from "react";
+import { connect } from "react-redux";
+import { push, RouterAction } from "react-router-redux";
 import BillForm from "../components/BillCard/BillForm";
 import PaymentForm from "../components/BillCard/Payment";
-import Source from "../models/source";
-import service from "../services/source";
+import { State } from "../reducers";
+
 const PaymentStyle = require("../components/BillCard/PaymentStyle.scss");
 
 
-export default class BillPage extends React.Component<any, any> {
+
+interface BillPageProps {
+    goTo: (uri: String) => RouterAction;
+}
+
+interface BillPageState {
+};
+
+function mapStateToProps(state: State.All) {
+    return {
+    };
+}
+
+function mapDispatchToProps(dispatch: Redux.Dispatch<any>) {
+    return {
+        goTo: function (uri: string): RouterAction {
+            return dispatch(push(uri));
+        },
+    };
+}
+
+export class BillPage extends React.Component<BillPageProps, BillPageState> {
     constructor(props: any) {
         super(props);
 
-        this.handleGetStarted = this.handleGetStarted.bind(this);
-    }
-
-    async handleGetStarted() {
-        if (this.props.source && this.props.source.id) {
-            this.props.goTo("/skills/" + this.props.source.id + "/integration");
-        } else {
-            this.props.handleLoadingChange(true);
-            const source: Source = new Source({ name: "default1", created: moment().toISOString() });
-            const createdSource = await service.createSource(source);
-            await this.props.getSources();
-            this.props.handleLoadingChange(false);
-            this.props.goTo(`/skills/${createdSource.id}/`);
-        }
     }
 
     render() {
@@ -69,4 +77,7 @@ export default class BillPage extends React.Component<any, any> {
         );
     }
 };
-
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(BillPage);

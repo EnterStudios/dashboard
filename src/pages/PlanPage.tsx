@@ -1,28 +1,35 @@
-import * as moment from "moment";
 import * as React from "react";
+import { connect } from "react-redux";
+import { push, RouterAction } from "react-router-redux";
 import PlanCard from "../components/BillCard/PlanCard";
-import Source from "../models/source";
-import service from "../services/source";
+import { State } from "../reducers";
 
 
-export default class BillPage extends React.Component<any, any> {
+interface BillPageProps {
+    goTo: (uri: String) => RouterAction;
+}
+
+
+interface BillPageState {
+};
+
+function mapStateToProps(state: State.All) {
+    return {
+    };
+}
+
+function mapDispatchToProps(dispatch: Redux.Dispatch<any>) {
+    return {
+        goTo: function (uri: string): RouterAction {
+            return dispatch(push(uri));
+        },
+    };
+}
+
+export class PlanPage extends React.Component<BillPageProps, BillPageState> {
     constructor(props: any) {
         super(props);
 
-        this.handleGetStarted = this.handleGetStarted.bind(this);
-    }
-
-    async handleGetStarted() {
-        if (this.props.source && this.props.source.id) {
-            this.props.goTo("/skills/" + this.props.source.id + "/integration");
-        } else {
-            this.props.handleLoadingChange(true);
-            const source: Source = new Source({ name: "default1", created: moment().toISOString() });
-            const createdSource = await service.createSource(source);
-            await this.props.getSources();
-            this.props.handleLoadingChange(false);
-            this.props.goTo(`/skills/${createdSource.id}/`);
-        }
     }
 
     render() {
@@ -31,6 +38,8 @@ export default class BillPage extends React.Component<any, any> {
         const llamaEnterprise = "Enterprise";
         const llamaStandard = "Standard";
         const sStandard = {
+            goTo: this.props.goTo,
+            planId: "standard",
             uriImage: uri + llamaStandard + ".jpg",
             letterColor: "#798a9a",
             containterColor: "#fcfdff",
@@ -55,6 +64,8 @@ export default class BillPage extends React.Component<any, any> {
             price: "$25.00",
         };
         const sPro = {
+            goTo: this.props.goTo,
+            planId: "pro",
             uriImage: uri + llamaPro + ".jpg",
             letterColor: "#ea8887",
             containterColor: "#fcfdff",
@@ -79,6 +90,8 @@ export default class BillPage extends React.Component<any, any> {
             monitoring: "",
         };
         const sEnterprise = {
+            goTo: this.props.goTo,
+            planId: "enterprise",
             uriImage: uri + llamaEnterprise + ".jpg",
             letterColor: "#a7a491",
             containterColor: "#fdfffe",
@@ -108,7 +121,10 @@ export default class BillPage extends React.Component<any, any> {
             <div style={{ display: "flex", justifyContent: "center" }}>
 
                 <div >
-                    <PlanCard letterColor={sStandard.letterColor}
+                    <PlanCard
+                        goTo={this.props.goTo}
+                        planId={sStandard.planId}
+                        letterColor={sStandard.letterColor}
                         containterColor={sStandard.containterColor}
                         footerColor={sStandard.footerColor}
                         uriImage={sStandard.uriImage}
@@ -129,11 +145,13 @@ export default class BillPage extends React.Component<any, any> {
                         numUsers={"Users"}
                         price={"Montlhy price"}
                         leftCard={true}
-
                     />
                 </div>
 
-                <div ><PlanCard letterColor={sStandard.letterColor}
+                <div ><PlanCard
+                    goTo={this.props.goTo}
+                    planId={sStandard.planId}
+                    letterColor={sStandard.letterColor}
                     containterColor={sStandard.containterColor}
                     footerColor={sStandard.footerColor}
                     uriImage={sStandard.uriImage}
@@ -155,7 +173,10 @@ export default class BillPage extends React.Component<any, any> {
                     monitoring={sStandard.monitoring}
                     leftCard={sStandard.leftCard}
                 /></div>
-                <div ><PlanCard letterColor={sPro.letterColor}
+                <div ><PlanCard
+                    goTo={this.props.goTo}
+                    planId={sPro.planId}
+                    letterColor={sPro.letterColor}
                     containterColor={sPro.containterColor}
                     footerColor={sPro.footerColor}
                     uriImage={sPro.uriImage}
@@ -179,7 +200,10 @@ export default class BillPage extends React.Component<any, any> {
                     leftCard={sPro.leftCard}
                 /></div >
 
-                <div ><PlanCard letterColor={sEnterprise.letterColor}
+                <div ><PlanCard
+                    goTo={this.props.goTo}
+                    planId={sEnterprise.planId}
+                    letterColor={sEnterprise.letterColor}
                     containterColor={sEnterprise.containterColor}
                     footerColor={sEnterprise.footerColor}
                     uriImage={sEnterprise.uriImage}
@@ -208,3 +232,7 @@ export default class BillPage extends React.Component<any, any> {
     }
 };
 
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PlanPage);

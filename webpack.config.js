@@ -19,6 +19,8 @@ var intercom_app_id_prod = process.env.INTERCOM_APP_ID_PROD;
 var intercom_app_id_dev = process.env.INTERCOM_APP_ID_DEV;
 var source_url = process.env.SOURCE_URL;
 
+var stripe_url = process.env.STRIPE_API_URL;
+
 var logless_base = "";
 var source_api_access_token = process.env.SOURCE_API_ACCESS_TOKEN;
 var firebase_api_key = "AIzaSyBfHBDy0cVUYnBL4l6_9RYubIdZSC3fG-A";
@@ -28,18 +30,18 @@ var firebase_storage_bucket = "dev-bespoken-tools.appspot.com";
 var firebase_messaging_sender_id = "686431405396";
 var travis_tag = process.env.TRAVIS_TAG;
 if (travis_tag) {
-    const env = travis_tag.match(/^(prod|dev).*$/);
-    if (env && env.length === 2 && env[1] === "dev") {
-        logless_base = "https://logless-dev.bespoken.tools/v1";
-    }
-    if (env && env.length === 2 && env[1] === "prod") {
-        firebase_api_key = "AIzaSyB1b8t0rbf_x2ZEhJel0pm6mQ4POZLgz-k";
-        firebase_auth_domain = "bespoken-tools.firebaseapp.com";
-        firebase_database_url = "https://bespoken-tools.firebaseio.com";
-        firebase_storage_bucket = "bespoken-tools.appspot.com";
-        firebase_messaging_sender_id = "629657216103";
-        monitor_api_url = "https://monitor-api.bespoken.tools";
-    }
+  const env = travis_tag.match(/^(prod|dev).*$/);
+  if (env && env.length === 2 && env[1] === "dev") {
+    logless_base = "https://logless-dev.bespoken.tools/v1";
+  }
+  if (env && env.length === 2 && env[1] === "prod") {
+    firebase_api_key = "AIzaSyB1b8t0rbf_x2ZEhJel0pm6mQ4POZLgz-k";
+    firebase_auth_domain = "bespoken-tools.firebaseapp.com";
+    firebase_database_url = "https://bespoken-tools.firebaseio.com";
+    firebase_storage_bucket = "bespoken-tools.appspot.com";
+    firebase_messaging_sender_id = "629657216103";
+    monitor_api_url = "https://monitor-api.bespoken.tools";
+  }
 }
 
 // A couple of default buildVariables, these are then made available
@@ -62,6 +64,7 @@ var buildVariables = {
     FIREBASE_MESSAGING_SENDER_ID: JSON.stringify(firebase_messaging_sender_id),
     INTERCOM_APP_ID_PROD: JSON.stringify(intercom_app_id_prod),
     INTERCOM_APP_ID_DEV: JSON.stringify(intercom_app_id_dev),
+    STRIPE_API_URL: JSON.stringify(stripe_url),
   },
   'BASENAME': JSON.stringify("/dashboard"),
   'GOOGLE_ANALYTICS': JSON.stringify(""),

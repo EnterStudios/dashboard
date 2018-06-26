@@ -1,8 +1,10 @@
 import * as React from "react";
+import { RouterAction } from "react-router-redux";
 
 const PlanCardStyle = require("./PlanCardStyle.scss");
 
 interface BillCardProps {
+    planId: string;
     uriImage: string;
     letterColor: string;
     containterColor: string;
@@ -25,6 +27,7 @@ interface BillCardProps {
     numUsers: string;
     price: string;
     leftCard: boolean;
+    goTo: (uri: String) => RouterAction;
 }
 
 interface BillCardState {
@@ -33,6 +36,12 @@ interface BillCardState {
 export default class BillCard extends React.Component<BillCardProps, BillCardState> {
     constructor(props: any) {
         super(props);
+    }
+
+    handlePlanClick = (evt: any) => {
+        if (this.props.goTo) {
+            this.props.goTo("/bills/" + this.props.planId);
+        }
     }
 
     render() {
@@ -45,7 +54,7 @@ export default class BillCard extends React.Component<BillCardProps, BillCardSta
 
 
                         {(!this.props.leftCard) &&
-                            <button className={PlanCardStyle.button} style={{ backgroundColor: this.props.buttonColor }} >{this.props.alt}</button>
+                            <button onClick={this.handlePlanClick} className={PlanCardStyle.button} style={{ backgroundColor: this.props.buttonColor }} >{this.props.alt}</button>
                         }
 
                         {(this.props.leftCard) &&

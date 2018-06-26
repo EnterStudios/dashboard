@@ -97,6 +97,7 @@ export default class ComponentsPage extends React.Component<any, any> {
         const llamaEnterprise = "Enterprise";
         const llamaStandard = "Standard";
         const sStandard = {
+            planId: "standard",
             uriImage: uri + llamaStandard + ".jpg",
             letterColor: "#798a9a",
             containterColor: "#fcfdff",
@@ -121,6 +122,7 @@ export default class ComponentsPage extends React.Component<any, any> {
             price: "$25.00",
         };
         const sPro = {
+            planId: "pro",
             uriImage: uri + llamaPro + ".jpg",
             letterColor: "#ea8887",
             containterColor: "#fcfdff",
@@ -145,6 +147,7 @@ export default class ComponentsPage extends React.Component<any, any> {
             monitoring: "",
         };
         const sEnterprise = {
+            planId: "enterprise",
             uriImage: uri + llamaEnterprise + ".jpg",
             letterColor: "#a7a491",
             containterColor: "#fdfffe",
@@ -213,11 +216,14 @@ export default class ComponentsPage extends React.Component<any, any> {
                 </div>
 
                 <div style={{ padding: 30 }}>
-                    <PaymentForm user={user} />
+                    <PaymentForm user={user} goTo={undefined} />
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     <div style={{ width: 232, height: 700 }}>
-                        <div ><PlanCard letterColor={sStandard.letterColor}
+                        <div ><PlanCard
+                            goTo={undefined}
+                            planId={sStandard.planId}
+                            letterColor={sStandard.letterColor}
                             containterColor={sStandard.containterColor}
                             footerColor={sStandard.footerColor}
                             uriImage={sStandard.uriImage}
@@ -242,7 +248,10 @@ export default class ComponentsPage extends React.Component<any, any> {
                         /></div>
                     </div>
                     <div style={{ width: 232, height: 700 }}>
-                        <div ><PlanCard letterColor={sStandard.letterColor}
+                        <div ><PlanCard
+                            goTo={undefined}
+                            planId={sStandard.planId}
+                            letterColor={sStandard.letterColor}
                             containterColor={sStandard.containterColor}
                             footerColor={sStandard.footerColor}
                             uriImage={sStandard.uriImage}
@@ -266,7 +275,10 @@ export default class ComponentsPage extends React.Component<any, any> {
                         /></div>
                     </div>
                     <div style={{ width: 232 }}>
-                        <div ><PlanCard letterColor={sPro.letterColor}
+                        <div ><PlanCard
+                            goTo={undefined}
+                            planId={sPro.planId}
+                            letterColor={sPro.letterColor}
                             containterColor={sPro.containterColor}
                             footerColor={sPro.footerColor}
                             uriImage={sPro.uriImage}
@@ -291,12 +303,13 @@ export default class ComponentsPage extends React.Component<any, any> {
                         /></div >
                     </div>
                     <div style={{ width: 232 }}>
-                        <div ><PlanCard letterColor={sEnterprise.letterColor}
+                        <div ><PlanCard
+                            goTo={undefined}
+                            planId={sEnterprise.planId} letterColor={sEnterprise.letterColor}
                             containterColor={sEnterprise.containterColor}
                             footerColor={sEnterprise.footerColor}
                             uriImage={sEnterprise.uriImage}
                             alt={sEnterprise.alt} buttonColor={sEnterprise.buttonColor}
-
                             unitTest={sEnterprise.unitTest}
                             numVirtualDevice={sEnterprise.numVirtualDevice}
                             numSkills={sEnterprise.numSkills}

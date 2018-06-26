@@ -150,6 +150,15 @@ const setSource: EnterHook = function (nextState: RouterState, redirect: Redirec
     });
 };
 
+const setPlan: EnterHook = function (nextState: RouterState, redirect: RedirectFunction) {
+
+    const planId: string = nextState.params["planId"];
+    if (!planId) {
+        store.dispatch(replace("/plans"));
+    }
+
+};
+
 const removeSource: LeaveHook = function () {
     IndexUtils.removeSelectedSource(store.dispatch);
 };
@@ -164,7 +173,8 @@ const render = function () {
                 {process.env.NODE_ENV !== "production" && <Route path="/components" component={ComponentsPage} />}
                 <Route path="/" component={Dashboard} onEnter={onEnterDashboard}>
                     {process.env.NODE_ENV !== "production" && <Route path="/plans" component={PlanPage} />}
-                    {process.env.NODE_ENV !== "production" && <Route path="/bills" component={BillPage} />}
+                    {process.env.NODE_ENV !== "production" && <Route path="/bills/" onEnter={setPlan} component={BillPage} />}
+                    {process.env.NODE_ENV !== "production" && <Route path="/bills/:planId" component={BillPage} />}
                     <Route path="/skills" component={SourceListPage} />
                     <Route path="/skills/new" component={NewSourcePage} />
                     <Route path="/skills/:sourceId" onEnter={setSource} onLeave={removeSource} >

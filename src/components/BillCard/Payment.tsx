@@ -1,4 +1,5 @@
 import { connect } from "react-redux";
+import { push, RouterAction } from "react-router-redux";
 import { User, UserDetails, UserProperties } from "../../models/user";
 import { State } from "../../reducers";
 import auth from "../../services/auth";
@@ -35,10 +36,14 @@ const createOptions = (fontSize: string) => {
     };
 };
 
+export interface SplitFormCProps {
+    fontSize: string;
+    user: User;
+    goTo: (uri: String) => RouterAction;
+}
 
 
-
-class SplitFormC extends React.Component<any & { fontSize: string, user: User }, any> {
+class SplitFormC extends React.Component<any & SplitFormCProps, any> {
     constructor() {
         super();
         this.state = {
@@ -46,8 +51,16 @@ class SplitFormC extends React.Component<any & { fontSize: string, user: User },
             message: undefined,
         };
     }
+
+    redirect = () => {
+        if (this.props.goTo)
+            this.props.goTo("/skills");
+    }
+
     handleSubmit = (ev: any) => {
         ev.preventDefault();
+        console.log("............");
+        console.log(this.props.user);
 
         if (this.props.stripe) {
             this.props.stripe
@@ -57,8 +70,8 @@ class SplitFormC extends React.Component<any & { fontSize: string, user: User },
                     if (payload.token) {
                         const userDetail: UserDetails = await auth.currentUserDetails();
                         const userProperties: UserProperties = {
-                            email: "daisy@gmail.com",
-                            userId: "RSBBpkg5w1VTXKUGRuCLiJjC0aH3",
+                            email: this.props.user.email,
+                            userId: this.props.user.userId,
                             stripeCustomerObjId: userDetail.stripeCustomerObjId ?
                                 userDetail.stripeCustomerObjId : undefined,
                             stripeSusbcribedPlanId: userDetail.stripeSusbcribedPlanId ?
@@ -70,6 +83,13 @@ class SplitFormC extends React.Component<any & { fontSize: string, user: User },
                         this.setState({
                             message: helper
                         });
+                        if (helper === "operation success") {
+
+                            setTimeout(() => {
+                                this.redirect();
+                            }, 2500);
+                        }
+
                     } else {
                         console.error("fail to try to create a token ", payload);
                         this.setState({
@@ -116,6 +136,7 @@ const SplitForm = injectStripe(SplitFormC);
 
 export interface PaymentFormProps {
     user: User;
+    goTo: (uri: String) => RouterAction;
 }
 
 function mapStateToProps(state: State.All) {
@@ -127,6 +148,9 @@ function mapStateToProps(state: State.All) {
 
 function mapDispatchToProps(dispatch: Redux.Dispatch<any>) {
     return {
+        goTo: function (uri: string): RouterAction {
+            return dispatch(push(uri));
+        }
     };
 }
 
@@ -181,9 +205,9 @@ export class PaymentForm extends React.Component<PaymentFormProps, any> {
                             alt="security logo" />
                     </div>
                     {/* <b>Payment form {this.props.user.email} </b> */}
-                    <b>Payment form   {this.props.user.email}</b>
+                    <b>Payment form </b>
                     < Elements>
-                        <SplitForm user={this.props.user} fontSize={elementFontSize} />
+                        <SplitForm goTo={this.props.goTo} user={this.props.user} fontSize={elementFontSize} />
                     </Elements>
                 </div >
             </StripeProvider >
