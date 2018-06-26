@@ -91,34 +91,15 @@ export class SourceListPage extends React.Component<SourceListPageProps, SourceL
         let rightSide = (
             <div className={SourcePagePaneStyle.right_container}>
                 {
-                    // TODO: provisional condition for production vs dev right panel remove once tested and approved
-                    process.env.NODE_ENV !== "production" ?
+                    !hasAnySourceIntegrated ?
                         (
-                            !hasAnySourceIntegrated ?
-                                (
-                                    <WelcomePage source={this.props.source} goTo={this.props.goTo}
-                                                 handleLoadingChange={this.props.setLoading}
-                                                 getSources={this.props.getSources}/>
-                                ) :
-                                (
-                                    <SourceListGlobalStats setLoading={this.props.setLoading} source={this.props.source}
-                                                           startDate={moment().subtract(7, "days")} endDate={moment()}/>
-                                )
-                        )
-                        :
+                            <WelcomePage source={this.props.source} goTo={this.props.goTo}
+                                         handleLoadingChange={this.props.setLoading}
+                                         getSources={this.props.getSources}/>
+                        ) :
                         (
-                            !hasAnySourceIntegrated ?
-                                (
-                                    <WelcomePage source={this.props.source} goTo={this.props.goTo}
-                                                 handleLoadingChange={this.props.setLoading}
-                                                 getSources={this.props.getSources}/>
-                                ) :
-                                (
-                                    <div className={SourcePagePaneStyle.integrated_preview}>
-                                        <div><strong>Coming Soon to Your Logs</strong><br />New charts and graphs</div>
-                                        <a href={"#"} onClick={this.handleGotoIntegration}>Go to integration page</a>
-                                    </div>
-                                )
+                            <SourceListGlobalStats setLoading={this.props.setLoading} source={this.props.source}
+                                                   startDate={moment().subtract(7, "days")} endDate={moment()}/>
                         )
                 }
             </div>
