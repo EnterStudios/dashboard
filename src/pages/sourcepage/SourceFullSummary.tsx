@@ -163,6 +163,7 @@ export class SourceFullSummary extends React.Component<SourceFullSummaryProps, S
         const handleOriginChange = this.handleOriginChange;
         const handleShowUpTime = this.handleShowUpTime;
         const handleShowEmptyGraph = this.handleShowEmptyGraph;
+        const isUptimeVisible = this.props.source && (this.props.source.monitoring_enabled || this.props.source.validation_enabled);
 
         return (
             <div>
@@ -215,7 +216,7 @@ export class SourceFullSummary extends React.Component<SourceFullSummaryProps, S
                                                    {...others}/>
                           </Cell>
                       )}
-                      <Cell className="bar-chart" col={12}>
+                      <Cell className={`bar-chart ${isUptimeVisible ? "" : "remove_top_padding"}`} col={12}>
                         <SourceIntentSummary
                             {...others}
                             bars={bars}/>

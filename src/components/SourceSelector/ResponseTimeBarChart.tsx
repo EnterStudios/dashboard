@@ -48,8 +48,8 @@ export class ResponseTimeBarChart extends LoadingComponent.Component<any, Respon
         let avgResponseTime;
         try {
             const responseTime: any = await LogService.getResponseTimeSummary(query);
-            avgResponseTime = responseTime.data.reduce((acum: any, item: any) => acum + (item.avgReponseTime / responseTime.data.length), 0);
-            formatedData = responseTime.data;
+            avgResponseTime = responseTime.data.reduce((acum: any, item: any) => acum + (item.avgResponseTime / responseTime.data.length), 0);
+            formatedData = responseTime.data.filter((bucket: any) => bucket.avgResponseTime > 0);
         } catch (err) {
             formatedData = [];
         } finally {
@@ -84,8 +84,8 @@ export class ResponseTimeBarChart extends LoadingComponent.Component<any, Respon
         let avgResponseTime;
         try {
             const responseTime: any = await LogService.getResponseTimeSummary(query);
-            avgResponseTime = responseTime.data.reduce((acum: any, item: any) => acum + (item.avgReponseTime / responseTime.data.length), 0);
-            formatedData = responseTime.data;
+            avgResponseTime = responseTime.data.reduce((acum: any, item: any) => acum + (item.avgResponseTime / responseTime.data.length), 0);
+            formatedData = responseTime.data.filter((bucket: any) => bucket.avgResponseTime > 0).map((bucket: any) => ({...bucket, avgResponseTime: Math.ceil(bucket.avgResponseTime)}));
         } catch (err) {
             formatedData = [];
         } finally {
