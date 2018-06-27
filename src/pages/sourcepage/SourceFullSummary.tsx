@@ -207,7 +207,7 @@ export class SourceFullSummary extends React.Component<SourceFullSummaryProps, S
                       {this.props.source && (this.props.source.monitoring_enabled || this.props.source.validation_enabled) &&
                       (
                           <Cell className="line-chart thin-stroke" col={12} tablet={8} phone={6}
-                                style={{height: showUpTime ? 300 : 0}}>
+                                style={{height: showUpTime ? 265 : 0}}>
                               <Grid>
                                   <h4 className="graph-header">Source Up Time</h4>
                               </Grid>
