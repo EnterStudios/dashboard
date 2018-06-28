@@ -213,9 +213,9 @@ namespace auth {
                 const data = retVal.val();
                 if (data) {
                     return new UserDetails(data.silentEchoToken, data.smAPIAccessToken, data.vendorID,
-                        data.stripeSusbcribedPlanId ? data.stripeSusbcribedPlanId : undefined,
+                        data.stripeSubscribedPlanId ? data.stripeSubscribedPlanId : undefined,
                         data.stripeCustomerObjId ? data.stripeCustomerObjId : undefined,
-                        data.stripeSusbcribedPlanName ? data.stripeSusbcribedPlanName : undefined);
+                        data.stripeSubscribedPlanName ? data.stripeSubscribedPlanName : undefined);
                 }
                 return new UserDetails(undefined, undefined, undefined);
             });

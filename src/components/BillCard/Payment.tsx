@@ -36,6 +36,7 @@ const createOptions = (fontSize: string) => {
 
 export interface SplitFormCProps {
     fontSize: string;
+    subscriptionUpdate: boolean;
     user: User;
     planId: string;
     goTo: (uri: String) => RouterAction;
@@ -73,9 +74,14 @@ class SplitFormC extends React.Component<any & SplitFormCProps, any> {
                                 userDetail.stripeCustomerObjId : undefined,
                             stripeSubscribedPlanId: userDetail.stripeSubscribedPlanId ?
                                 userDetail.stripeSubscribedPlanId : undefined,
+                            stripeSubscribedPlanName: userDetail.stripeSubscribedPlanName ?
+                                userDetail.stripeSubscribedPlanName : undefined,
                         };
                         const user = new User(userProperties);
                         const planToSubscribe = this.props.planId;
+                        this.setState({
+                            message: "Loading..."
+                        });
                         const helper = await postStripe(user, payload.token.id, planToSubscribe);
                         this.setState({
                             message: helper
@@ -103,6 +109,12 @@ class SplitFormC extends React.Component<any & SplitFormCProps, any> {
     }
     render() {
         const { message } = this.state;
+        const subscriptionUpdate = this.props.subscriptionUpdate;
+        let messageStyle = (message === "operation success") ? PaymentStyle.success : PaymentStyle.invalid;
+        if (message === "Loading...") {
+            messageStyle = PaymentStyle.Loading;
+        }
+
         return (
             <form onSubmit={this.handleSubmit}>
                 <label>{"Card number"}
@@ -124,7 +136,8 @@ class SplitFormC extends React.Component<any & SplitFormCProps, any> {
                     />
                 </label>
                 <button>{"Subscribe"}</button>
-                <div><label className={PaymentStyle.invalid}> <b> {message}</b></label></div>
+                <button disabled={!subscriptionUpdate}>{"Update Subscribe"}</button>
+                <div><label className={messageStyle}> <b> {message}</b></label></div>
             </form>
         );
     }
@@ -173,9 +186,9 @@ export class PaymentForm extends React.Component<PaymentFormProps, any> {
 
     render() {
         const { elementFontSize } = this.state;
+
         return (
             <StripeProvider apiKey="pk_test_pjtrb20eQPAtLomXsm4sopuW">
-                {/* <div  className="Checkout"> */}
                 <div className={PaymentStyle.container}>
                     <div>
                         <img src="https://bespoken.io/wp-content/uploads/2018/05/voicexplogo-e1526593815539.png"
@@ -191,7 +204,8 @@ export class PaymentForm extends React.Component<PaymentFormProps, any> {
                     </div>
                     <b>Payment form </b>
                     < Elements>
-                        <SplitForm planId={this.props.planId} goTo={this.props.goTo} user={this.props.user} fontSize={elementFontSize} />
+                        <SplitForm planId={this.props.planId} subscriptionUpdate={false}
+                            goTo={this.props.goTo} user={this.props.user} fontSize={elementFontSize} />
                     </Elements>
                 </div >
             </StripeProvider >

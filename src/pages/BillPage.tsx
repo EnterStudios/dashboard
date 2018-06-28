@@ -49,7 +49,6 @@ export class BillPage extends React.Component<BillPageProps, BillPageState> {
         const sStandard = {
             uriImageLLamaPay: uri + llama + ".png",
             uriImageLLamalogo: uri + llamaLogo + ".png",
-            //  date: `${(new Date()).toUTCString()}`,
             date: `${moment().format("MMM Do")}`,
             currentPlan: user.stripeSubscribedPlanName,
             planToSubscribe: userPlanId,

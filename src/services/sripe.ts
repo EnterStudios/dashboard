@@ -16,6 +16,7 @@ export async function postStripe(user: User, token: any, planToSubscribe: string
     query.add({ parameter: "stripeCustomerObjId", value: user.stripeCustomerObjId ? user.stripeCustomerObjId : undefined });
     query.add({ parameter: "email", value: user.email });
     query.add({ parameter: "updateSubscribedPlan", value: user.stripeSubscribedPlanId ? true : false });
+    query.add({ parameter: "stripeSubscribedPlanName", value: user.stripeSubscribedPlanName ? user.stripeSubscribedPlanName : undefined });
     query.add({
         parameter: "stripeSubscribedPlanId", value: user.stripeSubscribedPlanId ?
             user.stripeSubscribedPlanId : undefined

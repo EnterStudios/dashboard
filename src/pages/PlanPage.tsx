@@ -48,7 +48,6 @@ export class PlanPage extends React.Component<BillPageProps, BillPageState> {
     render() {
 
         const userPlanId = this.state.user && this.state.user.stripeSubscribedPlanName;
-        //  const userPlanId = "standard";
         const uri = "https://bespoken.io/wp-content/uploads/2018/05/";
         const llamaPro = "Pro";
         const llamaEnterprise = "Enterprise";
@@ -152,7 +151,6 @@ export class PlanPage extends React.Component<BillPageProps, BillPageState> {
                         // featurePlan2={" Number of devices: "}
                         featurePlan3={"invoicing period: "}
                         detailPlan1={userPlanId}
-                        //detailPlan1={"Standard"}
                         detailPlan2={""}
                         detailPlan3={"monthly"}
                         testing={"Testing"}
@@ -230,7 +228,6 @@ export class PlanPage extends React.Component<BillPageProps, BillPageState> {
                     footerColor={sEnterprise.footerColor}
                     uriImage={sEnterprise.uriImage}
                     alt={sEnterprise.alt} buttonColor={sEnterprise.buttonColor}
-
                     unitTest={sEnterprise.unitTest}
                     numVirtualDevice={sEnterprise.numVirtualDevice}
                     numSkills={sEnterprise.numSkills}
