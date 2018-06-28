@@ -15,30 +15,38 @@ export async function postStripe(user: User, token: any, planToSubscribe: string
     query.add({ parameter: "planToSubscribe", value: planToSubscribe });
     query.add({ parameter: "stripeCustomerObjId", value: user.stripeCustomerObjId ? user.stripeCustomerObjId : undefined });
     query.add({ parameter: "email", value: user.email });
-    query.add({ parameter: "updateSubscribedPlan", value: user.stripeSusbcribedPlanId ? true : false });
+    query.add({ parameter: "updateSubscribedPlan", value: user.stripeSubscribedPlanId ? true : false });
     query.add({
-        parameter: "stripeSusbcribedPlanId", value: user.stripeSusbcribedPlanId ?
-            user.stripeSusbcribedPlanId : undefined
-    });
-    const result: any = await fetch(STRIPE_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: query.json()
+        parameter: "stripeSubscribedPlanId", value: user.stripeSubscribedPlanId ?
+            user.stripeSubscribedPlanId : undefined
     });
 
-    console.error(result);
-    console.error("....", result);
+    try {
+        const result: any = await fetch(STRIPE_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: query.json()
+        });
 
-    if (result.status === 200) {
-        return "operation success";
-    }
-    if (result.status === 401) {
-        // return result;
-        console.log(result.text());
-        return "The request has not been applied because it lacks valid authentication ";
-    }
+        console.log("resultado", result);
+        console.log(result.statusText);
+        if (result.status === 200) {
+            return "operation success";
+        }
+        if (result.status === 401) {
+            return "The request has not been applied because it lacks valid authentication ";
+        }
+        if (result.status === 500) {
+            return result.statusText;
+        }
+        console.error(result.text());
 
-    return result.text();
+    } catch (error) {
+        console.log("error...................");
+        console.error(error);
+    }
+    return "Sorry there is an internal issue, Please try in another time or contact us.";
+
 }

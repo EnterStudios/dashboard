@@ -1,7 +1,5 @@
-import { connect } from "react-redux";
-import { push, RouterAction } from "react-router-redux";
+import { RouterAction } from "react-router-redux";
 import { User, UserDetails, UserProperties } from "../../models/user";
-import { State } from "../../reducers";
 import auth from "../../services/auth";
 import { postStripe } from "../../services/sripe";
 const ReactStripeElements = require("react-stripe-elements");
@@ -39,6 +37,7 @@ const createOptions = (fontSize: string) => {
 export interface SplitFormCProps {
     fontSize: string;
     user: User;
+    planId: string;
     goTo: (uri: String) => RouterAction;
 }
 
@@ -59,8 +58,6 @@ class SplitFormC extends React.Component<any & SplitFormCProps, any> {
 
     handleSubmit = (ev: any) => {
         ev.preventDefault();
-        console.log("............");
-        console.log(this.props.user);
 
         if (this.props.stripe) {
             this.props.stripe
@@ -74,11 +71,11 @@ class SplitFormC extends React.Component<any & SplitFormCProps, any> {
                             userId: this.props.user.userId,
                             stripeCustomerObjId: userDetail.stripeCustomerObjId ?
                                 userDetail.stripeCustomerObjId : undefined,
-                            stripeSusbcribedPlanId: userDetail.stripeSusbcribedPlanId ?
-                                userDetail.stripeSusbcribedPlanId : undefined,
+                            stripeSubscribedPlanId: userDetail.stripeSubscribedPlanId ?
+                                userDetail.stripeSubscribedPlanId : undefined,
                         };
                         const user = new User(userProperties);
-                        const planToSubscribe = "standard";
+                        const planToSubscribe = this.props.planId;
                         const helper = await postStripe(user, payload.token.id, planToSubscribe);
                         this.setState({
                             message: helper
@@ -127,7 +124,7 @@ class SplitFormC extends React.Component<any & SplitFormCProps, any> {
                     />
                 </label>
                 <button>{"Subscribe"}</button>
-                <div><label>{message}</label></div>
+                <div><label className={PaymentStyle.invalid}> <b> {message}</b></label></div>
             </form>
         );
     }
@@ -135,28 +132,16 @@ class SplitFormC extends React.Component<any & SplitFormCProps, any> {
 const SplitForm = injectStripe(SplitFormC);
 
 export interface PaymentFormProps {
+    planId: string;
     user: User;
     goTo: (uri: String) => RouterAction;
 }
 
-function mapStateToProps(state: State.All) {
-    return {
-        user: state.session.user,
-
-    };
-}
-
-function mapDispatchToProps(dispatch: Redux.Dispatch<any>) {
-    return {
-        goTo: function (uri: string): RouterAction {
-            return dispatch(push(uri));
-        }
-    };
-}
-
 export class PaymentForm extends React.Component<PaymentFormProps, any> {
+
     constructor() {
         super();
+
         this.state = {
             stripe: undefined,
             elementFontSize: window.innerWidth < 450 ? "14px" : "18px",
@@ -204,18 +189,12 @@ export class PaymentForm extends React.Component<PaymentFormProps, any> {
                         <img src="https://bespoken.io/wp-content/uploads/2018/05/voicexplogo-e1526593815539.png"
                             alt="security logo" />
                     </div>
-                    {/* <b>Payment form {this.props.user.email} </b> */}
                     <b>Payment form </b>
                     < Elements>
-                        <SplitForm goTo={this.props.goTo} user={this.props.user} fontSize={elementFontSize} />
+                        <SplitForm planId={this.props.planId} goTo={this.props.goTo} user={this.props.user} fontSize={elementFontSize} />
                     </Elements>
                 </div >
             </StripeProvider >
         );
     }
 }
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(PaymentForm);

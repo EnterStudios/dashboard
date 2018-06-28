@@ -216,11 +216,12 @@ export default class ComponentsPage extends React.Component<any, any> {
                 </div>
 
                 <div style={{ padding: 30 }}>
-                    <PaymentForm user={user} goTo={undefined} />
+                    <PaymentForm planId={"standard"} user={user} goTo={undefined} />
                 </div>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                     <div style={{ width: 232, height: 700 }}>
                         <div ><PlanCard
+                            userPlanId={"userPlanId"}
                             goTo={undefined}
                             planId={sStandard.planId}
                             letterColor={sStandard.letterColor}
@@ -249,6 +250,7 @@ export default class ComponentsPage extends React.Component<any, any> {
                     </div>
                     <div style={{ width: 232, height: 700 }}>
                         <div ><PlanCard
+                            userPlanId={"userPlanId"}
                             goTo={undefined}
                             planId={sStandard.planId}
                             letterColor={sStandard.letterColor}
@@ -276,6 +278,7 @@ export default class ComponentsPage extends React.Component<any, any> {
                     </div>
                     <div style={{ width: 232 }}>
                         <div ><PlanCard
+                            userPlanId={"userPlanId"}
                             goTo={undefined}
                             planId={sPro.planId}
                             letterColor={sPro.letterColor}
@@ -304,6 +307,7 @@ export default class ComponentsPage extends React.Component<any, any> {
                     </div>
                     <div style={{ width: 232 }}>
                         <div ><PlanCard
+                            userPlanId={"userPlanId"}
                             goTo={undefined}
                             planId={sEnterprise.planId} letterColor={sEnterprise.letterColor}
                             containterColor={sEnterprise.containterColor}

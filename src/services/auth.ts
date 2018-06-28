@@ -206,9 +206,9 @@ namespace auth {
             .child("/users/" + currentUser.uid).update(props);
     }
 
-    export function currentUserDetails(): Promise<UserDetails> {
+    export async function currentUserDetails(): Promise<UserDetails> {
         const currentUser = remoteservice.defaultService().auth().currentUser;
-        return remoteservice.defaultService().database().ref().child("/users/" + currentUser.uid).once("value")
+        return await remoteservice.defaultService().database().ref().child("/users/" + currentUser.uid).once("value")
             .then((retVal) => {
                 const data = retVal.val();
                 if (data) {

@@ -2,15 +2,20 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { push, RouterAction } from "react-router-redux";
 import PlanCard from "../components/BillCard/PlanCard";
+import { UserDetails } from "../models/user";
 import { State } from "../reducers";
+import auth from "../services/auth";
 
 
 interface BillPageProps {
     goTo: (uri: String) => RouterAction;
+    userPlanId: string;
 }
 
 
 interface BillPageState {
+    user: UserDetails;
+
 };
 
 function mapStateToProps(state: State.All) {
@@ -29,17 +34,28 @@ function mapDispatchToProps(dispatch: Redux.Dispatch<any>) {
 export class PlanPage extends React.Component<BillPageProps, BillPageState> {
     constructor(props: any) {
         super(props);
+        this.state = {
+            user: undefined,
+        };
+        this.initState();
+    }
 
+    initState = async () => {
+        const userDetail: UserDetails = await auth.currentUserDetails();
+        this.setState({ user: userDetail });
     }
 
     render() {
+
+        const userPlanId = this.state.user && this.state.user.stripeSubscribedPlanName;
+        //  const userPlanId = "standard";
         const uri = "https://bespoken.io/wp-content/uploads/2018/05/";
         const llamaPro = "Pro";
         const llamaEnterprise = "Enterprise";
         const llamaStandard = "Standard";
         const sStandard = {
             goTo: this.props.goTo,
-            planId: "standard",
+            planId: "Standard",
             uriImage: uri + llamaStandard + ".jpg",
             letterColor: "#798a9a",
             containterColor: "#fcfdff",
@@ -65,7 +81,7 @@ export class PlanPage extends React.Component<BillPageProps, BillPageState> {
         };
         const sPro = {
             goTo: this.props.goTo,
-            planId: "pro",
+            planId: "Pro",
             uriImage: uri + llamaPro + ".jpg",
             letterColor: "#ea8887",
             containterColor: "#fcfdff",
@@ -91,7 +107,7 @@ export class PlanPage extends React.Component<BillPageProps, BillPageState> {
         };
         const sEnterprise = {
             goTo: this.props.goTo,
-            planId: "enterprise",
+            planId: "Enterprise",
             uriImage: uri + llamaEnterprise + ".jpg",
             letterColor: "#a7a491",
             containterColor: "#fdfffe",
@@ -122,6 +138,7 @@ export class PlanPage extends React.Component<BillPageProps, BillPageState> {
 
                 <div >
                     <PlanCard
+                        userPlanId={userPlanId}
                         goTo={this.props.goTo}
                         planId={sStandard.planId}
                         letterColor={sStandard.letterColor}
@@ -131,11 +148,13 @@ export class PlanPage extends React.Component<BillPageProps, BillPageState> {
                         alt={sStandard.alt} buttonColor={sStandard.buttonColor}
                         currentPlan={"Current Plan"}
                         featurePlan1={" Plan type : "}
-                        featurePlan2={" Number of devices: "}
+                        featurePlan2={""}
+                        // featurePlan2={" Number of devices: "}
                         featurePlan3={"invoicing period: "}
+                        detailPlan1={userPlanId}
+                        //detailPlan1={"Standard"}
+                        detailPlan2={""}
                         detailPlan3={"monthly"}
-                        detailPlan1={"Free"}
-                        detailPlan2={"1"}
                         testing={"Testing"}
                         unitTest={"Unit testing"}
                         numVirtualDevice={"End-to-end Testing"}
@@ -149,6 +168,7 @@ export class PlanPage extends React.Component<BillPageProps, BillPageState> {
                 </div>
 
                 <div ><PlanCard
+                    userPlanId={userPlanId}
                     goTo={this.props.goTo}
                     planId={sStandard.planId}
                     letterColor={sStandard.letterColor}
@@ -174,6 +194,7 @@ export class PlanPage extends React.Component<BillPageProps, BillPageState> {
                     leftCard={sStandard.leftCard}
                 /></div>
                 <div ><PlanCard
+                    userPlanId={userPlanId}
                     goTo={this.props.goTo}
                     planId={sPro.planId}
                     letterColor={sPro.letterColor}
@@ -201,6 +222,7 @@ export class PlanPage extends React.Component<BillPageProps, BillPageState> {
                 /></div >
 
                 <div ><PlanCard
+                    userPlanId={userPlanId}
                     goTo={this.props.goTo}
                     planId={sEnterprise.planId}
                     letterColor={sEnterprise.letterColor}

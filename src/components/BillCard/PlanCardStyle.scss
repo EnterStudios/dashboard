@@ -45,6 +45,10 @@
     font-size: 2rem;
     width: 10rem;
     border: none;
+    cursor: pointer;
+    &.selected {
+        cursor: default;
+    }
 }
 
 .img_style{

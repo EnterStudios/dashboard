@@ -4,6 +4,7 @@ import { RouterAction } from "react-router-redux";
 const PlanCardStyle = require("./PlanCardStyle.scss");
 
 interface BillCardProps {
+    userPlanId: string;
     planId: string;
     uriImage: string;
     letterColor: string;
@@ -31,20 +32,27 @@ interface BillCardProps {
 }
 
 interface BillCardState {
+    //    user: UserDetails;
 }
 
-export default class BillCard extends React.Component<BillCardProps, BillCardState> {
+export default class PlanCard extends React.Component<BillCardProps, BillCardState> {
     constructor(props: any) {
         super(props);
     }
 
-    handlePlanClick = (evt: any) => {
+    handlePlanClick = async (evt: any) => {
         if (this.props.goTo) {
+
             this.props.goTo("/bills/" + this.props.planId);
+
+
         }
     }
 
     render() {
+        const selected = (this.props.planId === this.props.userPlanId) ? PlanCardStyle.selected : "";
+
+        console.log(this.props.userPlanId, (this.props.planId === this.props.userPlanId));
         return (
             <div className={PlanCardStyle.container} style={{ color: this.props.letterColor, background: this.props.containterColor }}>
                 <div>
@@ -54,13 +62,13 @@ export default class BillCard extends React.Component<BillCardProps, BillCardSta
 
 
                         {(!this.props.leftCard) &&
-                            <button onClick={this.handlePlanClick} className={PlanCardStyle.button} style={{ backgroundColor: this.props.buttonColor }} >{this.props.alt}</button>
+                            <button disabled={this.props.planId === this.props.userPlanId} onClick={this.handlePlanClick} className={`${PlanCardStyle.button} ${selected}`} style={{ backgroundColor: this.props.buttonColor }} >{this.props.alt}</button>
                         }
 
                         {(this.props.leftCard) &&
                             <div className={PlanCardStyle.plan_row_style}><b> {this.props.currentPlan} </b><br />
                                 {this.props.featurePlan1} {this.props.detailPlan1} <br />
-                                {this.props.featurePlan2} {this.props.detailPlan2} <br />
+                                {/* {this.props.featurePlan2} {this.props.detailPlan2} <br /> */}
                                 {this.props.featurePlan3} {this.props.detailPlan3}
                             </div>
                         }
