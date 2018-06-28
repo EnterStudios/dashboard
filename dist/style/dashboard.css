@@ -531,7 +531,7 @@
 .button_menu_theme__help_menu_button___M5l1k {
   letter-spacing: -1px;
   font-family: Calibri, "Helvetica","Arial",sans-serif;
-  top: -8px;
+  top: -6px;
   font-size: 1.4em;
   height: 24px;
   line-height: 24px;
@@ -1680,20 +1680,10 @@ a {
   margin-bottom: 0; }
 
 .mdl-color-cyan-bespoken {
-  background-color: #99d5dc; }
+  background-color: #99d5dd; }
 
 .mdl-color-green-bespoken {
   background-color: #023333; }
-
-.mdl-color-green-bespoken:after {
-  content: "";
-  width: 100%;
-  height: 100%;
-  background: url(https://bespoken.io/wp-content/uploads/Texturecrop30.png);
-  opacity: .4;
-  position: absolute;
-  top: 0;
-  left: 0; }
 
 .responsive-page-swap {
   position: absolute;
@@ -1724,9 +1714,56 @@ a {
     width: 300px;
     height: 300px; }
 
+.global_login_container {
+  display: flex; }
+  .global_login_container > div {
+    min-height: calc(600px - 24vh);
+    height: calc(100% - 24vh);
+    width: 50%;
+    margin: 0;
+    padding-top: 24vh;
+    position: absolute;
+    transition: 1.5s all; }
+    .global_login_container > div.no_image {
+      width: 100%;
+      transition: 1.5s all; }
+    .global_login_container > div + div {
+      min-height: 600px;
+      padding-top: 0;
+      height: 100%;
+      left: 50%; }
+      .global_login_container > div + div.no_image {
+        left: 100%; }
+
+.banner_button {
+  position: absolute;
+  width: 34.1%;
+  height: 7.3%;
+  left: 32%;
+  top: 28.7%;
+  background-color: transparent;
+  cursor: pointer; }
+  .banner_button:hover {
+    opacity: .1;
+    background-color: #000; }
+
+.ace_editor, .ace_editor div, .ace_editor span {
+  font-family: monospace;
+  font-size: 14px !important; }
+
+.banner_test {
+  width: 729px !important;
+  height: 972px !important; }
+
+.remove_top_padding {
+  padding-top: 0 !important; }
+
 @media (max-width: 1366px) {
   html, body {
-    font-size: 12px; } }
+    font-size: 12px; }
+  .banner_test {
+    width: 729px !important;
+    height: 772px !important; } }
 
 @media (max-width: 1024px) {
   html, body {
@@ -1739,6 +1776,14 @@ a {
     left: auto;
     height: 50px;
     overflow-y: hidden; } }
+
+@media (max-width: 850px) {
+  .global_login_container > div {
+    width: 100%;
+    margin: 0;
+    position: relative; }
+    .global_login_container > div + div {
+      display: none; } }
 
 @media (max-width: 667px) {
   .mdl-layout__header.no-header-margin {
@@ -1758,6 +1803,15 @@ a {
     left: auto;
     height: 50px;
     overflow-y: hidden; } }
+
+@media (max-height: 850px) {
+  .global_login_container > div {
+    min-height: calc(600px - 21vh);
+    height: calc(100% - 21vh);
+    padding-top: 21vh; }
+    .global_login_container > div + div {
+      min-height: 600px;
+      padding-top: 0; } }
 .slide-left__enter___UDCzm, .slide-left__leave___1yls4 {
   position: absolute;
   transition-timing-function: ease-in-out;
@@ -4532,16 +4586,37 @@ no_padding_top {
 .cursor-pointer {
   cursor: pointer; }
 
+.authform__button___DjQhb {
+  text-transform: none;
+  line-height: 3rem;
+  font-weight: 300; }
+
 .authform__neutral___1_i25:not([disabled]).authform__flat___3Y_l7, .authform__neutral___1_i25:not([disabled]).authform__toggle___1vAni {
   color: #616161;
   font-size: 0.9em;
   border: 1px solid #023333; }
 
 .authform__input___1Cupp {
-  font-size: 1em; }
+  font-size: 1.6rem;
+  padding: 0;
+  margin-bottom: 1.2rem;
+  background-color: #fff;
+  font-weight: 300; }
+
+.authform__inputElement___2mS2e {
+  color: #3f4040;
+  width: 98%;
+  font-size: 1.6rem;
+  padding: 0.5rem 0 0.5rem .5rem; }
+
+.authform__bar___Woh35 {
+  visibility: hidden; }
 
 .authform__label___3eigX {
-  font-size: 1em; }
+  font-size: 1.6rem;
+  top: 0.7rem;
+  left: 0.5rem;
+  font-weight: 300; }
 
 .authform__h3___1qUD6 {
   text-align: center;
@@ -4575,6 +4650,83 @@ no_padding_top {
   100% {
     opacity: 1;
     transform: scale(1); } }
+.AuthFormStyle__main_form___3rKK6 {
+  width: 100%;
+  text-align: center; }
+  .AuthFormStyle__main_form___3rKK6 > div > img {
+    width: 6.5rem;
+    margin-left: -4.4rem;
+    cursor: pointer; }
+    .AuthFormStyle__main_form___3rKK6 > div > img + img {
+      width: 12rem;
+      margin-left: -1.1rem;
+      vertical-align: bottom; }
+
+.AuthFormStyle__main_normal_login_form___3fXIR {
+  margin-top: 2.3rem; }
+  .AuthFormStyle__main_normal_login_form___3fXIR > div {
+    width: 24rem;
+    margin: auto; }
+    .AuthFormStyle__main_normal_login_form___3fXIR > div.AuthFormStyle__login_inputs_container___1H3KA {
+      margin-top: 1.8rem; }
+  .AuthFormStyle__main_normal_login_form___3fXIR .AuthFormStyle__or_separation___1fUAg {
+    text-align: center;
+    border-top: 1px solid #fff;
+    line-height: 0;
+    margin-top: 1.8rem;
+    margin-bottom: .5rem; }
+    .AuthFormStyle__main_normal_login_form___3fXIR .AuthFormStyle__or_separation___1fUAg span {
+      font-size: 1.6rem;
+      color: #fff;
+      background: #99D5DD;
+      padding: 0 10px; }
+
+.AuthFormStyle__github_login_container___fnc1S {
+  margin-top: 2.5rem; }
+
+.AuthFormStyle__reset_password_container___3UkcV {
+  width: 100%;
+  padding-top: 1.2rem;
+  margin-left: auto; }
+  .AuthFormStyle__reset_password_container___3UkcV button {
+    font-size: 0.95rem !important;
+    margin-top: -2rem !important;
+    padding-right: 0 !important;
+    background: transparent !important;
+    text-align: right;
+    font-weight: 300; }
+    .AuthFormStyle__reset_password_container___3UkcV button:hover {
+      opacity: .5; }
+
+.AuthFormStyle__amazon_login_button___dBAfE {
+  width: 100%;
+  height: 4rem;
+  background-color: #eeb329;
+  border: none !important;
+  color: #fff !important;
+  font-size: 1.5rem !important; }
+  .AuthFormStyle__amazon_login_button___dBAfE:hover {
+    background: #FE9901 !important;
+    opacity: .8; }
+
+.AuthFormStyle__github_login_button___1wMPZ {
+  width: 15rem;
+  height: 3rem;
+  background-color: #D77767;
+  border: none !important;
+  color: #fff !important;
+  font-size: 1.1rem !important;
+  text-indent: 1.5rem; }
+  .AuthFormStyle__github_login_button___1wMPZ:hover {
+    background: #D77767 !important;
+    opacity: .8; }
+
+.AuthFormStyle__regular_button___mQTaI {
+  background-color: #5FAFBC;
+  border: none !important;
+  color: #fff !important;
+  font-size: 1.4rem !important;
+  height: 3.5rem; }
 .container {
   position: relative;
   align-self: center;
@@ -8448,7 +8600,7 @@ no_padding_top {
     height: 16vw;
     border: 2px solid #EBEEF3; }
 .recharts-legend-item-text {
-  font-size: 1.2em;
+  font-size: 1.2rem;
   font-weight: bold; }
 
 .origin-selector .mdl-grid.mdl-grid--no-spacing {
@@ -8502,7 +8654,7 @@ no_padding_top {
   padding-top: 30px; }
 
 .bar-chart {
-  padding-top: 30px; }
+  padding-top: 64px; }
   .bar-chart .recharts-layer.recharts-bar-rectangle path {
     fill-opacity: .4;
     fill: #e68a00; }
@@ -8510,11 +8662,10 @@ no_padding_top {
     margin-left: 130px !important; }
 
 .graph-header {
-  font-family: Helvetica;
-  font-size: 16.8px;
+  font-size: 1.2rem;
   font-weight: bold;
   line-height: 24px;
-  margin: -6px 0 5px;
+  margin: -8px 0 3px;
   text-align: center;
   width: 100%; }
 
@@ -8949,13 +9100,16 @@ no_padding_top {
   display: inline-block;
   margin: 0; }
   .ValidationPageEventStatsStyle__container___DlxbT div {
-    display: block;
+    display: flex;
+    justify-content: space-between;
     width: 100%;
     margin-top: 10px;
     color: #919193;
     font-size: 1.4rem; }
     .ValidationPageEventStatsStyle__container___DlxbT div span {
       float: none; }
+      .ValidationPageEventStatsStyle__container___DlxbT div span + span {
+        margin-right: .3rem; }
 .ValidationComponentGlobalStatsStyle__container___c9UQ3 {
   padding: 20px; }
   .ValidationComponentGlobalStatsStyle__container___c9UQ3 .ValidationComponentGlobalStatsStyle__row___GdgMz {
