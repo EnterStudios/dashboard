@@ -224,7 +224,6 @@ export class PaymentForm extends React.Component<PaymentFormProps, any> {
         const { elementFontSize, userDetail } = this.state;
         const stripeSubscribedPlanId = userDetail && userDetail.stripeSubscribedPlanId;
         const subscriptionUpdate = stripeSubscribedPlanId ? true : false;
-        console.log("subscriptionUpdate?", subscriptionUpdate);
 
         return (
             <StripeProvider apiKey="pk_test_pjtrb20eQPAtLomXsm4sopuW">
