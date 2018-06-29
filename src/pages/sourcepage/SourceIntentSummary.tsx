@@ -119,7 +119,7 @@ export class SourceIntentSummary extends LoadingComponent.Component<CountData[],
         }
         return (
             <div>
-                <Grid>
+                <Grid style={{marginBottom: "-29px"}}>
                     <h4 className="graph-header">Number Of Events Per Intent</h4>
                 </Grid>
                 <div style={{ height: (data.length * 40) + 100 }} >

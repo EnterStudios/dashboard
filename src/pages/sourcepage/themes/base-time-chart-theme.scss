@@ -1,6 +1,6 @@
 :global {
     .recharts-legend-item-text {
-        font-size: 1.2em;
+        font-size: 1.2rem;
         font-weight: bold;
     }
     .origin-selector {
@@ -76,7 +76,7 @@
         padding-top: 30px;
     }
     .bar-chart {
-        padding-top: 30px;
+        padding-top: 64px;
         .recharts-y-axis {
             .recharts-text.recharts-cartesian-axis-tick-value {
                 // fill: transparent;
@@ -95,11 +95,10 @@
         }
     }
     .graph-header {
-        font-family: Helvetica;
-        font-size: 16.8px;
+        font-size: 1.2rem;
         font-weight: bold;
         line-height: 24px;
-        margin: -6px 0 5px;
+        margin: -8px 0 3px;
         text-align: center;
         width: 100%;
     }

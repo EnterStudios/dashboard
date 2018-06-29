@@ -145,6 +145,10 @@
         height: 972px!important;
     }
 
+    .remove_top_padding {
+        padding-top: 0!important;
+    }
+
     @media (max-width: 1366px) {
         html, body {
             font-size: 12px;

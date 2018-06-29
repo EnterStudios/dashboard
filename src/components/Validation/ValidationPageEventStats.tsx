@@ -134,7 +134,7 @@ export class SourceEvents extends LoadingComponent.Component<LogService.SourceSt
                     <span>Total events </span><span>{eventsLabel}</span>
                 </div>
                 <div>
-                    <span>Unique Users </span><span>{usersLabel}</span>
+                    <span>Unique users </span><span>{usersLabel}</span>
                 </div>
                 <div>
                     <span>Total errors </span><span>{errorsLabel}</span>

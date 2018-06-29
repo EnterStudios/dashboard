@@ -44,9 +44,6 @@ export default class SourceSelectorGlobalStats extends React.Component<SourceSel
                             <div>
                                 Events <span>{moment().format("MMMM Do YYYY, h:mm:ss a")}</span>
                             </div>
-                            <div>
-                                dropdown
-                            </div>
                         </div>
                         <div className={GlobalStatsStyle.bars}>
                             <DailyEvents
