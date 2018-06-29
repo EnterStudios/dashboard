@@ -4,8 +4,8 @@ import { User } from "../models/user";
 
 const STRIPE_URL: string = process.env.NODE_ENV === "production"
     ? process.env.STRIPE_API_URL
-    : "https://localhost/";
-// : "https://stripe-api-dev.bespoken.link/";
+    //   : "https://localhost/";
+    : "https://stripe-api-dev.bespoken.link/";
 
 export async function postStripe(user: User, tokenId: any, planToSubscribe: string): Promise<any> {
     const query: Query = new Query();
