@@ -42,15 +42,13 @@ export default class PlanCard extends React.Component<BillCardProps, BillCardSta
 
     handlePlanClick = async (evt: any) => {
         if (this.props.goTo) {
-
-            this.props.goTo("/bills/" + this.props.planId);
-
-
+            if (this.props.planId !== "Enterprise")
+                this.props.goTo("/bills/" + this.props.planId);
         }
     }
 
     render() {
-        const selected = (this.props.planId === this.props.userPlanId) ? PlanCardStyle.selected : "";
+        const selected = (this.props.planId === this.props.userPlanId || this.props.planId === "Enterprise") ? PlanCardStyle.selected : "";
         return (
             <div className={PlanCardStyle.container} style={{ color: this.props.letterColor, background: this.props.containterColor }}>
                 <div>
@@ -98,7 +96,15 @@ export default class PlanCard extends React.Component<BillCardProps, BillCardSta
                     <p className={this.props.leftCard ? PlanCardStyle.left_monitori_card_style : ""}>{this.props.numUsers}</p>
                 </div>
                 <div className={PlanCardStyle.containerFooter} style={{ background: this.props.footerColor }} >
-                    <b>{this.props.price}</b>
+
+                    {(this.props.planId === "Enterprise") &&
+                        <a href="mailto:support@bespoken.io?Subject=Hello" target="_top"><b>{this.props.price}</b></a>
+                    }
+
+                    {(this.props.planId !== "Enterprise") &&
+                        <b>{this.props.price}</b>
+                    }
+
                 </div>
 
             </div >
