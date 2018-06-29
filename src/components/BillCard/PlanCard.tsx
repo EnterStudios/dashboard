@@ -98,7 +98,7 @@ export default class PlanCard extends React.Component<BillCardProps, BillCardSta
                 <div className={PlanCardStyle.containerFooter} style={{ background: this.props.footerColor }} >
 
                     {(this.props.planId === "Enterprise") &&
-                        <a href="mailto:support@bespoken.io?Subject=Hello" target="_top"><b>{this.props.price}</b></a>
+                        <a href="mailto:sales@bespoken.io?Subject=Hello" target="_top"><b>{this.props.price}</b></a>
                     }
 
                     {(this.props.planId !== "Enterprise") &&
