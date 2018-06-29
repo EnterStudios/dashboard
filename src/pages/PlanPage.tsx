@@ -150,7 +150,7 @@ export class PlanPage extends React.Component<BillPageProps, BillPageState> {
                         featurePlan2={""}
                         // featurePlan2={" Number of devices: "}
                         featurePlan3={"invoicing period: "}
-                        detailPlan1={userPlanId}
+                        detailPlan1={userPlanId ? userPlanId : "Free"}
                         detailPlan2={""}
                         detailPlan3={"monthly"}
                         testing={"Testing"}
