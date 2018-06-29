@@ -3,13 +3,17 @@
     display: inline-block;
     margin: 0;
     div {
-        display: block;
+        display: flex;
+        justify-content: space-between;
         width: 100%;
         margin-top: 10px;
         color: #919193;
         font-size: 1.4rem;
         span {
             float: none;
+            + span {
+                margin-right: .3rem;
+            }
         }
     }
 }

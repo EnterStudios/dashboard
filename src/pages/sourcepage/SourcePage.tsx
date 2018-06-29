@@ -3,19 +3,12 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { replace, RouterAction } from "react-router-redux";
 
-import { Button } from "react-toolbox/lib/button";
-import Dialog from "react-toolbox/lib/dialog";
-
 import { deleteSource } from "../../actions/source";
-import { Cell, Grid } from "../../components/Grid";
 import Source from "../../models/source";
 import { State } from "../../reducers";
 
 import SourceFullSummary from "./SourceFullSummary";
 import SourceHeader from "./SourceHeader";
-
-const DeleteButtonTheme = require("../../themes/button_theme.scss");
-const DeleteDialogTheme = require("../../themes/dialog_theme.scss");
 
 interface SourcePageProps {
     source: Source;
@@ -86,7 +79,6 @@ export class SourcePage extends React.Component<SourcePageProps, SourcePageState
 
     render() {
         const { source } = this.props;
-        const sourceName = (source) ? source.name : "this skill";
         const start = moment().subtract(7, "days");
         const end = moment();
         if (!source) {
@@ -103,25 +95,6 @@ export class SourcePage extends React.Component<SourcePageProps, SourcePageState
                     source={source}
                     startDate={start}
                     endDate={end} />
-                <Grid>
-                    <Cell>
-                        <Button
-                            theme={DeleteButtonTheme}
-                            raised
-                            primary
-                            onClick={this.handleDeleteDialogToggle}
-                            label="Delete Source" />
-                    </Cell>
-                </Grid>
-                <Dialog
-                    theme={DeleteDialogTheme}
-                    actions={this.dialogActions}
-                    active={this.state.deleteDialogActive}
-                    onEscKeyDown={this.handleDeleteDialogToggle}
-                    onOverlayClick={this.handleDeleteDialogToggle}
-                    title="Delete Source" >
-                    <p>Are you sure you want to delete {sourceName}? This action can not be undone.</p>
-                </Dialog>
             </span>
         );
     }
