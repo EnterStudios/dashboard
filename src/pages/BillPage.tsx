@@ -59,14 +59,8 @@ export class BillPage extends React.Component<BillPageProps, BillPageState> {
         };
 
         return (
-            <div style={{
-                "display": "flex",
-                "justifyContent": "center",
-                "width": "100%",
-                "height": "600px",
-            }} >
-                <div className={PaymentStyle.cardContainer}
-                >
+            <div className={PaymentStyle.container}>
+                <div className={PaymentStyle.cardContainer}>
 
                     <BillForm uriImageLLamaPay={sStandard.uriImageLLamaPay}
                         uriImageLLamalogo={sStandard.uriImageLLamalogo}

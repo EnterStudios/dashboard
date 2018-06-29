@@ -39,6 +39,7 @@ export interface SplitFormCProps {
     subscriptionUpdate: boolean;
     user: User;
     planId: string;
+    userDetail: UserDetails;
     goTo: (uri: String) => RouterAction;
 }
 
@@ -57,49 +58,58 @@ class SplitFormC extends React.Component<any & SplitFormCProps, any> {
             this.props.goTo("/skills");
     }
 
+    setStripe = async (tokenId: any) => {
+        const userProperties: UserProperties = {
+            email: this.props.user.email,
+            userId: this.props.user.userId,
+            stripeCustomerObjId: this.props.userDetail.stripeCustomerObjId ?
+                this.props.userDetail.stripeCustomerObjId : undefined,
+            stripeSubscribedPlanId: this.props.userDetail.stripeSubscribedPlanId ?
+                this.props.userDetail.stripeSubscribedPlanId : undefined,
+            stripeSubscribedPlanName: this.props.userDetail.stripeSubscribedPlanName ?
+                this.props.userDetail.stripeSubscribedPlanName : undefined,
+        };
+        const user = new User(userProperties);
+        const planToSubscribe = this.props.planId;
+        this.setState({
+            message: "Loading..."
+        });
+        const helper = await postStripe(user, tokenId, planToSubscribe);
+        this.setState({
+            message: helper
+        });
+        if (helper === "operation success") {
+
+            setTimeout(() => {
+                this.redirect();
+            }, 3500);
+        }
+    }
+
     handleSubmit = (ev: any) => {
         ev.preventDefault();
-
         if (this.props.stripe) {
-            this.props.stripe
-                .createToken()
-                .then(async (payload: any) => {
 
-                    if (payload.token) {
-                        const userDetail: UserDetails = await auth.currentUserDetails();
-                        const userProperties: UserProperties = {
-                            email: this.props.user.email,
-                            userId: this.props.user.userId,
-                            stripeCustomerObjId: userDetail.stripeCustomerObjId ?
-                                userDetail.stripeCustomerObjId : undefined,
-                            stripeSubscribedPlanId: userDetail.stripeSubscribedPlanId ?
-                                userDetail.stripeSubscribedPlanId : undefined,
-                            stripeSubscribedPlanName: userDetail.stripeSubscribedPlanName ?
-                                userDetail.stripeSubscribedPlanName : undefined,
-                        };
-                        const user = new User(userProperties);
-                        const planToSubscribe = this.props.planId;
-                        this.setState({
-                            message: "Loading..."
-                        });
-                        const helper = await postStripe(user, payload.token.id, planToSubscribe);
-                        this.setState({
-                            message: helper
-                        });
-                        if (helper === "operation success") {
+            if (this.props.subscriptionUpdate) {
+                this.setStripe(undefined);
+            } else {
 
-                            setTimeout(() => {
-                                this.redirect();
-                            }, 2500);
+                this.props.stripe
+                    .createToken()
+                    .then(async (payload: any) => {
+
+                        if (payload.token) {
+
+                            this.setStripe(payload.token.id);
+
+                        } else {
+                            console.error("fail to try to create a token ", payload);
+                            this.setState({
+                                message: payload.error.message
+                            });
                         }
-
-                    } else {
-                        console.error("fail to try to create a token ", payload);
-                        this.setState({
-                            message: payload.error.message
-                        });
-                    }
-                });
+                    });
+            }
         } else {
             this.setState({
                 message: "Stripe.js hasnt loaded yet."
@@ -116,29 +126,52 @@ class SplitFormC extends React.Component<any & SplitFormCProps, any> {
         }
 
         return (
-            <form onSubmit={this.handleSubmit}>
-                <label>{"Card number"}
-                    <CardNumberElement {...createOptions(this.props.fontSize)} />
-                </label>
-                <label>{"Expiration date"}
-                    <CardExpiryElement
-                        {...createOptions(this.props.fontSize)}
-                    />
-                </label>
-                <label>{"CVC"}
-                    <CardCVCElement
-                        {...createOptions(this.props.fontSize)}
-                    />
-                </label>
-                <label>{"Postal code"}
-                    <PostalCodeElement
-                        {...createOptions(this.props.fontSize)}
-                    />
-                </label>
-                <button>{"Subscribe"}</button>
-                <button disabled={!subscriptionUpdate}>{"Update Subscribe"}</button>
+            <div className={PaymentStyle.cardPayment}>
+                <form onSubmit={this.handleSubmit}>
+                    {subscriptionUpdate ?
+                        <fieldset className={PaymentStyle.fake_form} >
+                            <div><b>Payment form </b></div>
+                            <div>
+                                <label>Card number</label>
+                                <div>**** **** **** 1234</div>
+                                <label>Expiration date</label>
+                                <div>{"MM / YY"}</div>
+                                <label>CVC</label>
+                                <div> CVC </div>
+                                <label>Postal code</label>
+                                <div>*****</div>
+                            </div>
+                            <button className={PaymentStyle.botton}>{"Update Subscription"}</button>
+                        </fieldset>
+                        :
+                        <fieldset >
+                            <div><b>Payment form </b></div>
+                            <div>
+                                <label>{"Card number"}
+                                    <CardNumberElement {...createOptions(this.props.fontSize)} />
+                                </label>
+                                <label>{"Expiration date"}
+                                    <CardExpiryElement
+                                        {...createOptions(this.props.fontSize)}
+                                    />
+                                </label>
+                                <label>{"CVC"}
+                                    <CardCVCElement
+                                        {...createOptions(this.props.fontSize)}
+                                    />
+                                </label>
+                                <label>{"Postal code"}
+                                    <PostalCodeElement
+                                        {...createOptions(this.props.fontSize)}
+                                    />
+                                </label>
+                            </div>
+                            <button className={PaymentStyle.botton}>{"Subscribe"}</button>
+                        </fieldset>
+                    }
+                </form>
                 <div><label className={messageStyle}> <b> {message}</b></label></div>
-            </form>
+            </div>
         );
     }
 }
@@ -182,32 +215,24 @@ export class PaymentForm extends React.Component<PaymentFormProps, any> {
             });
 
         }
+        this.setState({
+            userDetail: await auth.currentUserDetails(),
+        });
     }
 
     render() {
-        const { elementFontSize } = this.state;
+        const { elementFontSize, userDetail } = this.state;
+        const stripeSubscribedPlanId = userDetail && userDetail.stripeSubscribedPlanId;
+        const subscriptionUpdate = stripeSubscribedPlanId ? true : false;
+        console.log("subscriptionUpdate?", subscriptionUpdate);
 
         return (
             <StripeProvider apiKey="pk_test_pjtrb20eQPAtLomXsm4sopuW">
-                <div className={PaymentStyle.container}>
-                    <div>
-                        <img src="https://bespoken.io/wp-content/uploads/2018/05/voicexplogo-e1526593815539.png"
-                            alt="security logo" />
-                        <img src="https://bespoken.io/wp-content/uploads/2018/05/voicexplogo-e1526593815539.png"
-                            alt="security logo" />
-                    </div>
-                    <div>
-                        <img src="https://bespoken.io/wp-content/uploads/2018/05/voicexplogo-e1526593815539.png"
-                            alt="security logo" />
-                        <img src="https://bespoken.io/wp-content/uploads/2018/05/voicexplogo-e1526593815539.png"
-                            alt="security logo" />
-                    </div>
-                    <b>Payment form </b>
-                    < Elements>
-                        <SplitForm planId={this.props.planId} subscriptionUpdate={false}
-                            goTo={this.props.goTo} user={this.props.user} fontSize={elementFontSize} />
-                    </Elements>
-                </div >
+                < Elements >
+                    <SplitForm planId={this.props.planId} subscriptionUpdate={subscriptionUpdate}
+                        userDetail={userDetail}
+                        goTo={this.props.goTo} user={this.props.user} fontSize={elementFontSize} />
+                </Elements>
             </StripeProvider >
         );
     }

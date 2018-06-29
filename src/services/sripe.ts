@@ -7,11 +7,11 @@ const STRIPE_URL: string = process.env.NODE_ENV === "production"
     : "https://localhost/";
 // : "https://stripe-api-dev.bespoken.link/";
 
-export async function postStripe(user: User, token: any, planToSubscribe: string): Promise<any> {
+export async function postStripe(user: User, tokenId: any, planToSubscribe: string): Promise<any> {
     const query: Query = new Query();
 
     query.add({ parameter: "userId", value: user.userId });
-    query.add({ parameter: "token", value: token });
+    query.add({ parameter: "token", value: tokenId });
     query.add({ parameter: "planToSubscribe", value: planToSubscribe });
     query.add({ parameter: "stripeCustomerObjId", value: user.stripeCustomerObjId ? user.stripeCustomerObjId : undefined });
     query.add({ parameter: "email", value: user.email });
@@ -45,7 +45,6 @@ export async function postStripe(user: User, token: any, planToSubscribe: string
         console.error(result.text());
 
     } catch (error) {
-        console.log("error...................");
         console.error(error);
     }
     return "Sorry there is an internal issue, Please try in another time or contact us.";

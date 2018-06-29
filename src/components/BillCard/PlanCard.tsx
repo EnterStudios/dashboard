@@ -51,8 +51,6 @@ export default class PlanCard extends React.Component<BillCardProps, BillCardSta
 
     render() {
         const selected = (this.props.planId === this.props.userPlanId) ? PlanCardStyle.selected : "";
-
-        console.log(this.props.userPlanId, (this.props.planId === this.props.userPlanId));
         return (
             <div className={PlanCardStyle.container} style={{ color: this.props.letterColor, background: this.props.containterColor }}>
                 <div>

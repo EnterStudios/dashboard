@@ -1,32 +1,8 @@
 .container {
     display: flex;
-    flex-flow: column wrap;
+    justify-Content: center;
     width: 100%;
-    height: 100%;
-    // max-width: 200px;
-    max-height: 410px;
-    padding: 2rem 2rem;
-    > div {
-        > img {
-            justify-content: center;
-            margin: auto;
-            visibility: hidden;
-        }
-
-        width: 100%;
-        display: flex;
-        // flex-flow: row wrap;
-        align-items: center;
-        justify-content: center;
-        > p {
-            font-size: 1.36rem;
-            text-align: center;
-            width: 100%;
-            margin: auto;
-            padding: 1.2rem;
-            font-family: Khand;
-        }
-    }
+    height: 600px;
 }
 
 .cardContainer{
@@ -34,20 +10,60 @@
     flex-Direction: row;
     box-shadow:  darkgrey 1px 30px 24px;
     max-height: 500px;
-    width: 1000px;
+    width: 800px;
     border-radius: 1rem;
+
 }
 
 .invalid{
+    margin-top: 1rem;
     color: #9e2146;
     font-size: 16px;
 }
 .success{
+    margin-top: 1rem;
     color: green;
     font-size: 16px;
 }
 .loading{
+    margin-top: 1rem;
     color:grey;
     font-size: 16px;
 
+}
+
+.cardPayment{
+    display: flex;
+    flex-direction: column;
+    padding: 3rem;
+    align-self: center;
+
+}
+
+.botton{
+    width: 200px;
+    margin-top: 1rem;
+}
+
+.fake_form{
+
+    > div{
+       + div {
+        display: block;
+        font-size: 18px;
+        color:#424770;
+        letter-spacing: 0.025rem;
+        font-family: 'Source Code Pro', monospace;
+        // margin-bottom: 1rem;
+
+        > label{
+            display: block;
+            font-size: 14px;
+            color: #000;
+            letter-spacing: 0.025rem;
+            font-family: 'Source Code Pro', monospace;
+
+        }
+       }
+    }
 }
