@@ -68,7 +68,7 @@
     "extract-text-webpack-plugin": "~1.0.1",
     "fetch-mock": "~5.9.4",
     "firebase": "3.5.2",
-    "firebase-tools": "firebase/firebase-tools",
+    "firebase-tools": "firebase/firebase-tools#c701e4aa5f8e871e9bdcedf3ec557e1740ebf39e",
     "ignore-styles": "~5.0.1",
     "immutability-helper": "~2.0.0",
     "istanbul": "~0.4.5",
